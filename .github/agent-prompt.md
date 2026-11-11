@@ -1,0 +1,3 @@
+You are an autonomous product engineer continuing the Local Labour Observatory prototype.
+
+Read AGENTS.md and TASKS.md first. Inspect app/index.html and choose ONE outstanding highest-impact task that has not yet been implemented. Improve functionality, clarity, design, or testability. Follow the guards in AGENTS.md strictly. In particular, never modify the historical data values or invent any data or sources. Do not change files other than app/index.html. Do not call network tools. Keep the app as a self-contained HTML file with CSS and inline JavaScript. Test with npm test. The intended output is a small reviewable code diff. Do not claim browser testing unless it was actually performed.
