@@ -1,27 +1,21 @@
-# Local Labour Observatory - persistent development starter
+# Local Labour Observatory — Bergamo
 
-This package contains the existing Bergamo v0.9 prototype and a scheduled GitHub Actions development workflow that proposes **one small tested improvement each night**. It does not deploy or merge automatically.
+Prototipo della dashboard territoriale, con serie storiche, grafici e documentazione delle fonti. Il progetto è conservato in questo repository privato.
 
-## Setup
+## Esecuzioni automatiche senza API a pagamento
 
-1. Create a **private** GitHub repository named e.g. `local-labour-observatory`.
-2. Upload this folder's contents to the repository root (include `.github`).
-3. In GitHub: Settings > Secrets and variables > Actions > New repository secret. Add `OPENAI_API_KEY` (never put the secret in a code file, message or commit).
-4. Settings > Actions > General > Workflow permissions: choose Read and write permissions and allow GitHub Actions to create pull requests, if your organization permits. Keep branch protection and require review before merging.
-5. Go to Actions > Nightly Observatory Agent > Run workflow to verify a first run. Nightly schedule is 02:15 UTC, i.e. 03:15 in Rome during winter, 04:15 in summer.
-6. Open the generated PR, review changes and test in a browser before merging. Do not enable automatic merge.
+Il workflow `.github/workflows/nightly-agent.yml` esegue **solo controlli** programmati (test della struttura, dei collegamenti e della sintassi JavaScript). Non usa OpenAI API, non richiede chiavi, **non modifica autonomamente il codice** e non apre pull request.
 
-## Local usage
+Le esecuzioni avvengono alle 02:15 UTC, soggette alle regole e alle quote GitHub Actions del piano del repository. In Italia l'orario equivale alle 03:15 durante l'ora solare e alle 04:15 durante l'ora legale. GitHub non garantisce che i job programmati partano all'ora esatta.
 
-- `npm test` performs structural regression tests (it does **not** substitute for browser tests).
-- `npm run serve` serves `app/index.html` on http://localhost:8000 for manual testing.
-- The prototype currently includes historical data and source claims carried from earlier versions; **the package does not independently certify them**.
+## Sviluppo
 
-## Operational cautions
+- Applicazione: `app/index.html`
+- Test: `npm test` (Node.js 20+)
+- Server locale: `npm run serve`
+- Obiettivi di miglioramento: `TASKS.md`
+- Linee guida: `AGENTS.md`
 
-- Scheduled GitHub Actions can be delayed or disabled in inactive repositories; they require a working GitHub account, Actions availability, and API budget.
-- The Codex action runs a single improvement per invocation. Repeated improvement cycles require repeated scheduled runs.
-- This is code automation, not a continuous always-on agent. It proposes PRs; it does not guarantee a finished product on any particular morning.
-- The workflow intentionally avoids live data ingestion or external web calls. Official-data expansion is a separate, reviewed workflow.
-- The latest PR branch is reused to avoid an unbounded queue of automated PRs. Review and merge regularly to keep proposals coherent.
-- If no eligible change is found or tests fail, the run stops without opening a PR.
+I controlli automatici **non** sostituiscono collaudi in browser, revisioni metodologiche e verifica delle fonti statistiche.
+
+Per sviluppo iterativo assistito dall'AI senza API a consumo, si può lavorare direttamente in ChatGPT/Codex durante sessioni attive, purché le funzionalità siano comprese nel piano disponibile. Per un agente notturno che modifichi autonomamente il prodotto è necessario predisporre un modello e un ambiente di esecuzione persistente: il presente workflow non realizza quella funzione.
