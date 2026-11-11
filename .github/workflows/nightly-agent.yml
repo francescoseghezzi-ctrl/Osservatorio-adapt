@@ -1,0 +1,76 @@
+name: Nightly Observatory Agent
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 2 * * *'
+concurrency:
+  group: nightly-observatory
+  cancel-in-progress: false
+jobs:
+  propose:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Baseline tests
+        run: npm test
+      - name: Make one tested improvement
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          permission-profile: ':workspace'
+          prompt-file: .github/agent-prompt.md
+      - name: Check proposal
+        run: |
+          npm test
+          git diff -- app/index.html > proposal.patch
+          test -s proposal.patch
+          git diff --name-only | grep -v '^app/index.html$' > unexpected.txt || true
+          test ! -s unexpected.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nightly-proposal
+          path: proposal.patch
+          retention-days: 7
+  review_pr:
+    needs: propose
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@v4
+        with:
+          name: nightly-proposal
+      - name: Apply and validate isolated change
+        run: |
+          git apply --check proposal.patch
+          git apply proposal.patch
+          npm test
+      - name: Open review pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          add-paths: app/index.html
+          branch: agent/nightly-improvement
+          delete-branch: true
+          title: 'Observatory: proposed nightly improvement'
+          body: |
+            Automated small improvement to the Local Labour Observatory.
+            Static checks passed. **Requires human review and browser testing.**
+            No automated merge or deployment is configured.
+          commit-message: 'chore: propose one observatory improvement'
