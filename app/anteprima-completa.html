@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Local Labour Observatory | Bergamo v1.9 · Anteprima completa</title>
+<style>
+
+:root{
+  --bg:#08111f;
+  --bg2:#0b1729;
+  --panel:#ffffff;
+  --panel-soft:#f8fbff;
+  --ink:#133045;
+  --muted:#6d8393;
+  --line:#dce7f1;
+  --line-soft:#eaf1f7;
+  --cyan:#21d4c6;
+  --teal:#11b8ac;
+  --blue:#4a78ff;
+  --blue2:#6b8cff;
+  --purple:#7a5cff;
+  --nav:#0c1627;
+  --nav-2:#101d33;
+  --success:#12a67d;
+  --warning:#d8a24e;
+  --shadow:0 24px 60px rgba(8,20,38,.08);
+  --shadow-strong:0 30px 80px rgba(7,19,35,.22);
+  --radius:24px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font:15px/1.55 Inter,system-ui,-apple-system,Segoe UI,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 15% 0%, rgba(33,212,198,.18), transparent 24%),
+    radial-gradient(circle at 100% 0%, rgba(74,120,255,.16), transparent 30%),
+    linear-gradient(180deg,var(--bg) 0, var(--bg2) 340px, #f4f8fc 341px, #f4f8fc 100%);
+}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);background-size:34px 34px;mask-image:linear-gradient(to bottom, rgba(0,0,0,.45), transparent 58%)}
+button,select{font:inherit}
+.app{display:flex;min-height:100vh}
+aside{
+  width:292px;flex-shrink:0;height:100vh;position:sticky;top:0;overflow:auto;
+  padding:22px 18px;background:linear-gradient(180deg, rgba(8,17,31,.92), rgba(16,29,51,.9));
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  border-right:1px solid rgba(255,255,255,.08);color:#fff;
+}
+aside .logo{padding:18px 18px 16px;border-radius:22px;background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);font-weight:900;font-size:27px;line-height:1.02;letter-spacing:-1.2px}
+aside .logo small{display:block;margin-bottom:8px;font-size:11px;letter-spacing:2.8px;color:#8be9e0;font-weight:900}
+aside .sub{margin:14px 4px 22px;color:#a8bfce;font-size:12px;line-height:1.45}
+.nav{display:grid;gap:8px}
+.nav a{display:flex;align-items:center;gap:12px;text-decoration:none;color:#d6e0e8;padding:13px 14px;border-radius:16px;border:1px solid transparent;transition:.2s ease;font-weight:650}
+.nav a::before{content:"";width:9px;height:9px;border-radius:99px;background:linear-gradient(180deg,var(--cyan),var(--blue));box-shadow:0 0 0 4px rgba(33,212,198,.08)}
+.nav a:hover,.nav a:focus,.nav a:first-child{background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));border-color:rgba(255,255,255,.08);transform:translateX(2px);color:#fff}
+.aside-foot{margin-top:20px;padding:15px 14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-size:11px;color:#a9bfcd;line-height:1.55}
+main{max-width:1680px;flex:1;min-width:0;padding:30px 34px 56px}
+.header{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:24px;padding:30px;border-radius:30px;background:linear-gradient(135deg, rgba(10,22,39,.98), rgba(20,38,67,.95) 42%, rgba(32,120,165,.92) 100%);color:#fff;box-shadow:var(--shadow-strong);position:relative;overflow:hidden}
+.header::before{content:"";position:absolute;right:-90px;top:-100px;width:300px;height:300px;border-radius:999px;background:radial-gradient(circle, rgba(255,255,255,.22), transparent 70%)}
+.header::after{content:"";position:absolute;left:28%;top:0;bottom:0;width:1px;background:linear-gradient(180deg, transparent, rgba(255,255,255,.2), transparent)}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:end;width:100%}
+.eyebrow{text-transform:uppercase;letter-spacing:2.4px;color:#8eeddf;font-size:11px;font-weight:900}
+h1{margin:8px 0 10px;font-size:42px;line-height:1.03;letter-spacing:-1.6px;color:#fff;max-width:760px}
+.muted{color:var(--muted)}
+.header .muted{color:rgba(238,246,250,.78)}
+.small{font-size:12px}
+.hero-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.hero-box{padding:14px 14px 13px;border-radius:18px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(8px)}
+.hero-box .label{font-size:11px;color:#b7d4de;text-transform:uppercase;letter-spacing:.8px;font-weight:800}
+.hero-box .value{margin-top:7px;font-size:24px;font-weight:900;letter-spacing:-1px}
+.hero-box .sub{margin-top:6px;font-size:11px;color:#d5e5ea}
+.topline{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.pill{font-size:10px;letter-spacing:.7px;text-transform:uppercase;background:rgba(255,255,255,.12);color:#fff;padding:7px 10px;border-radius:999px;display:inline-block;font-weight:850;border:1px solid rgba(255,255,255,.12)}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end;position:relative;z-index:1}
+.toolbar select,.toolbar button,.action{padding:12px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.08);color:#fff;backdrop-filter:blur(8px)}
+.toolbar button,.action{cursor:pointer;font-weight:750}.toolbar button:hover,.action:hover{background:rgba(255,255,255,.15)}
+.banner{margin:0 2px 24px;padding:16px 18px;border-radius:18px;background:linear-gradient(180deg,#ecfbfa,#f5fcff);border:1px solid #cbeee8;color:#1c5d5a;box-shadow:0 10px 24px rgba(14,31,46,.05);font-size:13px;line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.card,.panel{background:linear-gradient(180deg,#fff,#f9fbfe);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.card::before,.panel::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--purple))}
+.metric-label{font-size:11px;font-weight:850;color:var(--muted);text-transform:uppercase;letter-spacing:.9px}
+.metric-value{font-size:36px;line-height:1.1;font-weight:950;letter-spacing:-1.5px;margin-top:10px;color:#102d42}
+.metric-sub{font-size:12px;color:var(--muted);margin-top:10px}
+.layout{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;margin-top:18px}.layout.equal{grid-template-columns:1fr 1fr}
+h2{font-size:20px;margin:0 0 4px;letter-spacing:-.5px;color:#102c3d}h3{font-size:15px;margin:0 0 12px}
+.panel .intro{margin:0 0 16px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.75px;font-weight:800}
+.chart{min-height:240px;padding:8px 8px 0;border-radius:18px;background:linear-gradient(180deg,#f3f8fc,#ffffff);border:1px solid var(--line-soft)}
+.insight{position:relative;margin:12px 0;padding:14px 14px 14px 17px;border-radius:18px;background:#f6fbfb;border:1px solid #dcefeb;box-shadow:0 6px 18px rgba(15,38,52,.03)}
+.insight::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:8px;background:linear-gradient(180deg,var(--cyan),var(--teal))}
+.insight strong{display:block;margin-bottom:4px;color:#123744}.warning{background:#fffaf0;border-color:#f0dfbf}.warning::before{background:linear-gradient(180deg,#f0bb62,#d69a39)}
+.tab{display:none}.tab.active{display:block}
+.data-table{width:100%;border-collapse:collapse;font-size:13px}.data-table th{text-align:left;color:#728694;font-size:11px;border-bottom:1px solid var(--line);padding:12px 8px;text-transform:uppercase;letter-spacing:.6px}.data-table td{border-bottom:1px solid #eaf0f4;padding:13px 8px}.data-table td:not(:first-child),.data-table th:not(:first-child){text-align:right}
+.panel + .panel{margin-top:16px}.tablewrap{overflow:auto}a{color:#0c8f88}code{background:#edf5f9;padding:2px 5px;border-radius:6px}.source-list a{word-break:break-word}.source-list li{margin:10px 0}
+.file{display:block;width:100%;border:1px dashed #b7ccdc;border-radius:18px;padding:18px;margin-top:14px;background:#fbfdff}.buttonrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}button.primary,.action.primary{background:#0d8a83;color:white;border:1px solid #0d8a83}
+.infocard{background:linear-gradient(180deg,#f7fbfd,#f1f8fc);border-radius:18px;padding:16px;margin-top:12px;border:1px solid var(--line-soft)}
+.rowstat{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.rowstat strong{font-size:18px;color:#112e40}.key{font-size:12px;color:var(--muted)}
+footer{margin-top:30px;color:#6f8592;font-size:12px;padding:18px 4px 8px}.chart svg{display:block;max-width:100%}
+.statstrip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}.statstrip .metric-value{font-size:26px}
+.tab{display:none!important}#overview{display:block!important}body:has(section.tab:not(#overview):target) #overview{display:none!important}section.tab:target{display:block!important}
+@media(max-width:1220px){aside{width:248px}.hero-grid{grid-template-columns:1fr}.header::after{display:none}.grid{grid-template-columns:repeat(2,1fr)}.layout,.layout.equal{grid-template-columns:1fr}main{padding:24px}h1{font-size:36px}}
+@media(max-width:760px){.app{display:block}aside{position:static;height:auto;width:100%;padding:18px 16px}.nav{display:flex;overflow:auto;padding-bottom:4px}.nav a{white-space:nowrap}.aside-foot{display:none}main{padding:18px 14px 44px}.header{padding:22px 18px;border-radius:22px}.toolbar{margin-top:14px;justify-content:flex-start}.hero-metrics{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.card,.panel{padding:16px;border-radius:18px}.metric-value{font-size:27px}.statstrip{grid-template-columns:1fr}h1{font-size:30px}}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.toolbar select,.toolbar button{width:100%}}
+@media print{aside,.toolbar,.buttonrow,.file{display:none!important}body{background:#fff}main{padding:0}.tab{display:block!important;break-before:page}.tab:first-child{break-before:auto}.card,.panel{box-shadow:none}.header{background:#fff!important;color:#000;box-shadow:none;padding:0}.header .muted,.eyebrow,h1{color:#000!important}.banner{font-size:11px;box-shadow:none}.chart{background:#fff}}
+
+
+.section-head{margin:0 0 20px;padding:12px 2px 0}.section-head h2{font-size:31px;line-height:1.12;margin:8px 0}.section-head p{font-size:14px;max-width:820px}
+#skills .grid{margin-bottom:18px}#skills .chart{min-height:0;padding:12px 8px 4px}
+#skills .data-table td:nth-child(2){color:#0a817d;font-weight:700}
+.nav a:first-child{background:transparent;border-color:transparent;transform:none}
+body:not(:has(section.tab:not(#overview):target)) .nav a[href="#overview"],
+body:has(#labour:target) .nav a[href="#labour"],
+body:has(#sectors:target) .nav a[href="#sectors"],
+body:has(#skills:target) .nav a[href="#skills"],
+body:has(#gender:target) .nav a[href="#gender"],
+body:has(#demography:target) .nav a[href="#demography"],
+body:has(#compare:target) .nav a[href="#compare"],
+body:has(#sources:target) .nav a[href="#sources"]{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.12);color:white}
+@media(max-width:760px){#skills .grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-head h2{font-size:25px}}
+@media(max-width:520px){#skills .grid{grid-template-columns:1fr}}
+
+
+/* Time series explorer */
+.ts-heading{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:20px}
+.ts-heading p{margin:7px 0 0;max-width:690px;color:var(--muted)}
+.ts-layout{display:grid;grid-template-columns:minmax(240px,285px) minmax(0,1fr);gap:18px;align-items:start}
+.ts-controls{position:sticky;top:20px}
+.ts-control-title{text-transform:uppercase;font-size:11px;font-weight:850;letter-spacing:1px;color:#61798d;margin:3px 0 12px}
+.ts-choice{display:flex;align-items:center;gap:10px;padding:10px 4px;font-size:13px;border-bottom:1px solid #edf2f7;cursor:pointer}
+.ts-choice input{accent-color:#168cbf;width:17px;height:17px;flex-shrink:0}
+.ts-dots{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.ts-filters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.ts-filter label{font-size:11px;color:var(--muted);font-weight:800;display:block;margin-bottom:6px}
+.ts-filter select{width:100%;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);padding:10px 8px;font-size:13px}
+.ts-style{display:flex;gap:6px;flex-wrap:wrap}
+.ts-style button,.ts-export{border:1px solid #dce7ee;border-radius:11px;background:#fff;padding:9px 12px;color:#254257;font-weight:750;cursor:pointer;font-size:12px}
+.ts-style button[aria-pressed="true"]{background:#153952;border-color:#153952;color:#fff}
+.ts-export{background:#edf7ff}
+.ts-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.ts-message{font-size:12px;color:#9a5613;background:#fff6e8;border-radius:10px;padding:10px;margin-top:12px;display:none}
+.ts-message:not(:empty){display:block}
+.ts-canvas{min-height:345px;background:linear-gradient(180deg,#f8fbff,#fff);border:1px solid #e9eff5;padding:12px;border-radius:16px}
+.ts-legend{display:flex;flex-wrap:wrap;gap:14px;margin:12px 0;font-size:12px;color:#526c7e}
+.ts-legend span{display:inline-flex;align-items:center;gap:7px}
+.ts-swatch{display:inline-block;width:11px;height:11px;border-radius:3px}
+.ts-meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:#587181}
+.ts-meta b{color:#173c53}
+.ts-table{margin-top:16px}
+.ts-table th,.ts-table td{text-align:right!important;white-space:nowrap}
+.ts-table th:first-child,.ts-table td:first-child{text-align:left!important}
+.ts-section-label{font-weight:900;font-size:13px;color:#547389;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.ts-note{font-size:12px;color:#647d8e;margin-top:14px}
+@media(max-width:950px){.ts-layout{grid-template-columns:1fr}.ts-controls{position:static}.ts-filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.ts-heading{display:block}.ts-filters{grid-template-columns:1fr 1fr}.ts-canvas{padding:2px;min-height:230px}}
+
+.ts-table-header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.ts-delta-switch{font-size:12px;max-width:360px}
+.ts-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin:12px 0 14px}
+.ts-insight{border:1px solid #e1ebf4;border-radius:12px;background:#f7fbff;padding:12px}
+.ts-insight-name{font-size:11px;color:#60788b;font-weight:750}
+.ts-insight-value{font-size:21px;font-weight:850;letter-spacing:-.6px;margin-top:5px}
+.ts-insight-years{font-size:10px;color:#6d8494;margin-top:4px}
+.ts-empty{padding:44px 18px;color:#627b8b;text-align:center}
+.preset-panel{margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.preset-actions{display:flex;flex-wrap:wrap;gap:8px}
+.preset-actions button{background:#eef5fc;border:1px solid #d9e5f1;color:#183e5a;border-radius:12px;padding:9px 13px;font-weight:700;cursor:pointer}
+.preset-actions button:hover,.preset-actions button:focus{background:#d9e9ff;border-color:#91b9fa}
+#ts-message:not(:empty){padding:12px 14px;background:#fff4ea;border:1px solid #e6c19f;border-radius:12px;color:#844621}
+@media(max-width:760px){.preset-panel{display:block}.preset-actions{margin-top:12px}}
+
+.flows-toolbar{display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}
+.flows-toolbar label{display:block;font-size:11px;font-weight:800;color:#647d8e;margin-bottom:7px}
+.flows-toolbar select{border:1px solid #dce6f1;border-radius:10px;background:#fff;padding:10px 12px;color:#183a52}
+.flows-chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.flows-chart{border:1px solid #e7eef4;background:#f8fbff;border-radius:14px;padding:8px;min-height:220px}
+.flows-chart svg{display:block;width:100%;height:auto}
+#flows-cob-chart{margin-bottom:20px}
+.flow-highlights .metric-value{font-size:28px}
+@media(max-width:900px){.flows-chart-grid{grid-template-columns:1fr}}
+.renewal-filters{display:grid;grid-template-columns:repeat(2,minmax(125px,1fr)) repeat(2,minmax(170px,1.5fr));gap:12px;margin-bottom:16px}
+.renewal-filters label{font-size:11px;font-weight:800;color:#607b8d;display:block;margin-bottom:6px}
+.renewal-filters select{width:100%;padding:10px 12px;background:#fff;border-radius:10px;border:1px solid #d5e3ed;color:#183a52}
+.renewal-cards{margin-top:12px;grid-template-columns:repeat(4,minmax(0,1fr))}
+.renewal-cards .metric-value{font-size:27px}
+.renewal-interpretation{border-left:4px solid #087c76;background:#edf8f7;border-radius:11px;padding:14px 16px;margin-top:16px;font-size:13px;color:#274d56;line-height:1.65}
+#renewal-table th,#renewal-table td{text-align:right}
+#renewal-table th:first-child,#renewal-table td:first-child{text-align:left}
+@media(max-width:1100px){.renewal-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.renewal-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.renewal-filters,.renewal-cards{grid-template-columns:1fr}}
+.lombardy-controls{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:12px;min-width:min(620px,100%)}
+.lombardy-controls label{display:block;color:#627b8e;font-size:11px;font-weight:800;margin-bottom:6px}
+.lombardy-controls select{width:100%;border:1px solid #d7e3ed;background:#fff;border-radius:10px;padding:10px;color:#1c4058}
+#lombardy-chart{min-height:400px}#lombardy-chart svg{max-width:100%}
+#lombardy-table th,#lombardy-table td{white-space:nowrap}
+#lombardy-table td:first-child{font-weight:750;text-align:left}
+#lombardy-table .lombardy-selected{background:#eaf9f7}
+#lombardy-table .lombardy-benchmark{background:#f3f7ff;font-weight:800;border-top:2px solid #cbd9ef}
+@media(max-width:800px){.lombardy-controls{grid-template-columns:1fr 1fr}}
+@media(max-width:550px){.lombardy-controls{grid-template-columns:1fr}#lombardy-chart{min-height:280px}}
+.lombardy-map-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(245px,.75fr);gap:16px;margin:12px 0 20px}
+.lombardy-map-frame{position:relative;min-width:0;border-radius:18px;border:1px solid #dce8ef;background:linear-gradient(140deg,#f6faff,#eef5f8);padding:14px}
+.lombardy-map-heading{display:flex;gap:12px;align-items:center;justify-content:space-between}.lombardy-map-heading h3{margin-bottom:3px}.lombardy-map-heading p{color:#587489;font-size:12px;margin:0}
+#lombardy-map-reset{cursor:pointer;background:#fff;border:1px solid #c8dce7;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:700;white-space:nowrap}
+.lombardy-map svg{width:100%;height:auto;max-height:520px;display:block;touch-action:manipulation}
+.lombardy-map-path{stroke:#fff;stroke-width:2;stroke-linejoin:round;cursor:pointer;transition:stroke-width .12s ease,filter .12s ease;vector-effect:non-scaling-stroke}
+.lombardy-map-path:hover,.lombardy-map-path:focus{stroke:#073c56;stroke-width:4;outline:none;filter:brightness(1.05)}
+.lombardy-map-path.is-selected{stroke:#083d5a;stroke-width:4;filter:drop-shadow(0 1px 3px rgba(5,45,68,.22))}
+.lombardy-map-label{font:700 12px system-ui,sans-serif;fill:#173b50;stroke:rgba(255,255,255,.8);stroke-width:2.5;paint-order:stroke;pointer-events:none}
+.lombardy-map-legend{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;color:#587489;font-size:11px}
+.lombardy-legend-ramp{height:10px;min-width:120px;flex:1;border-radius:12px;background:linear-gradient(90deg,#e7effa,#a6d5d3,#087c76)}
+.lombardy-map-detail{padding:20px;background:#fff;border:1px solid #dae8ed;border-radius:18px;min-width:0}
+.lombardy-map-detail h3{margin:0 0 4px;font-size:21px}.lombardy-map-detail .metric-value{font-size:34px;margin:8px 0}
+.lombardy-map-detail .rowstat{font-size:12px;align-items:center}.lombardy-map-detail .rowstat strong{font-size:15px}
+.lombardy-map-detail p{font-size:12px;color:#607786;line-height:1.55}
+.lombardy-map-tooltip{position:absolute;z-index:3;pointer-events:none;padding:11px 13px;background:#102e42;color:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(12,40,57,.25);font-size:12px;max-width:230px;line-height:1.5}
+.lombardy-map-tooltip strong{display:block;font-size:14px;margin-bottom:3px}
+.lombardy-map-tooltip[hidden]{display:none}
+@media(max-width:1050px){.lombardy-map-layout{grid-template-columns:1fr}.lombardy-map-detail{padding:16px}}
+@media(max-width:640px){.lombardy-map-heading{align-items:flex-start;flex-direction:column}.lombardy-map svg{max-height:430px}}
+</style><meta name="description" content="Anteprima autonoma completa del Local Labour Observatory, versione 1.9. Dati e mappe offline."></head><body><div class="app"><aside><div class="logo"><small>LOCAL LABOUR</small>OBSERVATORY</div><p class="sub">Territorial intelligence · Bergamo</p><div class="nav"><a aria-label="Apri sezione Panoramica" href="#overview">Panoramica</a><a aria-label="Apri esploratore delle serie storiche" href="#timeseries">Serie storiche</a><a aria-label="Apri dati storici dei flussi e fabbisogni" href="#flows">Flussi e previsioni</a><a aria-label="Apri sezione Occupazione e flussi" href="#labour">Occupazione e flussi</a><a aria-label="Apri sezione Assunzioni per settore" href="#sectors">Assunzioni per settore</a><a aria-label="Apri sezione Competenze e fabbisogni" href="#skills">Competenze e fabbisogni</a><a aria-label="Apri sezione Genere e inattività" href="#gender">Genere e inattività</a><a aria-label="Apri sezione Demografia" href="#demography">Demografia</a><a aria-label="Apri analisi ricambio generazionale" href="#renewal">Ricambio generazionale</a><a aria-label="Apri comparazione province lombarde" href="#lombardy">Province lombarde</a><a aria-label="Apri sezione Confronti" href="#compare">Confronti</a><a aria-label="Apri sezione Dati e metodologia" href="#sources">Dati e metodologia</a></div><div class="aside-foot">Versione 1.9 · novembre 2026<br>Dati ufficiali 2019–2025.<br>UI style · software B2B.</div></aside><main>
+<div class="header"><div class="hero-grid"><div><div class="eyebrow">Territorial intelligence platform · time series explorer 0.9</div><h1>Mercato del lavoro · Bergamo</h1><div class="muted small">Provincia di Bergamo · analisi delle forze di lavoro e delle trasformazioni occupazionali</div><div class="topline"><span class="pill">Bergamo pilot</span><span class="pill">Dati ufficiali</span><span class="pill">Software B2B style</span></div></div><div><div class="hero-metrics"><div class="hero-box"><div class="label">Occupazione</div><div class="value" id="hero-employment">67,9%</div><div class="sub">Tasso 15–64 · <span class="hero-year">2025</span></div></div><div class="hero-box"><div class="label">Disoccupazione</div><div class="value" id="hero-unemployment">1,3%</div><div class="sub">Tasso 15–74 · <span class="hero-year">2025</span></div></div><div class="hero-box"><div class="label">Occupati</div><div class="value" id="hero-employed">495k</div><div class="sub">Stima media annua</div></div></div></div></div><div class="toolbar"><select aria-label="Annualità, valida per serie ISTAT" title="Selezione anno per KPI e serie ISTAT" id="year"><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option><option value="2020">2020</option><option value="2019">2019</option></select><button id="print">Esporta / stampa PDF</button></div></div>
+<div class="banner"><strong>Dati ufficiali, periodo dichiarato.</strong> Serie annuali 2019–2025 elaborate dalla Camera di commercio di Bergamo su rilevazioni ISTAT. Le stime campionarie sono arrotondate; il saldo delle posizioni dipendenti da comunicazioni obbligatorie NON equivale alla variazione dello stock di occupati rilevata dall’indagine ISTAT. Nessun numero è simulato in questa versione.</div>
+<section class="tab" id="flows">
+ <div class="section-head"><div class="eyebrow">Analisi delle dinamiche territoriali</div><h2>Flussi e previsioni di assunzione</h2><p>Due fonti distinte: contratti effettivamente attivati e cessati nelle comunicazioni obbligatorie (COB); entrate <em>previste</em> dalle imprese nell'indagine Excelsior. Non sono misure intercambiabili.</p></div>
+ <div class="grid flow-highlights" id="flows-kpis" aria-live="polite"></div>
+ <div class="panel" style="margin-top:18px">
+  <div class="flows-toolbar"><div><h2>Domanda prevista delle imprese · Excelsior</h2><p class="intro">Dati mensili, gennaio 2022 – giugno 2025</p></div><div><label for="flows-year">Periodo da visualizzare</label><select id="flows-year"><option value="all">Tutti i mesi</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024">2024</option><option value="2025">2025 (gen–giu)</option></select></div></div>
+  <div class="flows-chart-grid"><div><h3>Entrate previste (numero)</h3><div id="flows-excelsior-entries" class="flows-chart" role="group" aria-label="Grafico entrate previste Excelsior"></div></div><div><h3>Difficoltà di reperimento (%)</h3><div id="flows-excelsior-difficulty" class="flows-chart" role="group" aria-label="Grafico difficoltà di reperimento Excelsior"></div></div></div>
+  <p class="ts-note"><strong>Fonte:</strong> Provincia di Bergamo, Rapporto I trimestre 2025, p. 37; Unioncamere–Ministero del Lavoro, Sistema informativo Excelsior. Le entrate previste non coincidono con le assunzioni effettuate. <a href="https://www.provincia.bergamo.it/po/attachment_news.php?id=2785" target="_blank" rel="noopener noreferrer">Documento originale</a>.</p>
+ </div>
+ <div class="panel" style="margin-top:18px">
+  <h2>Assunzioni, cessazioni e saldi · Comunicazioni obbligatorie</h2><p class="intro">Serie annuale omogenea, 2019–2024 · sedi di lavoro in provincia</p>
+  <div class="flows-chart" id="flows-cob-chart" role="group" aria-label="Grafico serie storica avviamenti e cessazioni"></div>
+  <div class="tablewrap"><table class="data-table" id="flows-cob-table"><thead><tr><th>Anno</th><th>Assunzioni</th><th>Cessazioni</th><th>Saldo</th></tr></thead><tbody></tbody></table></div>
+  <p class="ts-note"><strong>Fonte:</strong> Provincia di Bergamo, Rapporto annuale 2024, p. 12. Campo di osservazione: lavoro dipendente privato extra-agricolo, sedi di lavoro provinciali, 15–64 anni; escluse alcune sezioni ATECO. Questi flussi amministrativi non equivalgono alla variazione dello stock ISTAT. <a href="https://www.provincia.bergamo.it/cnvpbgrm/po/attachment_news.php?id=2647" target="_blank" rel="noopener noreferrer">Documento originale</a>.</p>
+ </div>
+</section>
+<section class="tab" id="timeseries"><div class="panel preset-panel"><div><h2>Esplora i dati</h2><p class="intro">Seleziona un confronto oppure configura gli indicatori manualmente.</p></div><div class="preset-actions"><button type="button" data-preset="rates">Partecipazione al lavoro</button><button type="button" data-preset="work">Dipendenti e indipendenti</button><button type="button" data-preset="index">Tutte le serie · indice 100</button><button type="button" data-preset="reset">Ripristina</button></div></div>
+<div class="ts-heading"><div><div class="ts-section-label">Analisi esplorativa / 01</div><h2 style="font-size:30px;margin-bottom:6px">Esplora le serie storiche</h2><p>Confronta gli indicatori, scegli il periodo e cambia rappresentazione. Serie ufficiali annuali 2019–2025, senza dati simulati.</p></div><span class="pill" style="background:#e7f6f4;border-color:#caeae6;color:#087e78">7 annualità</span></div>
+<div class="ts-layout">
+ <div class="panel ts-controls"><div class="ts-control-title">Indicatori</div><div id="ts-choices"><label class="ts-choice"><input type="checkbox" value="employment_rate" checked><i class="ts-dots" style="background:#23c6b5"></i>Tasso di occupazione</label><label class="ts-choice"><input type="checkbox" value="unemployment_rate" ><i class="ts-dots" style="background:#5585ff"></i>Tasso di disoccupazione</label><label class="ts-choice"><input type="checkbox" value="inactivity_rate" checked><i class="ts-dots" style="background:#f5a75d"></i>Tasso di inattivita</label><label class="ts-choice"><input type="checkbox" value="employed" ><i class="ts-dots" style="background:#815fff"></i>Occupati</label><label class="ts-choice"><input type="checkbox" value="employees" ><i class="ts-dots" style="background:#0ba19a"></i>Lavoratori dipendenti</label><label class="ts-choice"><input type="checkbox" value="self_employed" ><i class="ts-dots" style="background:#e16c9a"></i>Lavoratori indipendenti</label></div><div class="ts-filters"><div class="ts-filter"><label for="ts-from">Dal</label><select id="ts-from"><option value="2019" selected>2019</option><option value="2020" >2020</option><option value="2021" >2021</option><option value="2022" >2022</option><option value="2023" >2023</option><option value="2024" >2024</option><option value="2025" >2025</option></select></div><div class="ts-filter"><label for="ts-to">Al</label><select id="ts-to"><option value="2019" >2019</option><option value="2020" >2020</option><option value="2021" >2021</option><option value="2022" >2022</option><option value="2023" >2023</option><option value="2024" >2024</option><option value="2025" selected>2025</option></select></div></div><div class="ts-control-title">Tipo di grafico</div><div class="ts-style"><button type="button" id="ts-line" aria-pressed="true">Linee</button><button type="button" id="ts-bar" aria-pressed="false">Colonne</button></div><div style="margin-top:15px"><label class="ts-choice" style="border:0"><input id="ts-index" type="checkbox">Normalizza a indice 100 (primo anno scelto)</label></div><div id="ts-message" class="ts-message" role="status"></div><div class="ts-buttons"><button type="button" class="ts-export" id="ts-csv">Esporta CSV</button><button type="button" class="ts-export" id="ts-svg">Esporta SVG</button></div></div>
+ <div><div class="panel"><div class="ts-heading" style="margin-bottom:12px"><div><h2 id="ts-chart-title">Andamento degli indicatori</h2><p id="ts-chart-caption">Tassi percentuali · provincia di Bergamo · 2019–2025</p></div></div><div id="ts-chart" class="ts-canvas"><svg viewBox="0 0 900 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Serie storiche tassi occupazione e inattivita dal 2019 al 2025" style="width:100%;height:auto"><path d="M64 294.0 H870" stroke="#e1eaf2" stroke-width="1"/><text x="52" y="298.0" text-anchor="end" font-size="13" fill="#6b8291">24.2</text><path d="M64 228.5 H870" stroke="#e1eaf2" stroke-width="1"/><text x="52" y="232.5" text-anchor="end" font-size="13" fill="#6b8291">36.7</text><path d="M64 163.0 H870" stroke="#e1eaf2" stroke-width="1"/><text x="52" y="167.0" text-anchor="end" font-size="13" fill="#6b8291">49.2</text><path d="M64 97.5 H870" stroke="#e1eaf2" stroke-width="1"/><text x="52" y="101.5" text-anchor="end" font-size="13" fill="#6b8291">61.7</text><path d="M64 32.0 H870" stroke="#e1eaf2" stroke-width="1"/><text x="52" y="36.0" text-anchor="end" font-size="13" fill="#6b8291">74.2</text><text x="64.0" y="332" text-anchor="middle" font-size="13" fill="#6b8291">2019</text><text x="198.3" y="332" text-anchor="middle" font-size="13" fill="#6b8291">2020</text><text x="332.7" y="332" text-anchor="middle" font-size="13" fill="#6b8291">2021</text><text x="467.0" y="332" text-anchor="middle" font-size="13" fill="#6b8291">2022</text><text x="601.3" y="332" text-anchor="middle" font-size="13" fill="#6b8291">2023</text><text x="735.7" y="332" text-anchor="middle" font-size="13" fill="#6b8291">2024</text><text x="870.0" y="332" text-anchor="middle" font-size="13" fill="#6b8291">2025</text><polyline points="64.0,73.8 198.3,80.1 332.7,77.5 467.0,66.4 601.3,65.4 735.7,62.2 870.0,64.9" fill="none" stroke="#23c6b5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="64.0" cy="73.8" r="4.5" fill="white" stroke="#23c6b5" stroke-width="3"><title>2019: 66.2%</title></circle><circle cx="198.3" cy="80.1" r="4.5" fill="white" stroke="#23c6b5" stroke-width="3"><title>2020: 65.0%</title></circle><circle cx="332.7" cy="77.5" r="4.5" fill="white" stroke="#23c6b5" stroke-width="3"><title>2021: 65.5%</title></circle><circle cx="467.0" cy="66.4" r="4.5" fill="white" stroke="#23c6b5" stroke-width="3"><title>2022: 67.6%</title></circle><circle cx="601.3" cy="65.4" r="4.5" fill="white" stroke="#23c6b5" stroke-width="3"><title>2023: 67.8%</title></circle><circle cx="735.7" cy="62.2" r="4.5" fill="white" stroke="#23c6b5" stroke-width="3"><title>2024: 68.4%</title></circle><circle cx="870.0" cy="64.9" r="4.5" fill="white" stroke="#23c6b5" stroke-width="3"><title>2025: 67.9%</title></circle><polyline points="64.0,256.9 198.3,248.5 332.7,252.7 467.0,263.8 601.3,262.7 735.7,261.1 870.0,257.5" fill="none" stroke="#f5a75d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="64.0" cy="256.9" r="4.5" fill="white" stroke="#f5a75d" stroke-width="3"><title>2019: 31.3%</title></circle><circle cx="198.3" cy="248.5" r="4.5" fill="white" stroke="#f5a75d" stroke-width="3"><title>2020: 32.9%</title></circle><circle cx="332.7" cy="252.7" r="4.5" fill="white" stroke="#f5a75d" stroke-width="3"><title>2021: 32.1%</title></circle><circle cx="467.0" cy="263.8" r="4.5" fill="white" stroke="#f5a75d" stroke-width="3"><title>2022: 30.0%</title></circle><circle cx="601.3" cy="262.7" r="4.5" fill="white" stroke="#f5a75d" stroke-width="3"><title>2023: 30.2%</title></circle><circle cx="735.7" cy="261.1" r="4.5" fill="white" stroke="#f5a75d" stroke-width="3"><title>2024: 30.5%</title></circle><circle cx="870.0" cy="257.5" r="4.5" fill="white" stroke="#f5a75d" stroke-width="3"><title>2025: 31.2%</title></circle></svg></div><div id="ts-legend" class="ts-legend"><span><i class="ts-swatch" style="background:#23c6b5"></i>Tasso di occupazione</span><span><i class="ts-swatch" style="background:#f5a75d"></i>Tasso di inattività</span></div><div id="ts-summary" class="ts-summary" aria-live="polite"></div><div class="ts-meta"><span><b>Fonte:</b> Camera di commercio di Bergamo / ISTAT</span><span><b>Frequenza:</b> annuale</span><span><b>Periodo:</b> 2019–2025</span></div></div><div class="panel ts-table"><div class="ts-table-header"><h2>Tabella dei valori</h2><label class="ts-choice ts-delta-switch"><input type="checkbox" id="ts-delta"> Mostra variazione sull’anno precedente</label></div><p class="intro">Dati ufficiali · puoi scaricare la selezione in CSV</p><div class="tablewrap"><table class="data-table" id="ts-table"><thead><tr><th>Anno</th><th>Occupazione (%)</th><th>Disoccupazione (%)</th><th>Inattività (%)</th><th>Occupati (mila)</th><th>Dipendenti (mila)</th><th>Indipendenti (mila)</th></tr></thead><tbody><tr><td>2019</td><td>66,2</td><td>3,5</td><td>31,3</td><td>479</td><td>387</td><td>92</td></tr><tr><td>2020</td><td>65,0</td><td>3,1</td><td>32,9</td><td>473,4</td><td>382</td><td>91</td></tr><tr><td>2021</td><td>65,5</td><td>3,5</td><td>32,1</td><td>475,4</td><td>382</td><td>94</td></tr><tr><td>2022</td><td>67,6</td><td>3,4</td><td>30,0</td><td>488,7</td><td>402</td><td>87</td></tr><tr><td>2023</td><td>67,8</td><td>2,9</td><td>30,2</td><td>491</td><td>401</td><td>90</td></tr><tr><td>2024</td><td>68,4</td><td>1,5</td><td>30,5</td><td>497</td><td>408</td><td>90</td></tr><tr><td>2025</td><td>67,9</td><td>1,3</td><td>31,2</td><td>495</td><td>392</td><td>103</td></tr></tbody></table></div><p class="ts-note">Le serie sugli occupati sono espresse in migliaia di persone. I tassi si riferiscono a classi di età diverse: occupazione e inattività 15–64 anni; disoccupazione 15–74 anni. Le serie non vanno sommate tra loro. Per indicatori con unità differenti, attiva l'indice 100.</p></div></div>
+</div>
+<div class="panel" style="margin-top:18px"><h2>Prossime serie da integrare</h2><p class="intro">Dati individuati, non ancora elaborati in forma storica omogenea</p><p class="small muted">Flussi annuali e trimestrali delle comunicazioni obbligatorie (avviamenti, cessazioni, saldi); entrate previste Excelsior; difficoltà di reperimento; indicatori demografici per classi d'età. Saranno aggiunti dopo la verifica di definizioni, revisioni e comparabilità.</p></div>
+</section>
+<section class="tab active" id="overview"><div class="grid" id="kpis"><div class="card"><div class="metric-label">Occupazione · 15–64</div><div class="metric-value">67,9%</div><div class="metric-sub">-0,5 p.p. rispetto al 2024</div></div><div class="card"><div class="metric-label">Disoccupazione · 15–74</div><div class="metric-value">1,3%</div><div class="metric-sub">-0,2 p.p. rispetto al 2024</div></div><div class="card"><div class="metric-label">Inattività · 15–64</div><div class="metric-value">31,2%</div><div class="metric-sub">0,7 p.p. rispetto al 2024</div></div><div class="card"><div class="metric-label">Occupati · 15–89</div><div class="metric-value">495 mila</div><div class="metric-sub">Migliaia di persone · media annuale</div></div></div><div class="layout"><div class="panel"><h2>Tasso di occupazione</h2><p class="intro">15–64 anni · media annuale · %</p><div class="chart" id="employment-chart"><svg aria-label="Serie storica employment_rate" role="img" style="width:100%" viewbox="0 0 720 275"><line stroke="#e8eef0" x1="55" x2="700" y1="235" y2="235"></line><text fill="#7b8c95" font-size="12" text-anchor="end" x="47" y="239">64,2</text><line stroke="#e8eef0" x1="55" x2="700" y1="182.4999999999997" y2="182.4999999999997"></line><text fill="#7b8c95" font-size="12" text-anchor="end" x="47" y="186.4999999999997">65,4</text><line stroke="#e8eef0" x1="55" x2="700" y1="130" y2="130"></line><text fill="#7b8c95" font-size="12" text-anchor="end" x="47" y="134">66,7</text><line stroke="#e8eef0" x1="55" x2="700" y1="77.50000000000028" y2="77.50000000000028"></line><text fill="#7b8c95" font-size="12" text-anchor="end" x="47" y="81.50000000000028">68</text><line stroke="#e8eef0" x1="55" x2="700" y1="25" y2="25"></line><text fill="#7b8c95" font-size="12" text-anchor="end" x="47" y="29">69,2</text><polyline fill="none" points="55,150.86645468998407 162.5,200.9459459459459 270,180.07949125596187 377.5,92.44038155802905 485,84.09379968203531 592.5,59.054054054054085 700,79.92050874403814" stroke="#087c76" stroke-linejoin="round" stroke-width="3.5"></polyline><circle cx="55" cy="150.86645468998407" fill="#087c76" r="5" stroke="white" stroke-width="2"><title>2019: 66,2%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="55" y="262">2019</text><circle cx="162.5" cy="200.9459459459459" fill="#087c76" r="5" stroke="white" stroke-width="2"><title>2020: 65%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="162.5" y="262">2020</text><circle cx="270" cy="180.07949125596187" fill="#087c76" r="5" stroke="white" stroke-width="2"><title>2021: 65,5%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="270" y="262">2021</text><circle cx="377.5" cy="92.44038155802905" fill="#087c76" r="5" stroke="white" stroke-width="2"><title>2022: 67,6%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="377.5" y="262">2022</text><circle cx="485" cy="84.09379968203531" fill="#087c76" r="5" stroke="white" stroke-width="2"><title>2023: 67,8%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="485" y="262">2023</text><circle cx="592.5" cy="59.054054054054085" fill="#087c76" r="5" stroke="white" stroke-width="2"><title>2024: 68,4%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="592.5" y="262">2024</text><circle cx="700" cy="79.92050874403814" fill="#087c76" r="5" stroke="white" stroke-width="2"><title>2025: 67,9%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="700" y="262">2025</text></svg></div></div><div class="panel"><h2>Interpretazione del territorio</h2><p class="intro">Lettura basata sulle variazioni osservate</p><div id="observations"><div class="insight"><strong>Occupazione</strong>Nel 2025 il tasso è 67,9%, variazione -0,5 punti sul 2024.</div><div class="insight warning"><strong>Partecipazione al lavoro</strong>Il tasso di inattività è 31,2%. Va letto separatamente dalla disoccupazione.</div><div class="insight"><strong>Dipendenti e autonomi</strong>392 mila dipendenti e 103 mila indipendenti (stime arrotondate).</div></div></div></div><div class="layout equal"><div class="panel"><h2>Composizione dell'occupazione</h2><p class="intro">Dipendenti e indipendenti, migliaia di persone · ISTAT</p><div class="chart" id="composition-chart"><svg aria-label="Occupati dipendenti e indipendenti" role="img" style="width:100%" viewbox="0 0 720 285"><rect fill="#087c76" height="172.66153846153847" width="44.22857142857143" x="75.27142857142857" y="77.33846153846153"></rect><rect fill="#d4a16b" height="41.04615384615385" width="44.22857142857143" x="75.27142857142857" y="36.29230769230768"></rect><text fill="#70838d" font-size="12" text-anchor="middle" x="97.38571428571429" y="276">2019</text><rect fill="#087c76" height="170.43076923076924" width="44.22857142857143" x="167.4142857142857" y="79.56923076923076"></rect><rect fill="#d4a16b" height="40.6" width="44.22857142857143" x="167.4142857142857" y="38.969230769230755"></rect><text fill="#70838d" font-size="12" text-anchor="middle" x="189.5285714285714" y="276">2020</text><rect fill="#087c76" height="170.43076923076924" width="44.22857142857143" x="259.5571428571428" y="79.56923076923076"></rect><rect fill="#d4a16b" height="41.93846153846154" width="44.22857142857143" x="259.5571428571428" y="37.63076923076922"></rect><text fill="#70838d" font-size="12" text-anchor="middle" x="281.6714285714285" y="276">2021</text><rect fill="#087c76" height="179.35384615384615" width="44.22857142857143" x="351.70000000000005" y="70.64615384615385"></rect><rect fill="#d4a16b" height="38.815384615384616" width="44.22857142857143" x="351.70000000000005" y="31.830769230769235"></rect><text fill="#70838d" font-size="12" text-anchor="middle" x="373.81428571428575" y="276">2022</text><rect fill="#087c76" height="178.90769230769232" width="44.22857142857143" x="443.84285714285716" y="71.09230769230768"></rect><rect fill="#d4a16b" height="40.15384615384615" width="44.22857142857143" x="443.84285714285716" y="30.93846153846153"></rect><text fill="#70838d" font-size="12" text-anchor="middle" x="465.95714285714286" y="276">2023</text><rect fill="#087c76" height="182.03076923076924" width="44.22857142857143" x="535.9857142857143" y="67.96923076923076"></rect><rect fill="#d4a16b" height="40.15384615384615" width="44.22857142857143" x="535.9857142857143" y="27.81538461538461"></rect><text fill="#70838d" font-size="12" text-anchor="middle" x="558.1" y="276">2024</text><rect fill="#087c76" height="174.8923076923077" width="44.22857142857143" x="628.1285714285715" y="75.1076923076923"></rect><rect fill="#d4a16b" height="45.95384615384615" width="44.22857142857143" x="628.1285714285715" y="29.153846153846153"></rect><text fill="#70838d" font-size="12" text-anchor="middle" x="650.2428571428572" y="276">2025</text><text fill="#087c76" font-size="12" x="55" y="14">■ dipendenti</text><text fill="#b47e44" font-size="12" x="178" y="14">■ indipendenti</text></svg></div></div><div class="panel"><h2>Il punto da approfondire</h2><div class="insight warning"><strong>Disoccupazione e inattività</strong>Una disoccupazione molto bassa non implica automaticamente un mercato del lavoro privo di squilibri. Nel 2025 l'inattività aumenta mentre diminuisce l'occupazione dipendente.</div><div class="infocard small"><strong>Indicatore da aggiungere nella versione 0.3</strong><p>Assunzioni e cessazioni per contratto, settore ed età, usando le comunicazioni obbligatorie con relativa licenza di riutilizzo.</p></div></div></div><div class="layout equal"><div class="panel"><h2>Giovani: un segnale diverso dalla media</h2><p class="intro">Tasso di disoccupazione · 25–34 anni · Bergamo</p><div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="card"><div class="metric-label">2024</div><div class="metric-value">1,1%</div></div><div class="card"><div class="metric-label">2025</div><div class="metric-value">2,4%</div><div class="metric-sub">+1,3 punti</div></div></div><p class="source-note">Media annuale ISTAT. Fonte: <a href="https://www.bg.camcom.it/sites/default/files/contenuto_redazione/rapporti/rapporti%20sul%20lavoro/CS119-forze-lavoro-2025.pdf" target="_blank" rel="noopener noreferrer">Camera di commercio di Bergamo, tavola 2019–2025</a>.</p></div><div class="panel"><h2>Due misure, due storie</h2><div class="rowstat"><span>Saldo posizioni dipendenti · CO 2025</span><strong>+4.580</strong></div><div class="rowstat"><span>Occupati dipendenti · ISTAT 2024–25</span><strong>−16.000</strong></div><p class="source-note">Non è una contraddizione: le comunicazioni obbligatorie misurano flussi di rapporti, l'indagine ISTAT stima persone occupate con una metodologia campionaria differente. <a href="https://www.provincia.bergamo.it/cnvpbgrm/po/mostra_news.php?area=H&id=2535" target="_blank" rel="noopener noreferrer">Provincia di Bergamo, rapporto 2025</a>.</p></div></div></section>
+<section class="tab" id="labour"><div class="grid" id="labour-kpis"><div class="card"><div class="metric-label">Occupati</div><div class="metric-value">495 mila</div><div class="metric-sub">Media annuale ISTAT</div></div><div class="card"><div class="metric-label">Dipendenti</div><div class="metric-value">392 mila</div><div class="metric-sub">Media annuale ISTAT</div></div><div class="card"><div class="metric-label">Indipendenti</div><div class="metric-value">103 mila</div><div class="metric-sub">Media annuale ISTAT</div></div><div class="card"><div class="metric-label">Disoccupazione</div><div class="metric-value">1,3%</div><div class="metric-sub">15–74 anni</div></div></div><div class="layout"><div class="panel"><h2>Occupati, dipendenti e indipendenti</h2><p class="intro">Migliaia di persone; media annuale ISTAT</p><div class="chart" id="labour-chart"><svg aria-label="Occupati dipendenti e indipendenti" role="img" style="width:100%" viewbox="0 0 720 285"><rect fill="#087c76" height="172.66153846153847" width="44.22857142857143" x="75.27142857142857" y="77.33846153846153"></rect><rect fill="#d4a16b" height="41.04615384615385" width="44.22857142857143" x="75.27142857142857" y="36.29230769230768"></rect><text fill="#70838d" font-size="12" text-anchor="middle" x="97.38571428571429" y="276">2019</text><rect fill="#087c76" height="170.43076923076924" width="44.22857142857143" x="167.4142857142857" y="79.56923076923076"></rect><rect fill="#d4a16b" height="40.6" width="44.22857142857143" x="167.4142857142857" y="38.969230769230755"></rect><text fill="#70838d" font-size="12" text-anchor="middle" x="189.5285714285714" y="276">2020</text><rect fill="#087c76" height="170.43076923076924" width="44.22857142857143" x="259.5571428571428" y="79.56923076923076"></rect><rect fill="#d4a16b" height="41.93846153846154" width="44.22857142857143" x="259.5571428571428" y="37.63076923076922"></rect><text fill="#70838d" font-size="12" text-anchor="middle" x="281.6714285714285" y="276">2021</text><rect fill="#087c76" height="179.35384615384615" width="44.22857142857143" x="351.70000000000005" y="70.64615384615385"></rect><rect fill="#d4a16b" height="38.815384615384616" width="44.22857142857143" x="351.70000000000005" y="31.830769230769235"></rect><text fill="#70838d" font-size="12" text-anchor="middle" x="373.81428571428575" y="276">2022</text><rect fill="#087c76" height="178.90769230769232" width="44.22857142857143" x="443.84285714285716" y="71.09230769230768"></rect><rect fill="#d4a16b" height="40.15384615384615" width="44.22857142857143" x="443.84285714285716" y="30.93846153846153"></rect><text fill="#70838d" font-size="12" text-anchor="middle" x="465.95714285714286" y="276">2023</text><rect fill="#087c76" height="182.03076923076924" width="44.22857142857143" x="535.9857142857143" y="67.96923076923076"></rect><rect fill="#d4a16b" height="40.15384615384615" width="44.22857142857143" x="535.9857142857143" y="27.81538461538461"></rect><text fill="#70838d" font-size="12" text-anchor="middle" x="558.1" y="276">2024</text><rect fill="#087c76" height="174.8923076923077" width="44.22857142857143" x="628.1285714285715" y="75.1076923076923"></rect><rect fill="#d4a16b" height="45.95384615384615" width="44.22857142857143" x="628.1285714285715" y="29.153846153846153"></rect><text fill="#70838d" font-size="12" text-anchor="middle" x="650.2428571428572" y="276">2025</text><text fill="#087c76" font-size="12" x="55" y="14">■ dipendenti</text><text fill="#b47e44" font-size="12" x="178" y="14">■ indipendenti</text></svg></div></div><div class="panel"><h2>Disoccupazione</h2><p class="intro">Tasso 15–74 anni (%)</p><div class="chart" id="unemp-chart"><svg aria-label="Serie storica unemployment_rate" role="img" style="width:100%" viewbox="0 0 720 275"><line stroke="#e8eef0" x1="55" x2="700" y1="235" y2="235"></line><text fill="#7b8c95" font-size="12" text-anchor="end" x="47" y="239">0,7</text><line stroke="#e8eef0" x1="55" x2="700" y1="182.50000000000003" y2="182.50000000000003"></line><text fill="#7b8c95" font-size="12" text-anchor="end" x="47" y="186.50000000000003">1,5</text><line stroke="#e8eef0" x1="55" x2="700" y1="130" y2="130"></line><text fill="#7b8c95" font-size="12" text-anchor="end" x="47" y="134">2,4</text><line stroke="#e8eef0" x1="55" x2="700" y1="77.49999999999999" y2="77.49999999999999"></line><text fill="#7b8c95" font-size="12" text-anchor="end" x="47" y="81.49999999999999">3,3</text><line stroke="#e8eef0" x1="55" x2="700" y1="25" y2="25"></line><text fill="#7b8c95" font-size="12" text-anchor="end" x="47" y="29">4,1</text><polyline fill="none" points="55,62.05882352941175 162.5,86.76470588235293 270,62.05882352941175 377.5,68.23529411764704 485,99.11764705882352 592.5,185.58823529411765 700,197.94117647058826" stroke="#d49b66" stroke-linejoin="round" stroke-width="3.5"></polyline><circle cx="55" cy="62.05882352941175" fill="#d49b66" r="5" stroke="white" stroke-width="2"><title>2019: 3,5%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="55" y="262">2019</text><circle cx="162.5" cy="86.76470588235293" fill="#d49b66" r="5" stroke="white" stroke-width="2"><title>2020: 3,1%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="162.5" y="262">2020</text><circle cx="270" cy="62.05882352941175" fill="#d49b66" r="5" stroke="white" stroke-width="2"><title>2021: 3,5%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="270" y="262">2021</text><circle cx="377.5" cy="68.23529411764704" fill="#d49b66" r="5" stroke="white" stroke-width="2"><title>2022: 3,4%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="377.5" y="262">2022</text><circle cx="485" cy="99.11764705882352" fill="#d49b66" r="5" stroke="white" stroke-width="2"><title>2023: 2,9%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="485" y="262">2023</text><circle cx="592.5" cy="185.58823529411765" fill="#d49b66" r="5" stroke="white" stroke-width="2"><title>2024: 1,5%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="592.5" y="262">2024</text><circle cx="700" cy="197.94117647058826" fill="#d49b66" r="5" stroke="white" stroke-width="2"><title>2025: 1,3%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="700" y="262">2025</text></svg></div></div></div><div class="panel"><h2>Flussi di lavoro dipendente</h2><p class="intro">Indicatore amministrativo separato, da non sommare agli stock campionari ISTAT</p><div class="rowstat"><span>Saldo assunzioni − cessazioni, anno 2025</span><strong>+4.580</strong></div><p class="muted small">Fonte: Provincia di Bergamo, Osservatorio del mercato del lavoro 2025, pubblicato il 27 marzo 2026. Saldo di posizioni lavorative; non misura la variazione del numero di persone occupate nell'indagine sulle forze di lavoro.</p></div></section>
+<section class="tab" id="skills">
+<div class="section-head"><div class="eyebrow">Excelsior · domanda di lavoro prevista · 2024</div><h2>Competenze e difficoltà di reperimento</h2><p class="muted">Indicatori provinciali sulle entrate programmate dalle imprese. La serie annuale 2024 è distinta dai flussi delle comunicazioni obbligatorie 2025.</p></div>
+<div class="grid"><div class="card"><div class="metric-label">Entrate previste · 2024</div><div class="metric-value">103.870</div><div class="metric-sub">Imprese industria e servizi · perimetro Excelsior</div></div>
+<div class="card"><div class="metric-label">Difficile reperimento</div><div class="metric-value">50,1%</div><div class="metric-sub">Quota delle entrate previste</div></div>
+<div class="card"><div class="metric-label">Entrate previste · industria</div><div class="metric-value">41.310</div><div class="metric-sub">2024 · perimetro Excelsior</div></div>
+<div class="card"><div class="metric-label">Difficoltà · industria</div><div class="metric-value">55,5%</div><div class="metric-sub">+5,4 punti rispetto al totale provinciale</div></div></div>
+<div class="layout"><div class="panel"><h2>Profili difficili da reperire</h2><p class="intro">Quota delle entrate programmate (%) · 2024</p><div class="chart"><svg viewBox="0 0 760 158" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Valori percentuali per settore Excelsior 2024" style="width:100%;height:auto"><text x="10" y="34" font-size="15" font-weight="650" fill="#2b4558">Totale entrate previste</text><rect x="290" y="16" width="375" height="24" rx="9" fill="#e6eef5"/><rect x="290" y="16" width="289.0" height="24" rx="9" fill="#11b8ac"/><text x="678" y="34" font-size="15" font-weight="800" fill="#173647">50,1%</text><text x="10" y="99" font-size="15" font-weight="650" fill="#2b4558">Industria</text><rect x="290" y="81" width="375" height="24" rx="9" fill="#e6eef5"/><rect x="290" y="81" width="320.2" height="24" rx="9" fill="#4a78ff"/><text x="678" y="99" font-size="15" font-weight="800" fill="#173647">55,5%</text></svg></div><p class="source-note">Fonte: Sistema informativo Excelsior, tavole annuali 2024 per la provincia di Bergamo, tavola 12. <a href="https://bergamosviluppo.it/sito/files/280/RISULTATI-ANNUALI/2854/Annuale-2024Tavole.pdf?preview=1" target="_blank" rel="noopener noreferrer">Tavole originali</a>.</p></div>
+<div class="panel"><h2>Come leggere il dato</h2><div class="insight"><strong>Domanda prevista, non assunzioni osservate</strong>Excelsior rileva intenzioni di assunzione e caratteristiche delle figure richieste presso le imprese nel proprio perimetro. Non coincide con le comunicazioni obbligatorie.</div><div class="insight"><strong>Una difficoltà concentrata</strong>Nell'industria è segnalata una quota di difficile reperimento superiore al dato complessivo provinciale.</div><div class="insight warning"><strong>Non è un tasso di posti vacanti</strong>La percentuale riguarda le entrate programmate considerate difficili da coprire; non è una misura di vacancy effettivamente rimaste scoperte.</div></div></div>
+<div class="panel"><h2>Fabbisogni: prossimi livelli di analisi</h2><div class="tablewrap"><table class="data-table"><thead><tr><th>Dimensione</th><th>Stato</th><th>Prossima integrazione</th></tr></thead><tbody>
+<tr><td>Volume delle entrate programmate</td><td>Disponibile · 2024</td><td>Serie annuali 2022–2025</td></tr>
+<tr><td>Difficoltà di reperimento</td><td>Disponibile · 2024</td><td>Settori e professioni</td></tr>
+<tr><td>Professioni richieste</td><td>Fonte individuata</td><td>Codifica CP/ISCO</td></tr>
+<tr><td>Competenze richieste</td><td>Fonte individuata</td><td>Tassonomia e confronti</td></tr>
+</tbody></table></div></div></section><section class="tab" id="gender"><div class="grid" id="gender-kpis"><div class="card"><div class="metric-label">Inattività</div><div class="metric-value">31,2%</div><div class="metric-sub">15–64 anni</div></div><div class="card"><div class="metric-label">Tasso di attività</div><div class="metric-value">68,8%</div><div class="metric-sub">Complementare al tasso di inattività</div></div><div class="card"><div class="metric-label">Donne · occupazione 2025</div><div class="metric-value">58,5%</div><div class="metric-sub">Dato specifico riferito al 2025</div></div><div class="card"><div class="metric-label">Uomini · occupazione 2025</div><div class="metric-value">76,9%</div><div class="metric-sub">Dato specifico riferito al 2025</div></div></div><div class="layout equal"><div class="panel"><h2>Inattività</h2><p class="intro">15–64 anni · tasso ISTAT (%)</p><div class="chart" id="inactivity-chart"><svg aria-label="Serie storica inactivity_rate" role="img" style="width:100%" viewbox="0 0 720 275"><line stroke="#e8eef0" x1="55" x2="700" y1="235" y2="235"></line><text fill="#7b8c95" font-size="12" text-anchor="end" x="47" y="239">29,3</text><line stroke="#e8eef0" x1="55" x2="700" y1="182.49999999999991" y2="182.49999999999991"></line><text fill="#7b8c95" font-size="12" text-anchor="end" x="47" y="186.49999999999991">30,4</text><line stroke="#e8eef0" x1="55" x2="700" y1="130" y2="130"></line><text fill="#7b8c95" font-size="12" text-anchor="end" x="47" y="134">31,5</text><line stroke="#e8eef0" x1="55" x2="700" y1="77.50000000000009" y2="77.50000000000009"></line><text fill="#7b8c95" font-size="12" text-anchor="end" x="47" y="81.50000000000009">32,5</text><line stroke="#e8eef0" x1="55" x2="700" y1="25" y2="25"></line><text fill="#7b8c95" font-size="12" text-anchor="end" x="47" y="29">33,6</text><polyline fill="none" points="55,137.3392357875116 162.5,59.054054054054 270,98.1966449207827 377.5,200.945945945946 485,191.16029822926382 592.5,176.48182665424048 700,142.23205964585276" stroke="#d49b66" stroke-linejoin="round" stroke-width="3.5"></polyline><circle cx="55" cy="137.3392357875116" fill="#d49b66" r="5" stroke="white" stroke-width="2"><title>2019: 31,3%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="55" y="262">2019</text><circle cx="162.5" cy="59.054054054054" fill="#d49b66" r="5" stroke="white" stroke-width="2"><title>2020: 32,9%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="162.5" y="262">2020</text><circle cx="270" cy="98.1966449207827" fill="#d49b66" r="5" stroke="white" stroke-width="2"><title>2021: 32,1%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="270" y="262">2021</text><circle cx="377.5" cy="200.945945945946" fill="#d49b66" r="5" stroke="white" stroke-width="2"><title>2022: 30%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="377.5" y="262">2022</text><circle cx="485" cy="191.16029822926382" fill="#d49b66" r="5" stroke="white" stroke-width="2"><title>2023: 30,2%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="485" y="262">2023</text><circle cx="592.5" cy="176.48182665424048" fill="#d49b66" r="5" stroke="white" stroke-width="2"><title>2024: 30,5%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="592.5" y="262">2024</text><circle cx="700" cy="142.23205964585276" fill="#d49b66" r="5" stroke="white" stroke-width="2"><title>2025: 31,2%</title></circle><text fill="#70838d" font-size="12" text-anchor="middle" x="700" y="262">2025</text></svg></div></div><div class="panel"><h2>Squilibrio nella partecipazione</h2><div class="insight"><strong>Occupazione femminile 2025: 58,5%</strong>Il tasso maschile è 76,9%: 18,4 punti percentuali di differenza nella fascia 15–64 anni.</div><div class="insight warning"><strong>Variazione 2024–2025</strong>La Camera di commercio segnala −1,8 punti percentuali nell'occupazione femminile e circa 6.000 donne inattive in più.</div><p class="muted small">Per il 2025 sono utilizzati i tassi per genere pubblicati dalla Camera di commercio. La serie temporale separata per genere sarà integrata nella versione successiva.</p></div></div></section>
+<section class="tab" id="lombardy">
+<div class="section-head"><div class="eyebrow">Benchmark territoriale · 2025</div><h2>Le 12 province lombarde a confronto</h2><p>Dieci indicatori ISTAT con la stessa annualità e definizione statistica. Seleziona l'indicatore, confronta la graduatoria provinciale con la Lombardia e scarica i valori. I tassi misurano fenomeni diversi dai valori assoluti, che risentono della dimensione demografica.</p></div>
+<div class="panel">
+ <div class="flows-toolbar"><div><h2 id="lombardy-title">Tasso di occupazione</h2><p class="intro" id="lombardy-subtitle">Anno 2025 · residenti 15–64</p></div>
+ <div class="lombardy-controls"><div><label for="lombardy-indicator">Indicatore</label><select id="lombardy-indicator"></select></div><div><label for="lombardy-order">Ordine</label><select id="lombardy-order"><option value="descending">Decrescente</option><option value="ascending">Crescente</option><option value="alphabetical">Alfabetico</option></select></div><div><label for="lombardy-highlight">Evidenzia</label><select id="lombardy-highlight"><option value="BG">Bergamo</option><option value="BS">Brescia</option><option value="MI">Milano</option><option value="all">Nessuna provincia</option></select></div></div></div>
+ <div class="lombardy-map-layout">
+ <div class="lombardy-map-frame">
+  <div class="lombardy-map-heading"><div><h3>Mappa interattiva della Lombardia</h3><p>Passa sulle province per leggere i valori. Clicca o premi Invio per selezionare.</p></div><button type="button" id="lombardy-map-reset">Ripristina Bergamo</button></div>
+  <div id="lombardy-map" class="lombardy-map" role="group" aria-label="Mappa delle dodici province lombarde; province selezionabili con tastiera"></div>
+  <div class="lombardy-map-legend" id="lombardy-map-legend" aria-live="polite"></div>
+  <div id="lombardy-map-tooltip" class="lombardy-map-tooltip" role="status" hidden></div>
+ </div>
+ <div class="lombardy-map-detail" id="lombardy-map-detail" aria-live="polite"></div>
+</div>
+ <div class="grid" id="lombardy-kpis" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-bottom:18px" aria-live="polite"></div>
+ <div id="lombardy-chart" class="flows-chart" role="group" aria-label="Graduatoria delle province lombarde"></div>
+ <div id="lombardy-context" class="renewal-interpretation" aria-live="polite"></div>
+ <div class="buttonrow"><button type="button" id="lombardy-export" class="ts-export">Esporta i 10 indicatori (CSV)</button></div>
+ </div>
+ <div class="panel" style="margin-top:18px"><h2>Tabella comparativa completa · 2025</h2><p class="intro">12 province e benchmark Lombardia; scorri orizzontalmente per tutti gli indicatori</p><div class="tablewrap"><table class="data-table" id="lombardy-table"><thead></thead><tbody></tbody></table></div>
+ <p class="ts-note">I valori assoluti sono espressi in migliaia di persone e sono arrotondati. Le percentuali di attività e inattività sono complementari per definizione, salvo arrotondamenti. I dati per genere si riferiscono al tasso di occupazione 15–64 anni. Per gli stock è vietato interpretare l'ordine come indice di performance.</p>
+ <p class="ts-note"><strong>Fonti:</strong> <a href="https://www.osserva-varese.it/istat-occupazione/" target="_blank" rel="noopener noreferrer">OsserVa / Camera di commercio di Varese, tassi occupazione 2025 per genere</a>; <a href="https://lavoro.provincia.brescia.it/export/sites/default/.galleries/documenti/osservatorio/Report-2025.pdf" target="_blank" rel="noopener noreferrer">Provincia di Brescia, Rapporto 2025, tabelle provinciali ISTAT</a>. Per tassi e valori provinciali valgono le definizioni e le revisioni ISTAT della specifica annualità.</p>
+ </div>
+</section>
+<section class="tab" id="compare"><div class="panel"><h2>Confronto regionale e nazionale</h2><p class="intro">Dati 2025, stessa definizione dei tassi; non è una graduatoria di qualità del mercato del lavoro</p><div class="tablewrap"><table class="data-table"><thead><tr><th>Territorio</th><th>Occupazione 15–64</th><th>Disoccupazione 15–74</th><th>Inattività 15–64</th></tr></thead><tbody><tr><td><strong>Bergamo</strong></td><td>67,9%</td><td>1,3%</td><td>31,2%</td></tr><tr><td>Lombardia</td><td>69,6%</td><td>3,0%</td><td>28,3%</td></tr><tr><td>Italia</td><td>62,5%</td><td>6,1%</td><td>33,3%</td></tr></tbody></table></div><p class="muted small">Fonte: Camera di commercio di Bergamo, elaborazioni su ISTAT, grafici 2025. Gli scarti in punti percentuali sono confrontabili, mentre i denominatori di occupazione, disoccupazione e inattività differiscono.</p></div><div class="layout equal"><div class="panel"><h2>Occupazione nel 2025</h2><div id="compare-chart"><svg aria-label="Confronto tassi occupazione" role="img" style="width:100%" viewbox="0 0 640 240"><text fill="#556b79" font-size="16" x="8" y="39">Bergamo</text><rect fill="#edf3f4" height="37" rx="6" width="450" x="125" y="15"></rect><rect fill="#087c76" height="37" rx="6" width="381.93750000000006" x="125" y="15"></rect><text fill="#1c3d47" font-size="14" x="511.93750000000006" y="40">67,9%</text><text fill="#556b79" font-size="16" x="8" y="111">Lombardia</text><rect fill="#edf3f4" height="37" rx="6" width="450" x="125" y="87"></rect><rect fill="#a3bdc3" height="37" rx="6" width="391.49999999999994" x="125" y="87"></rect><text fill="#1c3d47" font-size="14" x="521.5" y="112">69,6%</text><text fill="#556b79" font-size="16" x="8" y="183">Italia</text><rect fill="#edf3f4" height="37" rx="6" width="450" x="125" y="159"></rect><rect fill="#a3bdc3" height="37" rx="6" width="351.5625" x="125" y="159"></rect><text fill="#1c3d47" font-size="14" x="481.5625" y="184">62,5%</text></svg></div></div><div class="panel"><h2>Che cosa dice il confronto</h2><div class="insight">Bergamo supera la media italiana nell'occupazione (+5,4 p.p.), ma resta sotto quella lombarda (−1,7 p.p.).</div><div class="insight warning">Il tasso di inattività di Bergamo è 2,9 punti superiore a quello regionale, nonostante la disoccupazione molto più bassa.</div></div></div></section>
+<section class="tab" id="sectors"><div class="header"><div><div class="eyebrow">Comunicazioni obbligatorie · 2025</div><h1>Assunzioni per settore</h1><p class="muted">Provincia di Bergamo — eventi amministrativi, non persone occupate</p></div></div>
+<div class="statstrip"><div class="card"><div class="metric-label">Manifattura</div><div class="metric-value">35.698</div><div class="metric-sub">Assunzioni registrate 2025</div></div><div class="card"><div class="metric-label">Costruzioni</div><div class="metric-value">15.108</div><div class="metric-sub">+2,5% sul 2024</div></div><div class="card"><div class="metric-label">Trasporti e magazzinaggio</div><div class="metric-value">12.183</div><div class="metric-sub">−10,9% sul 2024</div></div></div>
+<div class="panel"><h2>Assunzioni 2025 — sei settori selezionati</h2><p class="intro">Migliaia di eventi; i settori non rappresentano l'intero totale provinciale</p><div class="chart"><svg aria-label="Grafico a barre" role="img" viewbox="0 0 780 301"><text fill="#334d5d" font-size="14" x="6" y="38">Manifattura</text><rect fill="#edf3f4" height="28" rx="5" width="430" x="240" y="18"></rect><rect fill="#087c76" height="28" rx="5" width="383.8" x="240" y="18"></rect><text fill="#2c5260" font-size="14" x="631.8" y="37">35,7</text><text fill="#334d5d" font-size="14" x="6" y="84">Alloggio e ristorazione</text><rect fill="#edf3f4" height="28" rx="5" width="430" x="240" y="64"></rect><rect fill="#087c76" height="28" rx="5" width="180.6" x="240" y="64"></rect><text fill="#2c5260" font-size="14" x="428.6" y="83">16,8</text><text fill="#334d5d" font-size="14" x="6" y="130">Commercio</text><rect fill="#edf3f4" height="28" rx="5" width="430" x="240" y="110"></rect><rect fill="#087c76" height="28" rx="5" width="172.0" x="240" y="110"></rect><text fill="#2c5260" font-size="14" x="420.0" y="129">16,0</text><text fill="#334d5d" font-size="14" x="6" y="176">Costruzioni</text><rect fill="#edf3f4" height="28" rx="5" width="430" x="240" y="156"></rect><rect fill="#087c76" height="28" rx="5" width="162.3" x="240" y="156"></rect><text fill="#2c5260" font-size="14" x="410.3" y="175">15,1</text><text fill="#334d5d" font-size="14" x="6" y="222">Servizi alle imprese (N)</text><rect fill="#edf3f4" height="28" rx="5" width="430" x="240" y="202"></rect><rect fill="#087c76" height="28" rx="5" width="148.3" x="240" y="202"></rect><text fill="#2c5260" font-size="14" x="396.4" y="221">13,8</text><text fill="#334d5d" font-size="14" x="6" y="268">Trasporto e magazzinaggio</text><rect fill="#edf3f4" height="28" rx="5" width="430" x="240" y="248"></rect><rect fill="#087c76" height="28" rx="5" width="131.2" x="240" y="248"></rect><text fill="#2c5260" font-size="14" x="379.1" y="267">12,2</text></svg></div><p class="source-note">Fonte: Provincia di Bergamo, Allegato al Rapporto sul lavoro 2025, tabella “Eventi annuali per sezione ATECO — Assunzioni”. <a href="https://www.provincia.bergamo.it/cnvpbgrm/po/attachment_news.php?id=3305" rel="noopener" target="_blank">Documento originale</a>.</p></div>
+<div class="layout equal"><div class="panel"><h2>Lettura dei dati</h2><div class="insight">La manifattura resta il primo settore tra quelli riportati in questa selezione, pur registrando un calo delle assunzioni rispetto al 2024 (−1,9%).</div><div class="insight warning">Il numero di assunzioni è un conteggio di eventi: una stessa persona può comparire più volte nell'anno. Non equivale né ai nuovi posti netti né ai lavoratori distinti.</div></div><div class="panel"><h2>Dati consultabili</h2><div class="tablewrap"><table class="data-table"><thead><tr><th>Sezione economica</th><th>Assunzioni 2025</th></tr></thead><tbody><tr><td>Manifattura</td><td>35.698</td></tr><tr><td>Alloggio e ristorazione</td><td>16.830</td></tr><tr><td>Commercio</td><td>16.003</td></tr><tr><td>Costruzioni</td><td>15.108</td></tr><tr><td>Servizi alle imprese (N)</td><td>13.818</td></tr><tr><td>Trasporto e magazzinaggio</td><td>12.183</td></tr></tbody></table></div></div></div></section><section class="tab" id="demography"><div class="header"><div><div class="eyebrow">Popolazione residente · 1 gennaio 2025</div><h1>Demografia e ricambio</h1><p class="muted">Provincia di Bergamo · composizione della popolazione per classi d'età</p></div></div>
+<div class="statstrip"><div class="card"><div class="metric-label">Residenti</div><div class="metric-value">1,114,780</div><div class="metric-sub">Tutte le età</div></div><div class="card"><div class="metric-label">65 anni e più</div><div class="metric-value">22.9%</div><div class="metric-sub">255,221 persone</div></div><div class="card"><div class="metric-label">15–64 anni</div><div class="metric-value">64.4%</div><div class="metric-sub">718,303 persone</div></div></div>
+<div class="panel"><h2>Composizione per età</h2><p class="intro">Quote percentuali sul totale dei residenti, 1 gennaio 2025</p><div class="chart"><svg aria-label="Grafico a barre" role="img" viewbox="0 0 780 255"><text fill="#334d5d" font-size="14" x="6" y="38">0–14 anni</text><rect fill="#edf3f4" height="28" rx="5" width="430" x="240" y="18"></rect><rect fill="#087c76" height="28" rx="5" width="156.0" x="240" y="18"></rect><text fill="#2c5260" font-size="14" x="404.0" y="37">12,7%</text><text fill="#334d5d" font-size="14" x="6" y="84">15–34 anni</text><rect fill="#edf3f4" height="28" rx="5" width="430" x="240" y="64"></rect><rect fill="#087c76" height="28" rx="5" width="264.1" x="240" y="64"></rect><text fill="#2c5260" font-size="14" x="512.1" y="83">21,5%</text><text fill="#334d5d" font-size="14" x="6" y="130">35–54 anni</text><rect fill="#edf3f4" height="28" rx="5" width="430" x="240" y="110"></rect><rect fill="#087c76" height="28" rx="5" width="334.2" x="240" y="110"></rect><text fill="#2c5260" font-size="14" x="582.2" y="129">27,2%</text><text fill="#334d5d" font-size="14" x="6" y="176">55–64 anni</text><rect fill="#edf3f4" height="28" rx="5" width="430" x="240" y="156"></rect><rect fill="#087c76" height="28" rx="5" width="192.9" x="240" y="156"></rect><text fill="#2c5260" font-size="14" x="440.9" y="175">15,7%</text><text fill="#334d5d" font-size="14" x="6" y="222">65 anni e oltre</text><rect fill="#edf3f4" height="28" rx="5" width="430" x="240" y="202"></rect><rect fill="#087c76" height="28" rx="5" width="281.3" x="240" y="202"></rect><text fill="#2c5260" font-size="14" x="529.3" y="221">22,9%</text></svg></div><p class="source-note">Fonte: elaborazione su tabella demografica ISTAT ripubblicata da <a href="https://www.tuttitalia.it/lombardia/provincia-di-bergamo/statistiche/popolazione-eta-sesso-stato-civile-2025/" rel="noopener" target="_blank">Tuttitalia, provincia di Bergamo 2025</a>. Serie ufficiali demografiche disponibili anche presso <a href="https://www.ats-bg.it/dati-demografici-provincia-bergamo" rel="noopener" target="_blank">ATS Bergamo</a>. Le quote sono calcolate sui gruppi quinquennali, non stime di forza lavoro.</p></div>
+<div class="layout equal"><div class="panel"><h2>Ricambio generazionale</h2><div class="rowstat"><span>Residenti 15–34 anni</span><strong>239,777</strong></div><div class="rowstat"><span>Residenti 55–64 anni</span><strong>175,013</strong></div><div class="rowstat"><span>Rapporto 55–64 / 15–34</span><strong>0.73</strong></div><p class="small muted">Indicatore descrittivo della struttura demografica, non previsione dei pensionamenti o dei fabbisogni aziendali.</p></div><div class="panel"><h2>Che cosa manca</h2><div class="insight warning">Per stimare l'effettiva sostituzione generazionale servono partecipazione al lavoro per età, flussi previdenziali e struttura delle professioni. Questi dati non sono automaticamente derivabili dalla popolazione residente.</div></div></div>
+<div class="panel" style="margin-top:18px"><div class="flows-toolbar"><div><h2>Sette anni di trasformazione demografica</h2><p class="intro">Popolazione residente al 1° gennaio · provincia di Bergamo · 2019–2025</p></div><div><label for="demo-series">Serie da visualizzare</label><select id="demo-series"><option value="age_15_64">Residenti 15–64 anni</option><option value="age_0_14">Residenti 0–14 anni</option><option value="age_65_plus">Residenti 65+ anni</option><option value="old_age_index">Indice di vecchiaia</option><option value="dependency_index">Indice di dipendenza strutturale</option><option value="workforce_replacement_index">Indice di ricambio popolazione attiva</option></select></div></div>
+<div id="demo-chart" class="flows-chart" aria-label="Serie demografica selezionata" role="group"></div>
+<div class="grid" id="demo-summary" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-top:16px" aria-live="polite"></div>
+<p class="ts-note">Fonte: dati ISTAT ripubblicati da <a href="https://www.tuttitalia.it/lombardia/provincia-di-bergamo/statistiche/indici-demografici-struttura-popolazione/" target="_blank" rel="noopener noreferrer">Tuttitalia, indici demografici e struttura della popolazione</a>. Le serie sono consistenze demografiche al 1° gennaio: non misurano direttamente gli occupati, l'offerta effettiva di lavoro o i pensionamenti. Gli indici sono arrotondati nella fonte.</p></div></section><section class="tab" id="renewal">
+ <div class="section-head"><div class="eyebrow">Demografia × mercato del lavoro</div><h2>Ricambio generazionale: segnali osservabili</h2><p>Esplora come cambia la popolazione residente e come si muovono gli indicatori dell'occupazione nella provincia di Bergamo. Le due fonti misurano fenomeni diversi: <strong>le correlazioni descrittive non sono previsioni di pensionamento né misure dei posti vacanti.</strong></p></div>
+ <div class="panel">
+ <div class="renewal-filters">
+  <div><label for="renewal-from">Anno iniziale</label><select id="renewal-from"><option value="2019" selected>2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024">2024</option></select></div>
+  <div><label for="renewal-to">Anno finale</label><select id="renewal-to"><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024">2024</option><option value="2025" selected>2025</option></select></div>
+  <div><label for="renewal-demo">Variabile demografica</label><select id="renewal-demo"><option value="age_15_64">Residenti 15–64 anni</option><option value="age_0_14">Residenti 0–14 anni</option><option value="age_65_plus">Residenti 65 anni e più</option><option value="dependency_index">Indice di dipendenza strutturale</option><option value="workforce_replacement_index">Indice di ricambio popolazione attiva</option></select></div>
+  <div><label for="renewal-labour">Indicatore del lavoro</label><select id="renewal-labour"><option value="employment_rate">Tasso di occupazione 15–64</option><option value="inactivity_rate">Tasso di inattività 15–64</option><option value="unemployment_rate">Tasso di disoccupazione 15–74</option></select></div>
+ </div>
+ <p id="renewal-message" class="ts-message" role="status" aria-live="polite"></p>
+ <div class="grid renewal-cards" id="renewal-kpis" aria-live="polite"></div>
+ <div class="flows-chart-grid" style="margin-top:18px"><div><h3 id="renewal-demo-title">Popolazione</h3><div id="renewal-demo-chart" class="flows-chart" role="group" aria-label="Serie demografica"></div></div><div><h3 id="renewal-labour-title">Mercato del lavoro</h3><div id="renewal-labour-chart" class="flows-chart" role="group" aria-label="Serie occupazionale"></div></div></div>
+ <div class="renewal-interpretation" id="renewal-interpretation" aria-live="polite"></div>
+ <div class="tablewrap" style="margin-top:16px"><table class="data-table" id="renewal-table"><thead><tr><th>Anno</th><th>Popolazione</th><th>Indicatore lavoro</th></tr></thead><tbody></tbody></table></div>
+ <div class="buttonrow"><button class="ts-export" type="button" id="renewal-export">Esporta tabella CSV</button></div>
+ <p class="ts-note"><strong>Definizioni e limiti.</strong> La popolazione residente è rilevata al <strong>1° gennaio</strong>; i tassi del lavoro sono medie annuali riferite alla popolazione di età pertinente. Accostare i valori per anno non equivale a misurare il rapporto causale tra demografia e occupazione. La serie del lavoro proviene dal prototipo precedente e la sua verifica sulle fonti primarie è <strong>ancora da completare</strong>. L'indice di ricambio della popolazione attiva è una misura demografica, non un rapporto tra pensionamenti e nuovi occupati.</p>
+ <p class="ts-note"><strong>Fonti:</strong> <a href="https://www.tuttitalia.it/lombardia/provincia-di-bergamo/statistiche/indici-demografici-struttura-popolazione/" target="_blank" rel="noopener noreferrer">ISTAT, struttura demografica via Tuttitalia</a>; <a href="https://www.bg.camcom.it/sites/default/files/contenuto_redazione/rapporti/rapporti%20sul%20lavoro/CS119-forze-lavoro-2025.pdf" target="_blank" rel="noopener noreferrer">Camera di commercio di Bergamo, forze di lavoro</a>.</p>
+ </div>
+<div class="panel" style="margin-top:18px">
+ <h2>Come cambia l'età di chi lavora: Censimento 2018–2023</h2>
+ <p class="intro">Occupati residenti per classe d'età · due rilevazioni ISTAT · non una serie annuale</p>
+ <div class="grid" id="workforce-age-kpis" style="grid-template-columns:repeat(auto-fit,minmax(185px,1fr));margin-bottom:18px" aria-live="polite"></div>
+ <div class="flows-chart" id="workforce-age-chart" role="group" aria-label="Confronto degli occupati residenti per fascia di età nel 2018 e 2023"></div>
+ <div class="tablewrap"><table class="data-table" id="workforce-age-table"><thead><tr><th>Età</th><th>2018</th><th>2023</th><th>Variazione</th><th>Var. %</th></tr></thead><tbody></tbody></table></div>
+ <p class="ts-note">La distribuzione per età degli occupati residenti non misura il numero di pensionamenti attesi e non identifica il settore o la professione degli occupati. Il totale 2018 della fonte differisce di una unità dalla somma delle classi pubblicate: manteniamo entrambi i dati originali, senza rettificarli artificialmente.</p>
+ <p class="ts-note"><strong>Fonte:</strong> <a href="https://www.provincia.bergamo.it/cnvpbgrm/po/attachment_news.php?id=2960" rel="noopener noreferrer" target="_blank">Provincia di Bergamo, Scenari demografici e mercato del lavoro, allegato al Rapporto II trimestre 2025, p. 9</a> (elaborazione su Censimento permanente ISTAT).</p>
+</div>
+<div class="panel" style="margin-top:18px">
+ <h2>Lavoratori dipendenti INPS per fascia d'età</h2>
+ <p class="intro">Privato extra-agricolo · media annua dei lavoratori nel mese · 2018 e 2023</p>
+ <div class="grid" id="inps-age-kpis" style="grid-template-columns:repeat(auto-fit,minmax(185px,1fr));margin-bottom:18px"></div>
+ <div id="inps-age-chart" class="flows-chart" role="group" aria-label="Lavoratori dipendenti INPS per età 2018 e 2023"></div>
+ <div class="tablewrap"><table class="data-table" id="inps-age-table"><thead><tr><th>Classe d'età</th><th>2018</th><th>2023</th><th>Variazione</th><th>Variazione %</th></tr></thead><tbody></tbody></table></div>
+ <p class="ts-note">Il perimetro INPS (dipendenti privati extra-agricoli per sede di lavoro) è diverso da quello degli occupati residenti del Censimento. In questa rilevazione le classi sono quinquennali; il totale 2018 differisce di una unità dalla somma delle classi pubblicate.</p>
+ <p class="ts-note"><strong>Fonte:</strong> <a href="https://www.provincia.bergamo.it/cnvpbgrm/po/attachment_news.php?id=2958" target="_blank" rel="noopener noreferrer">Provincia di Bergamo, Rapporto II trimestre 2025, tavole INPS, p. 42</a>.</p>
+</div>
+<div class="panel" style="margin-top:18px">
+ <h2>Distribuzione settoriale del lavoro dipendente</h2>
+ <p class="intro">INPS · lavoratori nell'anno · selezione di dieci sezioni ATECO · 2019 e 2023</p>
+ <div class="flows-toolbar"><div><h3 id="inps-sector-title">Variazioni per settore</h3></div><div><label for="inps-sector-order">Ordina settori</label><select id="inps-sector-order"><option value="growth">Per variazione assoluta</option><option value="size">Per dimensione 2023</option><option value="name">Per nome ATECO</option></select></div></div>
+ <div id="inps-sector-chart" class="flows-chart" role="group" aria-label="Variazioni dei lavoratori dipendenti nei settori selezionati"></div>
+ <div class="tablewrap"><table class="data-table" id="inps-sector-table"><thead><tr><th>ATECO</th><th>Settore</th><th>2019</th><th>2023</th><th>Variazione</th><th>Variazione %</th></tr></thead><tbody></tbody></table></div>
+ <p class="ts-note"><strong>Attenzione:</strong> le dieci sezioni presentate sono una selezione, non il totale degli occupati. I dati non sono incrociati con l'età, quindi non è possibile individuare i settori con più lavoratori anziani a partire da questi archivi. Inoltre l'indicatore INPS “lavoratori nell'anno” non coincide con la media dei “lavoratori nel mese” della tabella precedente.</p>
+ <p class="ts-note"><strong>Fonte:</strong> <a href="https://www.provincia.bergamo.it/po/attachment_news.php?id=2648" target="_blank" rel="noopener noreferrer">Provincia di Bergamo, Rapporto annuale 2024, tavole INPS per ATECO</a>.</p>
+</div>
+<div class="panel" style="margin-top:18px">
+ <h2>Qualifiche contrattuali per settore</h2>
+ <p class="intro">INPS · impiegati, operai e quadri nelle dieci sezioni ATECO · 2019 e 2023</p>
+ <div class="flows-toolbar"><div><h3>Confronto delle variazioni</h3></div><div><label for="inps-qualification">Qualifica</label><select id="inps-qualification"><option value="operai">Operai</option><option value="impiegati">Impiegati</option><option value="quadri">Quadri</option></select></div></div>
+ <div id="inps-qualification-chart" class="flows-chart" role="group" aria-label="Variazione dei dipendenti per qualifica e settore"></div>
+ <div class="tablewrap"><table id="inps-qualification-table" class="data-table"><thead><tr><th>ATECO</th><th>Settore</th><th>2019</th><th>2023</th><th>Variazione</th><th>Variazione %</th></tr></thead><tbody></tbody></table></div>
+ <p class="ts-note">Le qualifiche contrattuali non sono professioni ISTAT. Le tre qualifiche mostrate non esauriscono il totale dei lavoratori di ogni settore. Non sono disponibili età × qualifica × settore; non ricaviamo quindi una stima del ricambio professionale.</p>
+ <p class="ts-note"><strong>Fonte:</strong> <a href="https://www.provincia.bergamo.it/po/attachment_news.php?id=2648" target="_blank" rel="noopener noreferrer">Provincia di Bergamo, tavole INPS al Rapporto annuale 2024, p. 23</a>.</p>
+</div>
+
+ </section>
+<section class="tab" id="sources"><div class="panel"><h2>Copertura dei dati · release 1.9</h2><div class="tablewrap"><table class="data-table"><thead><tr><th>Dominio</th><th>Anno</th><th>Stato</th></tr></thead><tbody><tr><td>Forze di lavoro ISTAT</td><td>2019–2025</td><td>Serie completa</td></tr><tr><td>Comunicazioni obbligatorie (CO)</td><td>2019–2024</td><td>Assunzioni, cessazioni e saldi; dati settoriali 2025</td></tr><tr><td>Domanda e reperimento Excelsior</td><td>2022–giugno 2025</td><td>42 osservazioni mensili, entrate previste</td></tr><tr><td>Popolazione per età e indici demografici</td><td>2019–2025</td><td>Serie annuale 1° gennaio · tre grandi classi di età</td></tr><tr><td>Occupati residenti per classe d’età (Censimento)</td><td>2018, 2023</td><td>Due rilevazioni, nessuna interpolazione</td></tr><tr><td>Dipendenti INPS per età</td><td>2018, 2023</td><td>Medie annue dei lavoratori nel mese; 11 classi</td></tr><tr><td>Dipendenti INPS per ATECO e qualifica</td><td>2019, 2023</td><td>Selezione di dieci sezioni; tre qualifiche principali</td></tr><tr><td>Confronto 12 province lombarde</td><td>2025</td><td>Dieci indicatori ISTAT, tassi e stock su perimetri distinti</td></tr><tr><td>Retribuzioni provinciali</td><td>—</td><td>Non disponibili nella release</td></tr><tr><td>Comuni e sistemi locali</td><td>—</td><td>Da acquisire</td></tr></tbody></table></div><p class="source-note">Il selettore annuale modifica i KPI e le serie ISTAT; i moduli CO, Excelsior e demografia mantengono l'anno esplicitato nella rispettiva intestazione.</p></div><div class="layout equal"><div class="panel"><h2>Fonti e provenienza</h2><ol class="source-list"><li><a href="https://www.bg.camcom.it/sites/default/files/contenuto_redazione/rapporti/rapporti%20sul%20lavoro/CS119-forze-lavoro-2025.pdf" rel="noopener" target="_blank">Camera di commercio di Bergamo, Forze di lavoro 2025</a> — tabelle 2019–2025 e confronti Italia/Lombardia.</li><li><a href="https://www.bg.camcom.it/notizie/mercato-del-lavoro-bergamo-ancora-record-italiano-bassa-disoccupazione-ma-cresce" rel="noopener" target="_blank">Camera di commercio, nota del 13 marzo 2026</a> — lettura strutturale e disaggregazioni di genere.</li><li><a href="https://www.provincia.bergamo.it/cnvpbgrm/po/mostra_news.php?area=H&amp;id=2535" rel="noopener" target="_blank">Provincia di Bergamo, Osservatorio 2025</a> — saldo posizioni dipendenti da flussi amministrativi.</li></ol><div class="infocard small">Tutte le osservazioni precaricate sono valori pubblicati da queste fonti. La dashboard non effettua richieste automatiche a banche dati esterne.</div><div class="infocard"><strong>Nuove fonti della v0.4</strong><p><a href="https://www.provincia.bergamo.it/cnvpbgrm/po/attachment_news.php?id=3305" rel="noopener" target="_blank">Provincia di Bergamo — Allegato al Rapporto lavoro 2025 (assunzioni per ATECO)</a></p><p><a href="https://www.ats-bg.it/dati-demografici-provincia-bergamo" rel="noopener" target="_blank">ATS Bergamo — dati demografici provinciali ISTAT</a></p><p><a href="https://www.tuttitalia.it/lombardia/provincia-di-bergamo/statistiche/popolazione-eta-sesso-stato-civile-2025/" rel="noopener" target="_blank">Tabella popolazione 2025 per età, fonte ISTAT ripubblicata</a></p></div></div><div class="panel"><h2>Importazione dati aggiuntivi</h2><p class="intro">Carica una serie CSV per visualizzarla separatamente. Il file resta nel browser.</p><p class="small">Colonne richieste: <code>year,employment_rate,unemployment_rate,inactivity_rate,employed,employees,self_employed</code>. I conteggi sono espressi in migliaia.</p><input accept=".csv,text/csv" class="file" id="csv" type="file"/><div class="buttonrow"><button class="action" id="download">Scarica dataset ufficiale precaricato</button><button class="action primary" id="reset">Ripristina dati ufficiali</button></div><p class="muted small" id="upload-message">I dati importati sono dichiarati come esterni non verificati. Non sostituiscono le fonti ufficiali nelle note metodologiche.</p></div></div><div class="panel"><h2>Definizioni e limiti</h2><div class="tablewrap"><table class="data-table"><thead><tr><th>Misura</th><th>Definizione</th><th>Nota di cautela</th></tr></thead><tbody><tr><td>Tasso occupazione</td><td>Occupati 15–64 / popolazione 15–64</td><td>Stima campionaria annuale</td></tr><tr><td>Tasso disoccupazione</td><td>Disoccupati 15–74 / forze di lavoro pertinenti</td><td>Non include gli inattivi</td></tr><tr><td>Tasso inattività</td><td>Inattivi 15–64 / popolazione 15–64</td><td>Distinto da disoccupazione</td></tr><tr><td>Occupati</td><td>Persone occupate, migliaia</td><td>Arrotondamenti annuali</td></tr><tr><td>Saldo CO</td><td>Attivazioni meno cessazioni</td><td>Posizioni amministrative, non persone ISTAT</td></tr></tbody></table></div><p class="small muted">Sono attualmente esclusi: serie comunali, retribuzioni provinciali, dati Excelsior e indicatori su giovani residenti. Non sono stati inseriti valori simulati per completare artificialmente i grafici.</p></div></section>
+<footer>Local Labour Observatory · Bergamo · v1.0 · 12 novembre 2026 · Product-style redesign con fonti documentate.</footer>
+</main></div><script>
+/* Generated from data/bergamo-annual.json and data/catalog.json; edit source files, then regenerate. */
+window.OBSERVATORY_DATA={"rows":[{"year":2019,"employment_rate":66.2,"unemployment_rate":3.5,"inactivity_rate":31.3,"employed":479,"employees":387,"self_employed":92},{"year":2020,"employment_rate":65,"unemployment_rate":3.1,"inactivity_rate":32.9,"employed":473.4,"employees":382,"self_employed":91},{"year":2021,"employment_rate":65.5,"unemployment_rate":3.5,"inactivity_rate":32.1,"employed":475.4,"employees":382,"self_employed":94},{"year":2022,"employment_rate":67.6,"unemployment_rate":3.4,"inactivity_rate":30,"employed":488.7,"employees":402,"self_employed":87},{"year":2023,"employment_rate":67.8,"unemployment_rate":2.9,"inactivity_rate":30.2,"employed":491,"employees":401,"self_employed":90},{"year":2024,"employment_rate":68.4,"unemployment_rate":1.5,"inactivity_rate":30.5,"employed":497,"employees":408,"self_employed":90},{"year":2025,"employment_rate":67.9,"unemployment_rate":1.3,"inactivity_rate":31.2,"employed":495,"employees":392,"self_employed":103}],"defs":[{"key":"employment_rate","title":"Tasso di occupazione","unit":"%","group":"rate"},{"key":"unemployment_rate","title":"Tasso di disoccupazione","unit":"%","group":"rate"},{"key":"inactivity_rate","title":"Tasso di inattivita","unit":"%","group":"rate"},{"key":"employed","title":"Occupati","unit":"mila","group":"count"},{"key":"employees","title":"Lavoratori dipendenti","unit":"mila","group":"count"},{"key":"self_employed","title":"Lavoratori indipendenti","unit":"mila","group":"count"}]};
+
+</script>
+<script>
+/* Generated from data/excelsior-monthly.json and data/cob-annual.json */
+window.OBSERVATORY_FLOWS={"excelsior":{"schema_version":1,"territory":"BG","dataset_id":"excelsior_monthly","frequency":"monthly","source":{"publisher":"Provincia di Bergamo, Osservatorio del Mercato del Lavoro","original_data_provider":"Unioncamere / Ministero del Lavoro, Sistema Informativo Excelsior","document":"Rapporto I Trimestre 2025, p. 37: Previsioni di assunzioni in provincia di Bergamo (giugno 2025)","url":"https://www.provincia.bergamo.it/po/attachment_news.php?id=2785","published":"2025-06-19"},"scope_note":"Entrate previste dalle imprese, NON assunzioni effettive. Serie fermata a giugno 2025 per evitare il cambiamento di perimetro Excelsior introdotto da luglio 2025 (settore primario).","indicators":[{"id":"planned_entries","label":"Entrate previste","unit":"persons"},{"id":"hard_to_fill_percent","label":"Difficoltà di reperimento","unit":"%"}],"rows":[{"period":"2022-01","planned_entries":10440,"hard_to_fill_percent":38.8},{"period":"2022-02","planned_entries":6820,"hard_to_fill_percent":44},{"period":"2022-03","planned_entries":7290,"hard_to_fill_percent":43.4},{"period":"2022-04","planned_entries":7100,"hard_to_fill_percent":44.8},{"period":"2022-05","planned_entries":7680,"hard_to_fill_percent":40.4},{"period":"2022-06","planned_entries":9110,"hard_to_fill_percent":41.2},{"period":"2022-07","planned_entries":8680,"hard_to_fill_percent":40.5},{"period":"2022-08","planned_entries":6400,"hard_to_fill_percent":41.7},{"period":"2022-09","planned_entries":12170,"hard_to_fill_percent":44.3},{"period":"2022-10","planned_entries":9970,"hard_to_fill_percent":50.6},{"period":"2022-11","planned_entries":8060,"hard_to_fill_percent":49.1},{"period":"2022-12","planned_entries":6510,"hard_to_fill_percent":47},{"period":"2023-01","planned_entries":12150,"hard_to_fill_percent":48.4},{"period":"2023-02","planned_entries":8180,"hard_to_fill_percent":47.8},{"period":"2023-03","planned_entries":8200,"hard_to_fill_percent":49},{"period":"2023-04","planned_entries":7510,"hard_to_fill_percent":48.5},{"period":"2023-05","planned_entries":8420,"hard_to_fill_percent":48},{"period":"2023-06","planned_entries":8720,"hard_to_fill_percent":48.5},{"period":"2023-07","planned_entries":9990,"hard_to_fill_percent":50.6},{"period":"2023-08","planned_entries":6420,"hard_to_fill_percent":47.3},{"period":"2023-09","planned_entries":12200,"hard_to_fill_percent":50.9},{"period":"2023-10","planned_entries":10310,"hard_to_fill_percent":56.5},{"period":"2023-11","planned_entries":9150,"hard_to_fill_percent":52.1},{"period":"2023-12","planned_entries":6680,"hard_to_fill_percent":49.7},{"period":"2024-01","planned_entries":12040,"hard_to_fill_percent":52.2},{"period":"2024-02","planned_entries":8480,"hard_to_fill_percent":48.6},{"period":"2024-03","planned_entries":9120,"hard_to_fill_percent":48.9},{"period":"2024-04","planned_entries":7840,"hard_to_fill_percent":48.7},{"period":"2024-05","planned_entries":8570,"hard_to_fill_percent":49.9},{"period":"2024-06","planned_entries":9220,"hard_to_fill_percent":51.9},{"period":"2024-07","planned_entries":8780,"hard_to_fill_percent":55.5},{"period":"2024-08","planned_entries":6470,"hard_to_fill_percent":54.3},{"period":"2024-09","planned_entries":12350,"hard_to_fill_percent":50.3},{"period":"2024-10","planned_entries":9850,"hard_to_fill_percent":52.2},{"period":"2024-11","planned_entries":8160,"hard_to_fill_percent":52.5},{"period":"2024-12","planned_entries":6160,"hard_to_fill_percent":51.8},{"period":"2025-01","planned_entries":11020,"hard_to_fill_percent":50.8},{"period":"2025-02","planned_entries":7710,"hard_to_fill_percent":51.7},{"period":"2025-03","planned_entries":8380,"hard_to_fill_percent":50.2},{"period":"2025-04","planned_entries":8020,"hard_to_fill_percent":49.5},{"period":"2025-05","planned_entries":8430,"hard_to_fill_percent":49.8},{"period":"2025-06","planned_entries":9080,"hard_to_fill_percent":48.1}]},"cob":{"schema_version":1,"territory":"BG","dataset_id":"cob_annual","frequency":"annual","scope_note":"Rapporti di lavoro dipendente privato extra-agricolo nelle sedi di lavoro della provincia, lavoratori 15-64 anni. Contratti in apprendistato, somministrazione, tempo determinato e indeterminato; escluse sezioni ATECO A, O, P, Q, T, U. I dati sono flussi amministrativi, non stock occupati ISTAT.","source":{"publisher":"Provincia di Bergamo, Osservatorio del Mercato del Lavoro","document":"Rapporto annuale 2024, pagina 12, Comunicazioni Obbligatorie di assunzione e cessazione","url":"https://www.provincia.bergamo.it/cnvpbgrm/po/attachment_news.php?id=2647","published":"2025-04-04"},"rows":[{"year":2019,"hires":114847,"terminations":107888,"net":6959},{"year":2020,"hires":87743,"terminations":88387,"net":-644},{"year":2021,"hires":117677,"terminations":105962,"net":11715},{"year":2022,"hires":133516,"terminations":125829,"net":7687},{"year":2023,"hires":128899,"terminations":122220,"net":6679},{"year":2024,"hires":127948,"terminations":121003,"net":6945}],"update_note":"Uses one internally consistent 2019-2024 table from the 2024 annual report. The later 2025 balance is excluded pending verification of the annual table and compatible perimeter."}};
+
+</script>
+<script>
+/* Generated from data/demography-annual.json */
+window.OBSERVATORY_DEMOGRAPHY={"schema_version":1,"territory":"BG","reference_date":"01-01","frequency":"annual","period":"2019-2025","source":{"publisher":"Tuttitalia.it","underlying_source":"ISTAT","title":"Indici demografici e Struttura provincia di Bergamo (BG)","url":"https://www.tuttitalia.it/lombardia/provincia-di-bergamo/statistiche/indici-demografici-struttura-popolazione/"},"methodology":"Annual population stocks refer to January 1 of the labeled year (not December 31). Resident population by age and sex is not equivalent to the employed labour force. Indices are reported as displayed by source, with rounding.","indicators":[{"id":"age_0_14","label":"Residenti 0–14 anni","unit":"persons"},{"id":"age_15_64","label":"Residenti 15–64 anni","unit":"persons"},{"id":"age_65_plus","label":"Residenti 65 anni e oltre","unit":"persons"},{"id":"total","label":"Residenti totali","unit":"persons","derived":"sum_of_age_groups"},{"id":"mean_age","label":"Età media","unit":"years"},{"id":"old_age_index","label":"Indice di vecchiaia","unit":"per_100_under_15"},{"id":"dependency_index","label":"Indice di dipendenza strutturale","unit":"per_100_working_age"},{"id":"workforce_replacement_index","label":"Indice di ricambio della popolazione attiva","unit":"per_100_15_19"}],"rows":[{"year":2019,"age_0_14":159604,"age_15_64":714548,"age_65_plus":233007,"total":1107159,"mean_age":44.2,"old_age_index":146,"dependency_index":54.9,"workforce_replacement_index":119.8},{"year":2020,"age_0_14":156744,"age_15_64":713981,"age_65_plus":237401,"total":1108126,"mean_age":44.5,"old_age_index":151.5,"dependency_index":55.2,"workforce_replacement_index":122.3},{"year":2021,"age_0_14":154298,"age_15_64":712653,"age_65_plus":236605,"total":1103556,"mean_age":44.6,"old_age_index":153.3,"dependency_index":54.9,"workforce_replacement_index":125.4},{"year":2022,"age_0_14":150709,"age_15_64":711361,"age_65_plus":240927,"total":1102997,"mean_age":45,"old_age_index":159.9,"dependency_index":55.1,"workforce_replacement_index":127.6},{"year":2023,"age_0_14":147501,"age_15_64":714218,"age_65_plus":244584,"total":1106303,"mean_age":45.2,"old_age_index":165.8,"dependency_index":54.9,"workforce_replacement_index":130.8},{"year":2024,"age_0_14":144532,"age_15_64":716342,"age_65_plus":249553,"total":1110427,"mean_age":45.5,"old_age_index":172.7,"dependency_index":55,"workforce_replacement_index":134.1},{"year":2025,"age_0_14":141256,"age_15_64":718303,"age_65_plus":255221,"total":1114780,"mean_age":45.7,"old_age_index":180.7,"dependency_index":55.2,"workforce_replacement_index":138.4}]};
+
+</script>
+<script>
+/* Generated from data/employed-age-census.json */
+window.OBSERVATORY_EMPLOYED_BY_AGE={"schema_version":1,"territory":"BG","dataset_id":"employed_by_age_census","frequency":"census_snapshot","years":[2018,2023],"source":{"publisher":"Provincia di Bergamo, Osservatorio del Mercato del Lavoro","primary_source":"ISTAT, Censimento permanente della popolazione","document":"Scenari demografici e mercato del lavoro, Allegato al Rapporto II trimestre 2025, pagina 9","url":"https://www.provincia.bergamo.it/cnvpbgrm/po/attachment_news.php?id=2960"},"definition":"Occupati residenti nella provincia per classe d'età, ai censimenti, al 31 dicembre; non equivale ai lavoratori dipendenti registrati per sede di lavoro INPS né agli avviamenti COB.","notes":["Only 2018 and 2023 observations are available from this verified table. Intermediate annual values must not be interpolated.","Published category totals in 2018 differ from the reported grand total by 1 unit, reflecting tabular rounding/aggregation; do not force reconciliation.","Age classes 15–24, 25–49, 50–64, and 65+ are not identical to the historical labour force survey age bands."],"rows":[{"year":2018,"total":483059,"age_15_24":30684,"age_25_49":285594,"age_50_64":152115,"age_65_plus":14665},{"year":2023,"total":510849,"age_15_24":37351,"age_25_49":279810,"age_50_64":176907,"age_65_plus":16781}]};
+
+</script>
+<script>
+/* Generated from data/inps-age-monthly-mean.json, data/inps-sector-annual.json, and data/inps-sector-qualifications.json */
+window.OBSERVATORY_INPS={"age":{"schema_version":1,"territory":"BG","dataset_id":"inps_covered_employees_age","unit":"persons","measure":"INPS lavoratori dipendenti privati extra-agricoli nel mese; numero medio annuo","years":[2018,2023],"source":{"publisher":"Provincia di Bergamo, Osservatorio del Mercato del Lavoro","primary":"INPS, Osservatorio sui lavoratori dipendenti","url":"https://www.provincia.bergamo.it/cnvpbgrm/po/attachment_news.php?id=2958","table":"Osservatorio sui lavoratori dipendenti nel mese, p. 42 del Rapporto II trimestre 2025"},"scope_note":"Dati INPS medi annui per luogo di lavoro nel privato extra-agricolo. Non sommare a occupati residenti da Censimento né ai flussi COB. La somma delle classi 2018 differisce di una unità dal totale pubblicato; valori originali preservati.","total":{"2018":313681,"2023":343130},"rows":[{"id":"under_20","label":"Fino a 19","values":{"2018":2741,"2023":4420}},{"id":"20_24","label":"20–24","values":{"2018":22818,"2023":28708}},{"id":"25_29","label":"25–29","values":{"2018":32283,"2023":36451}},{"id":"30_34","label":"30–34","values":{"2018":35837,"2023":37373}},{"id":"35_39","label":"35–39","values":{"2018":39532,"2023":38334}},{"id":"40_44","label":"40–44","values":{"2018":46688,"2023":41543}},{"id":"45_49","label":"45–49","values":{"2018":47175,"2023":48433}},{"id":"50_54","label":"50–54","values":{"2018":44100,"2023":47912}},{"id":"55_59","label":"55–59","values":{"2018":29569,"2023":40083}},{"id":"60_64","label":"60–64","values":{"2018":10344,"2023":15830}},{"id":"over_65","label":"65 e oltre","values":{"2018":2593,"2023":4043}}]},"sector":{"schema_version":1,"territory":"BG","dataset_id":"inps_employees_sector","unit":"persons","measure":"Lavoratori dipendenti nell'anno; principali sezioni ATECO","years":[2019,2023],"source":{"publisher":"Provincia di Bergamo, Osservatorio Mercato del Lavoro","primary":"INPS, Osservatorio lavoratori dipendenti privati extra-agricoli","url":"https://www.provincia.bergamo.it/po/attachment_news.php?id=2648","table":"Tavole allegate al Rapporto annuale 2024, lavoratori nell'anno, 2019–2023"},"scope_note":"Le dieci sezioni ATECO sono una selezione, non l'intero universo. Non sommare le righe come se costituissero il totale. Periodo 2019-2023 e definizione dell'anno differenti da INPS lavoratori nel mese 2018-2023. Non disponibile incrocio età × settore.","rows":[{"ateco":"C","label":"Manifattura","values":{"2019":138175,"2023":140501}},{"ateco":"F","label":"Costruzioni","values":{"2019":26435,"2023":32380}},{"ateco":"G","label":"Commercio","values":{"2019":43484,"2023":46340}},{"ateco":"H","label":"Trasporti e magazzinaggio","values":{"2019":21935,"2023":25506}},{"ateco":"I","label":"Alloggio e ristorazione","values":{"2019":25006,"2023":27681}},{"ateco":"J","label":"Informazione e comunicazione","values":{"2019":4727,"2023":5807}},{"ateco":"M","label":"Attività professionali e tecniche","values":{"2019":8342,"2023":9791}},{"ateco":"N","label":"Noleggio e servizi alle imprese","values":{"2019":34833,"2023":39335}},{"ateco":"Q","label":"Sanità e assistenza sociale","values":{"2019":20725,"2023":20218}},{"ateco":"S","label":"Altre attività di servizi","values":{"2019":8375,"2023":7614}}]},"qualifications":{"schema_version":1,"territory":"BG","dataset_id":"inps_sector_qualifications","years":[2019,2023],"measure":"Lavoratori dipendenti nell'anno, principali qualifiche per sezioni ATECO, INPS","source":{"publisher":"Provincia di Bergamo, Rapporto annuale 2024, tavole allegate","primary":"INPS, Osservatorio lavoratori dipendenti privati extra-agricoli","url":"https://www.provincia.bergamo.it/po/attachment_news.php?id=2648","page":"23; tabella per qualifica e sezione ATECO"},"limitations":"Qualifiche contrattuali (non professioni ISTAT). Rappresenta tre qualifiche principali e non tutti i lavoratori del settore: non usare le somme come totale settoriale. Mancano dimensioni anagrafiche e incrocio eta x qualifica.","rows":[{"ateco":"C","qualifications":{"impiegati":{"2019":38756,"2023":40962},"operai":{"2019":89178,"2023":89225},"quadri":{"2019":3745,"2023":4129}}},{"ateco":"F","qualifications":{"impiegati":{"2019":4911,"2023":6425},"operai":{"2019":19816,"2023":23901},"quadri":{"2019":103,"2023":157}}},{"ateco":"G","qualifications":{"impiegati":{"2019":26119,"2023":27339},"operai":{"2019":14100,"2023":15195},"quadri":{"2019":714,"2023":999}}},{"ateco":"H","qualifications":{"impiegati":{"2019":5396,"2023":5806},"operai":{"2019":15274,"2023":18118},"quadri":{"2019":329,"2023":382}}},{"ateco":"I","qualifications":{"impiegati":{"2019":1664,"2023":1796},"operai":{"2019":21453,"2023":23967},"quadri":{"2019":47,"2023":60}}},{"ateco":"J","qualifications":{"impiegati":{"2019":3909,"2023":4815},"operai":{"2019":183,"2023":243},"quadri":{"2019":131,"2023":199}}},{"ateco":"M","qualifications":{"impiegati":{"2019":6576,"2023":7731},"operai":{"2019":832,"2023":730},"quadri":{"2019":192,"2023":273}}},{"ateco":"N","qualifications":{"impiegati":{"2019":7441,"2023":7133},"operai":{"2019":26446,"2023":31350},"quadri":{"2019":159,"2023":179}}},{"ateco":"Q","qualifications":{"impiegati":{"2019":14160,"2023":14316},"operai":{"2019":6284,"2023":5580},"quadri":{"2019":33,"2023":32}}},{"ateco":"S","qualifications":{"impiegati":{"2019":2064,"2023":2120},"operai":{"2019":5196,"2023":4570},"quadri":{"2019":45,"2023":50}}}]}};
+
+</script>
+<script>
+/* Generated from data/lombardy-provinces-2025.json */
+window.OBSERVATORY_LOMBARDY={"schema_version":1,"territory_group":"Lombardia","year":2025,"source_status":"secondary_official_tables_checked","sources":[{"id":"brescia_report","publisher":"Provincia di Brescia, Osservatorio del Mercato del Lavoro","title":"Report 2025, tabelle ISTAT, pp. 48–53","url":"https://lavoro.provincia.brescia.it/export/sites/default/.galleries/documenti/osservatorio/Report-2025.pdf","indicators":["employment_rate","unemployment_rate","activity_rate","inactivity_rate","employed_thousands","unemployed_thousands","labour_force_thousands","inactive_thousands"]},{"id":"osserva_varese","publisher":"Camera di commercio di Varese / OsserVa","title":"ISTAT Occupazione, confronto territoriale per sesso, pubblicato 13 marzo 2026","url":"https://www.osserva-varese.it/istat-occupazione/","indicators":["male_employment_rate","female_employment_rate"]}],"quality_note":"All 12 Lombardy provinces. Rates refer to resident-based labour-force surveys. Stock estimates in thousands are rounded; sums and complementary rates may differ slightly due to rounding. Do not interpret absolute stocks as normalized territorial performance.","indicators":[{"id":"employment_rate","label":"Tasso di occupazione 15–64","unit":"%","group":"rate","direction":"higher"},{"id":"female_employment_rate","label":"Tasso di occupazione femminile 15–64","unit":"%","group":"rate","direction":"higher"},{"id":"male_employment_rate","label":"Tasso di occupazione maschile 15–64","unit":"%","group":"rate","direction":"higher"},{"id":"unemployment_rate","label":"Tasso di disoccupazione 15–74","unit":"%","group":"rate","direction":"lower"},{"id":"activity_rate","label":"Tasso di attività 15–64","unit":"%","group":"rate","direction":"higher"},{"id":"inactivity_rate","label":"Tasso di inattività 15–64","unit":"%","group":"rate","direction":"lower"},{"id":"employed_thousands","label":"Occupati 15–89","unit":"migliaia","group":"stock","direction":null},{"id":"unemployed_thousands","label":"Persone in cerca di lavoro 15+","unit":"migliaia","group":"stock","direction":null},{"id":"labour_force_thousands","label":"Forze di lavoro 15+","unit":"migliaia","group":"stock","direction":null},{"id":"inactive_thousands","label":"Inattivi 15–64","unit":"migliaia","group":"stock","direction":null}],"benchmark":{"name":"Lombardia","values":{"employment_rate":69.6,"male_employment_rate":76.77,"female_employment_rate":62.13,"unemployment_rate":3,"activity_rate":71.7,"inactivity_rate":28.3,"employed_thousands":4567,"unemployed_thousands":139,"labour_force_thousands":4706,"inactive_thousands":1806}},"provinces":[{"code":"BG","name":"Bergamo","values":{"employment_rate":67.9,"male_employment_rate":76.87,"female_employment_rate":58.45,"unemployment_rate":1.3,"activity_rate":68.8,"inactivity_rate":31.2,"employed_thousands":495,"unemployed_thousands":7,"labour_force_thousands":501,"inactive_thousands":223}},{"code":"BS","name":"Brescia","values":{"employment_rate":67.8,"male_employment_rate":78.23,"female_employment_rate":56.82,"unemployment_rate":2.9,"activity_rate":69.8,"inactivity_rate":30.2,"employed_thousands":563,"unemployed_thousands":17,"labour_force_thousands":579,"inactive_thousands":244}},{"code":"CO","name":"Como","values":{"employment_rate":66.5,"male_employment_rate":75.06,"female_employment_rate":57.67,"unemployment_rate":4.7,"activity_rate":69.8,"inactivity_rate":30.2,"employed_thousands":262,"unemployed_thousands":13,"labour_force_thousands":275,"inactive_thousands":115}},{"code":"CR","name":"Cremona","values":{"employment_rate":68.9,"male_employment_rate":77.51,"female_employment_rate":59.85,"unemployment_rate":2.4,"activity_rate":70.6,"inactivity_rate":29.4,"employed_thousands":154,"unemployed_thousands":4,"labour_force_thousands":158,"inactive_thousands":65}},{"code":"LC","name":"Lecco","values":{"employment_rate":65.5,"male_employment_rate":70.95,"female_employment_rate":59.88,"unemployment_rate":2.6,"activity_rate":67.2,"inactivity_rate":32.8,"employed_thousands":139,"unemployed_thousands":4,"labour_force_thousands":143,"inactive_thousands":68}},{"code":"LO","name":"Lodi","values":{"employment_rate":66.7,"male_employment_rate":75.39,"female_employment_rate":57.61,"unemployment_rate":2,"activity_rate":68.1,"inactivity_rate":31.9,"employed_thousands":101,"unemployed_thousands":2,"labour_force_thousands":103,"inactive_thousands":47}},{"code":"MN","name":"Mantova","values":{"employment_rate":68.8,"male_employment_rate":80.25,"female_employment_rate":56.78,"unemployment_rate":3.7,"activity_rate":71.6,"inactivity_rate":28.4,"employed_thousands":184,"unemployed_thousands":7,"labour_force_thousands":191,"inactive_thousands":73}},{"code":"MI","name":"Milano","values":{"employment_rate":72.8,"male_employment_rate":77.46,"female_employment_rate":68.07,"unemployment_rate":3,"activity_rate":75.1,"inactivity_rate":24.9,"employed_thousands":1569,"unemployed_thousands":48,"labour_force_thousands":1617,"inactive_thousands":520}},{"code":"MB","name":"Monza e della Brianza","values":{"employment_rate":68.1,"male_employment_rate":73.27,"female_employment_rate":62.92,"unemployment_rate":3.1,"activity_rate":70.3,"inactivity_rate":29.7,"employed_thousands":387,"unemployed_thousands":12,"labour_force_thousands":399,"inactive_thousands":165}},{"code":"PV","name":"Pavia","values":{"employment_rate":68.8,"male_employment_rate":75.4,"female_employment_rate":62.03,"unemployment_rate":4.1,"activity_rate":71.9,"inactivity_rate":28.1,"employed_thousands":242,"unemployed_thousands":10,"labour_force_thousands":252,"inactive_thousands":96}},{"code":"SO","name":"Sondrio","values":{"employment_rate":65.2,"male_employment_rate":74.04,"female_employment_rate":56.14,"unemployment_rate":4.1,"activity_rate":68,"inactivity_rate":32,"employed_thousands":74,"unemployed_thousands":3,"labour_force_thousands":77,"inactive_thousands":36}},{"code":"VA","name":"Varese","values":{"employment_rate":69.8,"male_employment_rate":78.58,"female_employment_rate":60.91,"unemployment_rate":3,"activity_rate":72,"inactivity_rate":28,"employed_thousands":399,"unemployed_thousands":12,"labour_force_thousands":411,"inactive_thousands":155}}]};
+
+</script>
+<script>
+/* Province outlines derived from ISTAT, published via guglielmo/geojson-italy, CC-BY. */
+window.OBSERVATORY_LOMBARDY_MAP={"source":"ISTAT administrative borders redistributed by guglielmo/geojson-italy (CC-BY)","source_url":"https://github.com/guglielmo/geojson-italy/blob/main/topojson/limits_IT_provinces.topo.json","vintage":"unspecified_in_upstream_file","viewBox":"0 0 920 690","provinces":[{"code":"VA","name":"Varese","path":"M178.1,376.8L177.9,373.8L175.2,371L177.3,367.7L177.3,363.4L174.7,362.2L175.2,360.4L173.1,357.5L168.3,356.2L169,353.7L168,349.9L170.3,350.6L171.8,352.7L173.3,352.5L174,350.7L169.8,343.8L170.4,342.3L172.2,341.7L172.4,339L166,339.6L163.3,338.9L163.4,335.5L166.3,329L165.1,325.2L163.1,323.9L154.6,323L152.7,321.7L150.2,315.7L144.2,307.4L143.4,303.3L144,300L145.9,297.2L151.4,293.4L153,288.7L152.4,282.7L147.4,270.2L147.8,267L153,260.2L182.5,229.6L183.1,226.8L177.9,209.3L178.3,206.3L182.1,200.1L186.2,196.3L189.3,202.2L195.3,205.3L199.1,204.9L200.4,203.1L206.4,208.7L210.7,211.2L211.3,215.7L209,219.9L206.8,219L205.3,224.7L203.4,227.3L200.4,228.5L197.2,233.8L195.9,238.8L197.7,237.9L206,239.2L214.3,248L216.7,249.5L220.2,248.7L221.2,252.9L219.9,256.2L221.1,259.3L224.5,261.8L227,265.6L226.4,269.1L228.7,272.3L229.1,277L230.8,277.1L230.2,279.2L224.9,285.5L223,294.5L220.8,295.3L222.1,300.4L223.4,301.6L221.6,304.3L223.1,307L222.8,309.5L224.6,309.2L226.4,312.1L226.4,313.9L228,314.1L228.2,316.3L231,317L230.4,319.6L232.2,320.9L233,326.5L232.2,329.3L230.5,328.1L228.5,329.4L228.6,332.5L222.7,336.1L220.3,336.4L220.7,337.8L223.5,340.6L226.4,341.1L227.8,346L229.3,346.7L232.2,344L236.3,342.5L238.9,337.9L240.6,340.9L240.3,346.4L239.1,348L239.7,348.9L240.7,347.7L250.2,349.7L256.4,348.6L257.7,351.7L255.5,352.8L255.9,358.6L258.7,365L258,369.8L255.3,369.7L255,370.7L249.7,367.2L244.4,371.8L240.2,366.4L238.3,367.7L236.6,360.8L239,358.8L236.5,354.4L234,355.4L234.1,352.8L230.4,349.8L228.1,352.4L229.7,355.9L227.3,357.2L224.9,361.1L221.4,361.8L214.2,366L215.5,369.7L213.8,371.2L207.3,373.6L206.8,370.6L203.5,368.9L200.5,362.9L195.9,362.7L195.1,367.8L193.7,367.6L192,369L191.6,370.5L187.3,372.4L187.7,374.1L185.4,376.2L183.2,375.9L181.9,374.1L180.6,374.5Z","centroid":[231,277]},{"code":"CO","name":"Como","path":"M256.4,348.6L250.2,349.7L240.7,347.7L239.7,348.9L239.1,348L240.3,346.4L240.6,340.9L238.9,337.9L236.3,342.5L232.2,344L229.3,346.7L227.8,346L226.4,341.1L221.2,338.9L220.3,336.4L222.7,336.1L228.6,332.5L228.5,329.4L230.5,328.1L232.2,329.3L233,326.5L232.2,320.9L230.4,319.6L231,317L228.2,316.3L228,314.1L226.4,313.9L226.4,312.1L224.6,309.2L222.8,309.5L223.1,307L221.6,304.3L223.4,301.6L222.1,300.4L220.8,295.3L223,294.5L223.6,289.9L225.7,288.7L228.1,288.8L229.2,286.9L232.6,285.5L237.3,289L240.7,287.3L242.9,288.5L242.5,291.8L247.2,293.5L251.5,292.2L252,287.2L255,282.7L254.8,279.5L256.1,276.3L258.9,275L263.8,267.2L261.4,267.5L259.6,263.6L253.3,258.7L248.2,258.3L248.8,255.4L246.9,254L247.1,248.2L242.6,246.1L241.3,244.2L250.2,237.4L248.9,230.1L246,226.7L245.9,223.8L249.2,218.5L254.6,215.7L261.4,214.5L261.5,211.4L264,208.2L263.9,206.6L260,197.1L271,192.3L274.7,186.1L278.6,183.7L279.9,180.7L285.1,180.5L287.2,178L288.8,169.3L292.9,166.7L293.6,161.8L296.6,160.5L302.8,160.6L305.7,158.7L318.7,160.2L322,161.7L323.5,164.6L327.8,167.2L333.8,167.6L339.2,164.4L342.9,166.7L339.3,174.6L339.1,185.8L336.8,191.6L335.9,187.4L328.9,186.7L325.1,185L324.1,187.3L311.4,195.1L309.5,198.3L310.9,201.9L308.9,216.4L303.3,225.7L302.5,232.6L303.3,235.1L305.1,235.7L307.8,246L303.9,246.2L302.6,247.2L301.5,251.7L305.3,252.4L306.3,255.4L304.1,259.3L306.8,263.4L308.2,268.8L310.3,269.9L312,269.3L314,265.7L316.7,268.8L314.8,270.7L315.3,273.1L318.4,276.2L318,279.1L315.2,284.5L315.8,285.5L311.2,287.7L308,292.1L309.1,296.1L305.4,298.1L301.9,301.8L302.7,305.6L300.1,306.2L298.7,309.9L301.5,315.1L296.7,322.8L295.9,325.8L292,326.7L287.8,332L287,338.3L287.6,341.8L284.2,343.2L275.3,333.1L271.7,334.7L268.6,334.2L267,332.5L263.7,336.1L258.9,336.2L257.5,345L255.8,345.1L256.5,347.4ZM238.1,240.7L238.8,241.3L238.3,247.7L234.5,246.7L236.5,240.5Z","centroid":[297,161]},{"code":"SO","name":"Sondrio","path":"M388.3,216.2L385.8,220.5L379.5,221.4L375.7,227.7L373.8,228.7L369.7,228.1L367.6,230.9L363.8,230.6L363.3,231.8L362.1,231.7L361.1,225.4L356.5,220.5L358.2,215.3L354.5,212.7L350.6,212.3L340.5,207.8L337,205.1L336.8,191.6L339.1,185.8L339.3,174.6L342.9,166.7L339.2,164.4L333.8,167.6L327.8,167.2L323.5,164.6L322,161.7L318.7,160.2L313.4,159.4L311.9,160L305.7,158.7L302.8,160.6L299.5,160.6L301,149.3L305.4,142.2L307.8,140.3L307.2,136.7L311.2,130.8L309.8,129.5L309.5,127.1L311,125.3L309.5,121.4L307.1,120.5L306,117.1L307.7,111.8L305.8,109L307.1,104.9L305.6,101.4L303.3,100.8L299.5,95.7L299.5,92.2L304.9,89.9L306.3,87.6L305.6,81.4L307.2,76.4L313.7,73.9L322.9,73.7L325.4,72.3L327.4,74.1L326.6,77.2L327.1,78.6L331,82.8L335.7,85.9L339.1,81.9L339.3,78.6L341.1,76.3L345,75.4L345.6,73.7L347.4,72.9L347,80.1L344.8,80.5L344.8,81.9L347.5,81.7L347.8,85.5L346.6,87.1L346.8,94.1L345.7,100.2L348.7,107.9L348.9,111.2L347.5,114.9L355.8,119.7L360.9,131.3L367.2,138.6L369.8,137.6L374.7,141.1L380.8,141.1L383.3,143.2L387.2,143.7L394.8,139L401.9,142.2L404.3,141.6L406.9,133.2L405.6,130.5L407.1,128.6L406.2,126.3L409,123.3L410.8,122.8L415.5,127.2L418.4,128.2L428.3,122.8L431.9,119.7L435.1,118.9L439.3,119.2L447.3,113.4L451.4,118.2L453.4,115.5L457.8,113.9L460.7,119.2L467.5,123L464.2,132.1L467.7,134.8L468.5,138.2L466.6,141.5L468,144.8L475.1,146.7L480.9,151L481.9,155L479.1,161.1L479.4,162.6L484.2,165.9L487.1,162.9L491.3,162.3L496.2,163.6L501,161.6L502.2,158.7L507.9,152.8L501.9,141.1L499.3,138.9L499.5,137.9L494.6,134.9L492.2,129.3L493.3,122.3L497.3,119.1L497,114.5L500,111.9L504,111.9L505.1,110.3L504.8,105.9L505.5,105.1L504.4,102.3L502.7,102.8L500.5,98.4L497.7,97.1L491.1,100L486.2,100.6L486.2,99.6L481.7,97.9L480.7,94.3L478,93.9L477.3,92.7L478.2,89.8L480.2,87.7L478.3,80.6L480.1,65.6L478.1,63.2L479.4,61.2L481.7,60.7L487.4,54L486.4,51.2L489,50.7L491,48.8L490.4,44.4L491.2,40L497.5,41.5L511.1,34.9L515.4,36.9L517.5,36.3L518.4,34.2L522,32L525.9,40.5L522.7,45.7L523.1,50.2L525.3,52.3L529.2,50.8L533.2,53.6L534.8,59.2L538.2,60.3L541.3,58.8L544,61.4L546.4,59.8L547.4,57.5L549.9,57.5L557.6,61.2L562.5,59L566.3,63.3L570,65.5L571.1,71.9L575.2,76.7L579.9,76.1L592.9,78.8L597.6,83.6L603.1,85.3L607.9,92L606.8,93.3L607.3,102.7L610,106.6L605.5,111.4L604.4,114L595.6,114.4L590,119.9L589,122L587,121.1L584.9,121.7L583.2,128.2L580.3,128.2L577.6,124.4L574.1,121.9L562.5,128.5L551.7,141.4L545.8,142.6L544.4,143.7L542.1,143.5L539.1,147.1L538.9,152.2L535.9,155.5L534.5,163.7L532.4,164.8L531.6,167.1L526.6,169.7L519.9,171.5L518.7,175.7L508.8,178.3L506.8,183.2L504.1,184.3L506.9,191.8L505.4,201.1L509.8,209.4L506.4,217.1L495.6,216.4L491.4,219.1L489.8,217.6L489.2,213.6L491.7,208.1L489.9,206.1L481.7,206.9L480.9,208L472.5,207.8L470.9,209.8L470.9,212L466.4,212.1L464.9,214.2L462.7,214.5L456.4,214.1L447.4,218.1L447.7,220.5L442.8,220.8L439.7,219L437.4,220.6L431.7,221.4L430.6,220.3L425.9,219.5L425.1,218.2L421.9,218.2L416.7,215L411.3,215.3L409.4,216.8L403.2,214.9L402,217.1L398.4,217.8L394.2,216Z","centroid":[497,119]},{"code":"MI","name":"Milano","path":"M208.6,429.5L204.5,421.3L204.4,416.3L201.3,417.1L200.8,412.2L196.6,407.7L196.2,399.9L192.4,399.8L189.4,396.1L185.2,396L182.9,394.7L179.5,389.1L179.8,386.6L180.9,385.6L179,382.3L178.1,376.8L181.9,374.1L183.2,375.9L185.4,376.2L187.7,374.1L187.3,372.4L191.6,370.5L192,369L193.7,367.6L195.1,367.8L195.9,362.7L200.5,362.9L203.5,368.9L206.8,370.6L207.3,373.6L213.8,371.2L215.5,369.7L214.2,366L221.4,361.8L224.9,361.1L227.3,357.2L229.7,355.9L228.1,352.4L230.4,349.8L234.1,352.8L234,355.4L236.5,354.4L239,358.8L236.6,360.8L238.3,367.7L240.2,366.4L244.4,371.8L249.7,367.2L255,370.7L255.3,369.7L258,369.8L258.7,365L255.9,358.6L255.8,356L268.1,356.2L267.4,360.3L265.2,362L266.5,365.5L265.3,367.3L276.4,368.7L276.8,367.4L283.6,366.1L283.7,368.1L289.5,371.2L292.8,370.1L294.9,372.7L294.9,374.4L301.3,377.2L300.1,378.5L304.9,377.4L304.2,379.1L312.4,383.8L316.7,383L316,380.3L317.2,375.8L320,375.8L325,378.1L326.4,377L330,377L332.6,375.6L332,374.6L333.9,372.4L343.3,368.1L343.7,366.1L352,364.5L351.2,362L352.5,359.8L351.9,357.2L355.1,354.2L354,352.4L355.2,350.8L355.4,353.4L360.4,355.9L364.8,369.2L363.9,372.9L361.9,375.3L362,379.8L364.9,387.5L367.4,387.8L367,391.7L365.4,395L360.5,392.8L354.7,402.4L352.5,411.9L350,412.1L347.6,410L346.3,407.5L346.8,406.1L345.1,405.4L341.4,405.5L340.8,408.2L337.6,411L337.5,415.2L336.1,416.3L338.3,417.9L339.5,420.4L336.1,425.4L334.8,430.4L333.7,428.3L331.2,427.6L329.7,429.2L329.6,431.2L327.6,431.8L328.8,437.4L325.6,438.5L323.1,437.8L325.2,444.8L323.9,445.6L329.3,453.5L330.8,453.2L332.1,454.3L330.8,455.4L329.4,455L328.6,456.5L330.5,457.3L329.1,458.6L326.7,458.5L326.1,455.8L323.5,452.9L318.3,455.6L316.1,452.5L313.3,450.6L307.3,449.9L305.3,451.7L299.1,451.7L295.4,448.8L294.4,451.2L292.9,451.2L289.2,448.4L288,454.1L284.8,456.1L289,462.4L285.2,461.5L284.1,460.1L277.9,459.9L275.5,456.4L274.1,457L273,456L261.9,458.4L260.4,457L262.1,454.5L259.6,454.9L260,457.5L252.1,459.1L250.6,460.7L249.5,457.9L252.1,458.5L248.4,451.2L244.2,453.2L241.3,452.6L243.6,458.7L242.2,459.3L242.8,461L247.5,462.6L248.1,465.8L247.3,467.2L245.5,466.6L240.1,470.8L231.5,462.3L231.3,455.2L229,453.3L226.8,454.2L222.9,451.1L223.8,449.1L213.8,445.4L213.9,440.5L210.4,438.1L209.7,436.1L209.7,430.6ZM359.7,495.7L360.6,497.9L362.1,498.4L362.1,501.3L363.2,502.7L351.3,503.8L346.4,496.9L342.3,495.5L349.6,491.2L356.5,496Z","centroid":[355,351]},{"code":"BG","name":"Bergamo","path":"M376.5,403.2L373.6,408.2L367.5,408.2L365.4,402.2L366.2,399.6L360.5,394.1L360.5,392.8L365.4,395L367,391.7L367.4,387.8L364.9,387.5L362,379.8L361.9,375.3L363.9,372.9L364.8,369.2L360.4,355.9L355.4,353.4L355,347.9L353.4,345.7L353.2,342.8L349.6,341.1L345.1,336.4L346.6,328.9L344.8,326.4L344.3,321.4L346.3,315.7L344,312.1L348.4,310.8L349.5,309.7L344.9,304.1L346.5,303.2L349.1,305.3L351.6,304L352,301.6L355,301.7L355.3,300.6L350.1,291.4L350.4,287.1L348.7,283.3L349.6,280.4L357.5,277L361.5,276.9L357.5,272.5L360,271.6L357.8,269.6L357.6,267.2L362.4,261.8L362.7,258.9L365.2,253.7L364.4,249.1L361,246.6L357.9,246L355.9,243.2L355,236L353.2,234.9L354.2,231.7L363.3,231.8L363.8,230.6L367.6,230.9L369.7,228.1L373.8,228.7L377,226.6L379.5,221.4L385.8,220.5L388.3,216.2L394.2,216L398.4,217.8L402,217.1L403.2,214.9L409.4,216.8L411.3,215.3L416.7,215L421.9,218.2L425.1,218.2L425.9,219.5L430.6,220.3L431.7,221.4L437.4,220.6L439.7,219L442.8,220.8L447.7,220.5L447.4,218.1L456.4,214.1L462.7,214.5L464.9,214.2L466.4,212.1L470.9,212L470.9,209.8L472.5,207.8L480.9,208L481.7,206.9L489.9,206.1L491.7,208.1L489.2,213.6L489.8,217.6L491.4,219.1L495.6,216.4L498.6,216.2L501.3,217.4L506.4,217.1L507.8,218.9L511.6,218.9L512.8,220.3L514.6,220.6L515.9,219.2L519.5,219.9L519.1,222.2L520.7,224.2L524.3,223.9L527,229.7L524.5,231.9L514.6,233L511.6,235.6L510.7,238.1L508,241L508.3,243.7L495.5,249.5L494,255.3L490.1,258.1L489.3,260.9L490,265.1L492.8,272L501.9,279.3L501.1,282.8L495.6,288L492.6,294.5L489.8,297.3L484.4,300.3L482.1,304.6L480.7,310.9L483.3,318.4L481.6,328.6L483.1,334.9L482.5,336.9L478.3,339.5L468.3,340.4L459.9,343L455.4,342.6L453.6,347.5L452.4,348.7L451,347.6L447,353.4L444.9,360.4L443.1,362.7L440.5,360.5L438.8,360.3L437.3,361.9L434.8,362.5L435.8,368.6L433.5,368.7L432.8,370.1L433.2,373.2L431.6,379.8L435.4,382.7L435.3,389.2L436.7,390.4L437.9,396.8L439,397L439.7,399.9L443.7,405.9L443.6,418.7L439.9,416.9L437.9,417.6L436.4,416.6L434.2,411.1L431,412L428.6,409.4L426.6,410.5L428.9,412.7L425.9,415.2L425.2,420.2L420,418.1L416.5,417.9L416.8,415L415.5,410.7L414.6,409.4L413,409.6L411.4,405.7L407.7,402.6L405.9,402.9L405.4,401.2L402.9,401.2L400.7,408.2L398.7,408.8L397,414.3L392.4,415.6L389.8,410.2L386.6,408.8L383.1,409.6L380.9,407L380.5,403.3L377.1,403.9Z","centroid":[490,218]},{"code":"BS","name":"Brescia","path":"M564.5,452.9L565.2,455.4L563.7,460.7L559.9,461.9L557.5,464.1L556,474L557.5,475.5L556.7,476.9L554.4,476L553.2,478.5L551.4,478.4L549.6,476.8L548.5,481.7L549.4,486.6L545.5,487.9L545.3,489.2L543.3,489.9L539.7,490.1L539.8,486.8L536.9,483.9L530.8,481.3L527.5,475.1L524.5,475.3L524.1,477.3L517.9,478.2L517.7,483.7L505.6,478.1L502.9,478.9L496.6,476.6L490.7,475.8L490.5,474.4L488.7,474.1L487.9,472.8L487.2,469.3L484.5,468.9L479.5,465.8L474.9,467L472.7,464.7L468.6,463.3L461,455.4L455.9,453L448.5,447.5L445.6,447.3L442.1,441.1L443.4,440.2L443.4,431.4L444.3,429.2L443.3,411.6L444.2,408.1L439,397L437.9,396.8L436.7,390.4L435.3,389.2L435.4,382.7L431.6,379.8L431.7,377.8L433.2,373.2L432.8,370.1L433.5,368.7L435.8,368.6L434.8,362.5L437.3,361.9L438.8,360.3L440.5,360.5L443.1,362.7L444.9,360.4L447,353.4L451,347.6L452.4,348.7L453.6,347.5L455.4,342.6L459.9,343L468.3,340.4L478.3,339.5L482.5,336.9L483.1,334.9L481.6,328.6L483.3,318.4L480.7,310.9L482.1,304.6L484.4,300.3L489.8,297.3L492.6,294.5L495.6,288L501.1,282.8L501.9,279.3L492.8,272L490,265.1L489.3,260.9L490.1,258.1L494,255.3L495.5,249.5L508.3,243.7L508,241L510.7,238.1L511.6,235.6L514.6,233L524.5,231.9L527,229.7L524.3,223.9L520.7,224.2L519.1,222.2L519.5,219.9L515.9,219.2L514.6,220.6L512.8,220.3L511.6,218.9L507.8,218.9L506.4,217.1L509.8,209.4L505.4,201.1L506.9,191.8L504.1,184.3L506.8,183.2L508.8,178.3L518.7,175.7L519.9,171.5L526.6,169.7L531.6,167.1L532.4,164.8L534.5,163.7L535.9,155.5L538.9,152.2L539.1,147.1L542.1,143.5L544.4,143.7L545.8,142.6L551.7,141.4L562.5,128.5L574.1,121.9L577.6,124.4L580.3,128.2L583.2,128.2L584.1,125.5L585.3,125.4L594.7,130.6L595.1,135.2L598.4,139.7L594.7,143.4L594.5,145.2L597.7,148.1L599.7,155.8L596,162L596.4,163.9L591.6,169.9L589.8,175L592.8,177.6L595.2,181.9L590.9,190L591.9,195.8L589.9,202.1L576.7,217.1L576.8,228.4L574.3,228.5L571.2,232.1L570.1,238.3L570.1,242.9L575.2,244.9L577.5,244.6L578.2,247L576.8,251.3L577.5,253.7L578.7,254L578.6,256.8L582.2,259.5L583,262.5L581.9,266.3L579.6,267.5L578.3,271.6L578.6,273.1L581.4,275.9L580.9,279.9L582,285.9L581.2,289.9L582.4,291.8L586,290.7L590.3,293.6L588.9,296L586.4,297.7L588.1,299.2L588,303.3L595,304.4L598.7,302.8L599,301.3L603.4,298.4L610.9,297.3L612.3,298.8L614.4,295.6L615.6,289.1L620.3,289.5L624.5,286.7L629.3,287.6L630.5,286.3L633.5,285.8L635.6,286.7L638.1,289.8L639,287.4L643,285.8L645.9,288.7L653.7,287.4L656.9,288.9L655.7,293.6L651.2,298.1L625.9,340.2L610,360.5L609.4,362.8L612.7,409.1L613.8,412L613,413.2L608.3,413.6L609.1,415.3L612.5,413.6L613.5,414.4L612.9,421.8L615.2,422.4L615.4,424.1L614,424.4L613.2,426.1L612.6,430.6L610.5,432.3L606.1,433.1L602.5,431.6L598.5,433.6L595.4,431.6L591.4,432L583.1,423.6L570.7,422.6L569.6,421.5L573.2,425.4L569.4,432.9L571.5,434.4L573.5,440.5L574.1,449.2L572.4,448.8L572.9,451.5L568.7,450.9L568.5,452.9Z","centroid":[519,176]},{"code":"PV","name":"Pavia","path":"M134.7,455.3L136.5,455.6L139.3,453.6L140.2,454L137.6,446.1L141.1,444.2L143.6,439.9L144.5,442.5L147.6,444L152,442.9L153.9,444L157.2,442.1L159.8,443L161.4,444.7L161.2,447.2L166.6,451.3L167.4,458.4L169,462.1L174.5,461.9L179.7,459L182.1,448.1L186,449.3L186.8,446.9L189,445.3L190.2,441.7L187,441.9L181.3,437L180.9,434.6L183.5,435.4L191,434.8L190.6,433.3L192.1,431.5L197.5,434.3L199.4,434.2L201.7,432.9L201.4,431.1L208.6,429.5L209.7,430.6L210.4,438.1L213.9,440.5L213.8,445.4L223.8,449.1L222.9,451.1L226.8,454.2L229,453.3L231.3,455.2L231.5,462.3L240.1,470.8L245.5,466.6L247.3,467.2L248.1,465.8L247.5,462.6L242.8,461L242.2,459.3L243.6,458.7L241.3,452.6L242,452.3L244.2,453.2L248.4,451.2L252.1,458.5L249.5,457.9L250.6,460.7L252.1,459.1L260,457.5L259.6,454.9L262.1,454.5L260.4,457L261.9,458.4L273,456L274.1,457L275.5,456.4L277.9,459.9L284.1,460.1L285.2,461.5L289,462.4L284.8,456.1L288,454.1L289.2,448.4L292.9,451.2L294.4,451.2L295.4,448.8L299.1,451.7L305.3,451.7L307.3,449.9L310.7,450.1L316.1,452.5L318.3,455.6L319.9,455.4L318.7,457.2L323.5,459.1L324.2,461.9L320.9,462.4L319.9,460.9L317.7,460.3L316.4,461.9L320.5,468.7L316.9,469.5L313.6,475.9L316.3,477.4L317.5,475.6L324.2,479.2L324.6,477L323.4,475.6L327.2,477.4L328.8,481.4L331.6,481.4L330.8,483.4L332,485.6L333.2,485.6L334.2,491L337.5,489.7L338.4,493.2L340.1,491.8L342.3,495.5L346.4,496.9L351.3,503.8L363.2,502.7L366,506.6L365.8,511.6L367,513.1L364.1,516.6L367.5,525.1L366.2,528.5L363.3,530.5L361.8,529.9L357.3,522.9L354.7,522.5L348.5,525.3L342.5,525.7L342,528.9L336.5,528.8L335.1,532.2L327.1,540.2L328.2,542.7L326.8,548L328.2,549.2L326,554.7L325,555.6L323.3,555.3L320.9,558.4L319.2,563.7L319.7,566.7L316.8,569.7L316.1,573.6L314.5,575.8L308.2,576.8L309.6,581.1L306.2,589L309.6,590.7L309,593.3L312.9,595.3L316.7,594.5L317.2,596.3L320.7,598.1L322.5,607.8L325.4,612.5L321.5,617.2L317.9,619.7L316.1,619.7L315.3,624L308.3,628.5L307.8,630.2L308.1,632.6L316,637.8L318.5,640.5L313.2,649.9L314.7,652.5L317.1,653.7L316.8,654.9L312.5,655.4L310.9,657.7L308.5,658L308.1,656.6L306.4,656.3L301.7,657.7L301,654.2L296.7,646.4L296,650.6L298.3,655.7L292.6,656.9L288.9,656L290.4,649.9L289.4,644.6L291.3,640.7L291.8,634.9L287.5,633.5L282.5,628.7L282.8,620.9L279.7,617.7L279.8,614.8L276.8,616.8L272.2,617.7L267.9,616.3L265.3,613.5L262.3,615L260.1,614L260.7,612.3L259.7,609.8L258.3,610L254.9,603.5L259.2,600.3L259.6,598.5L256.3,591.2L250.7,591.3L248,587.3L244.2,585L243.5,581.9L238.8,574.8L237.1,573.7L239.1,569.4L239,566.1L235.1,559.7L233.1,559.4L227.2,561.3L225.2,559.4L221.7,553.1L222.5,547.1L221.9,543.5L220.4,542.7L221.5,541.6L219.6,539.2L217.2,538.3L218.7,536.7L217.2,536.3L213.3,539.8L212.6,539.2L208.1,540.4L207.6,541.4L204.7,541.5L201.3,544.6L198.9,544L197.7,545.2L199.5,547.3L198.7,548.8L194,548.4L193.5,553L191.9,553.4L186.4,548.1L182.9,548.3L178.5,543.4L175.5,548.1L172.5,546.4L170.5,546.7L167.4,549.8L165.8,548.1L166.9,546.2L165.9,544.6L161.9,542.5L163.2,541.3L164.3,537.3L162.5,534.4L164.4,531.5L159.1,526.4L159.4,524.1L156,520.9L156.8,514.8L151.9,513L150.8,508.3L144.4,505.1L144,503L141.3,500.2L141.6,497.6L145.7,493.3L149.9,490.9L147.8,489.7L144.4,489.9L143.1,491.2L143.4,492.7L138.3,493.6L137.2,492.1L142.3,490.5L141.7,488.7L137.5,485.4L137.2,482.9L140.8,481.7L141.1,479.9L138.3,479.3L144.1,479.1L144,477.7L142.1,478.2L136.6,475.6L136.8,474L138.6,474.3L139.8,476.3L141.3,474.7L139.1,472.8L139.6,466.7L136.7,466.2L136.9,467.8L134.6,467.5L135.8,463.8L134.4,462.4L131.3,462.1L133.3,457.3Z","centroid":[308,586]},{"code":"CR","name":"Cremona","path":"M360.5,394.1L366.2,399.6L365.4,402.2L367.5,408.2L373.6,408.2L376.5,403.2L377.1,403.9L380.5,403.3L380.9,407L383.1,409.6L388.3,409.1L389.8,410.2L392.4,415.6L397.7,413.5L398.7,408.8L400.7,408.2L402.9,401.2L405.4,401.2L405.9,402.9L407.7,402.6L411.4,405.7L413,409.6L414.6,409.4L416.8,415L416.5,417.9L420,418.1L425.2,420.2L425.9,415.2L428.9,412.7L426.6,410.5L428.6,409.4L431,412L434.2,411.1L436.4,416.6L437.9,417.6L439.9,416.9L443.6,418.7L444.3,429.2L443.4,431.4L443.4,440.2L442.1,441.1L444.6,446.1L445.6,447.3L448.5,447.5L455.9,453L461,455.4L468.6,463.3L472.7,464.7L474.9,467L479.5,465.8L484.5,468.9L487.2,469.3L487.9,472.8L488.7,474.1L490.5,474.4L490.7,475.8L496.6,476.6L502.9,478.9L505.6,478.1L517.7,483.7L517.9,478.2L524.1,477.3L524.5,475.3L527.5,475.1L530.8,481.3L536.9,483.9L539.8,486.8L539.7,490.1L537.8,494.3L538.7,495.7L541.9,496.6L544.2,500.5L550.2,503.8L551,508.7L554.4,511L558.9,511.8L562.5,513.8L562.9,510.4L567.9,512.1L568.3,510.2L571.9,508.7L576.1,509.5L578.9,513.2L577.7,515.1L573,515.8L571.4,517.2L570.8,518.7L573.1,525L566.8,526.5L562,526.2L560.9,541.4L561.6,542.4L566.8,541.3L573.1,536.6L579.2,537.6L578.8,529.1L579.9,531.3L588,531.7L589.4,538L587.7,539L588.2,541.1L585.1,542.5L583.1,549.7L581.1,548.7L576.3,550.7L572.6,550.9L571.1,554L570.6,561.2L577.1,561.9L583.3,560.8L588.1,558.1L589.8,555.1L593.6,553.4L596.5,555L602.3,554.4L599,556.4L595,557L592.7,559.9L587.6,561.7L585.8,564.9L582.2,564.5L579.9,571.8L575.3,572.6L573.1,574L572.5,575.7L567.8,574.7L565.3,572.5L561.9,562.8L560.3,561.1L556.6,560.9L548.9,566.6L542.6,561.8L537.7,559.6L537.9,557.7L535.7,555.5L529.8,556.1L525.4,549.6L515.7,544.7L511.9,546.6L509,545.9L506.6,542.2L503.7,541.5L501.5,544.2L497.7,546.1L492.2,548.5L489.2,548L487.3,545.3L486.8,540.7L479.6,542.4L480.2,539.6L478.3,535.6L475.7,534.6L473.2,530.9L474.6,528.6L474.9,525.2L466.7,514.1L464.7,512.8L461.9,513.2L453.1,522.7L449.3,523.4L449.1,520.6L450.7,519.1L451.8,515.8L451.8,513.3L449.4,511.1L443.9,513.7L439.7,510.6L439.3,504.7L436.9,506.8L434.3,505.8L432.2,507.6L429.7,506.2L429.9,504.1L427.5,503.5L424.6,504.6L422.8,503.1L420.9,503.2L417.7,495.1L412.9,497.6L418.3,487.4L415.7,486L415.1,484.2L412.2,485.7L410.5,485.1L410.1,482.9L408.2,483.5L404.8,481.9L404.6,480.7L406.6,479.4L406.8,477.8L402.7,475.2L403,473.3L406,472.3L405,471.3L399.2,473L397.9,470.9L396.7,473.3L395.5,473.4L394,471.9L394.7,469.8L391.4,467.2L389.5,468.3L388.5,465.8L385.2,463.5L385,461.8L383.6,461.7L381.4,458.7L379,454.1L379.8,452.2L378.2,450.8L376.5,442.1L373.8,439.2L371.4,438.1L370.3,446L367.7,447L364.1,444.6L358.2,443.9L358.5,440.2L357.4,438.3L356.1,438.8L354.1,437.8L351.5,434.9L348.8,435.7L345.9,431.8L349.3,424.6L348.8,423.2L351.7,421.2L351.8,418.6L353.6,415.5L352,413L354.7,402.4L359.3,395.1Z","centroid":[602,554]},{"code":"MN","name":"Mantova","path":"M572.5,575.7L573.1,574L575.3,572.6L579.9,571.8L582.2,564.5L585.8,564.9L587.6,561.7L592.7,559.9L595,557L599,556.4L602.3,554.4L596.5,555L593.6,553.4L589.8,555.1L588.1,558.1L583.3,560.8L577.1,561.9L570.6,561.2L571.1,554L572.6,550.9L576.3,550.7L581.1,548.7L583.1,549.7L585.1,542.5L588.2,541.1L587.7,539L589.4,538L588,531.7L579.9,531.3L578.8,529.1L579.2,537.6L573.1,536.6L568.5,540.6L561.6,542.4L560.9,541.4L562,526.2L566.8,526.5L573.1,525L570.8,518.7L571.4,517.2L573,515.8L577.7,515.1L578.9,513.2L574.8,508.9L571.9,508.7L568.3,510.2L567.9,512.1L562.9,510.4L562.5,513.8L558.9,511.8L554.4,511L551,508.7L550.2,503.8L544.2,500.5L541.9,496.6L538.7,495.7L537.8,494.3L538.3,491.9L539.7,490.1L545.3,489.2L545.5,487.9L549.4,486.6L548.5,481.7L549.6,476.9L551.4,478.4L553.2,478.5L554.4,476L556.7,476.9L557.5,475.5L556,474L557.5,464.1L559.9,461.9L563.7,460.7L565.2,455.4L564.5,452.9L568.5,452.9L568.7,450.9L572.9,451.5L572.4,448.8L574.1,449.2L573.5,440.5L571.5,434.4L569.4,432.9L573.2,425.4L569.6,421.5L570.7,422.6L583.1,423.6L591.4,432L595.4,431.6L598.5,433.6L602.5,431.6L606.1,433.1L610.5,432.3L612.6,430.6L613.2,426.1L614,424.4L615.4,424.1L615.2,422.4L617.6,418.6L628.7,421.9L629.8,425.6L629.2,428.9L625.2,433.8L625.3,435.2L628.6,438L626.4,440.5L622.2,442.4L622.5,445.9L626.7,446.9L628.8,448.7L626.9,454.3L630.2,453.6L632.4,454.7L632.9,457.8L631.8,462.4L633.8,463.6L644,454.6L656.9,468.2L658.3,473.5L665,474.6L665.7,476.4L669.6,476.5L670.7,479.4L678.6,481L677.2,483.4L677.4,485.9L680.4,488L680.9,489.7L685.1,489.8L690.7,492.9L692.1,495.6L691.3,496.7L692.5,502.9L691.2,506.6L691.8,507.2L695.2,507.9L699.1,504.6L700.8,507.5L703.2,506.6L704.1,507.7L702.3,509.5L702.6,512.6L699.3,514.6L699.2,516.2L701.5,519.1L709.2,524L714.7,525.1L714.1,521.6L715.3,519.6L716.5,520.9L721.4,522.6L723,520.4L723.7,516.1L725.9,515.3L734.9,520.4L738.4,519.9L738.9,520.5L732.6,524.4L732.5,527.3L734.9,527.9L735,528.9L732.2,531.6L731.9,535.9L737.8,536.3L741.3,537.8L746.3,541.8L748.3,541.3L750.4,538.4L752.8,537.9L753.5,541.5L751.8,544.9L754.6,550.1L763.1,552.5L768.7,559L785.9,566.1L788.7,569.1L788.6,571.6L783.8,572L777.7,569.1L774.2,569.9L772.9,571.6L765.2,568L762.1,568.3L756.8,569.4L753.9,575.4L748,571.1L744.8,573.3L738.1,575L728.3,575.4L727.2,576.9L718.9,570L709,567.8L706.1,572L692.4,570L685.2,576.5L681.7,576.9L681.9,578.7L679.6,580.6L673.5,580.2L668.1,583.6L662.7,580.1L662.6,578.1L658.6,579.4L656.9,577.4L635.4,572L635,570.3L636.3,567.5L634.7,561.7L632.5,558.4L631,558.4L628.7,559.7L627.9,564.2L624.5,567.7L622.8,566.6L624.5,563.8L622.5,559.9L620.7,563.2L617.5,565.6L609.2,579.9L602.7,582.9L595.4,584.9L586.6,583.6L583.9,583L581.5,580.5L576.3,577.9Z","centroid":[655,465]},{"code":"LC","name":"Lecco","path":"M299.4,317.8L301.5,315.1L298.7,309.9L300.1,306.2L302.7,305.6L301.9,301.8L305.4,298.1L309.1,296.1L308,292.1L311.2,287.7L315.8,285.5L315.2,284.5L318,279.1L318.4,276.2L315.3,273.1L314.8,270.7L316.7,268.8L314,265.7L312,269.3L310.3,269.9L308.2,268.8L306.8,263.4L304.1,259.3L306.3,255.4L305.3,252.4L301.5,251.7L302.6,247.2L303.9,246.2L307.8,246L306.7,239.8L305.1,235.7L303.3,235.1L302.5,230.8L303.3,225.7L308.9,216.4L310.9,201.9L309.5,198.3L311.4,195.1L324.1,187.3L325.1,185L328.9,186.7L335.9,187.4L337,205.1L340.5,207.8L350.6,212.3L354.5,212.7L358.2,215.3L356.5,220.5L361.1,225.4L362.1,231.7L354.2,231.7L353.2,234.9L355,236L355.9,243.2L357.9,246L361,246.6L364.4,249.1L365.2,253.7L362.7,258.9L362.4,261.8L357.6,267.2L357.8,269.6L360,271.6L357.5,272.5L361.5,276.9L357.5,277L349.6,280.4L348.7,283.3L350.4,287.1L350.1,291.4L353.4,296.2L355,301.7L352,301.6L351.6,304L349.1,305.3L346.5,303.2L344.9,304.1L349.5,309.7L348.4,310.8L344,312.1L346.3,315.7L344.3,321.4L344.8,326.4L346.6,328.9L345.1,336.4L349.6,341.1L350.9,341.3L344.2,347.6L338.7,345.4L336.9,339L332.8,341L327.4,345.8L326.7,344L324,341.9L320.5,341.2L314.4,344.1L312.5,337.2L310.2,335L311,328.7L308.3,321.6L306.6,320.8L307.1,319.6L305.4,317.9L302.4,318.7Z","centroid":[353,235]},{"code":"LO","name":"Lodi","path":"M352.5,411.9L352,413L353.6,415.5L351.8,418.6L351.7,421.2L348.8,423.2L349.3,424.6L345.9,431.8L348.8,435.7L351.5,434.9L354.1,437.8L356.1,438.8L357.4,438.3L358.5,440.2L358.2,443.9L364.1,444.6L367.7,447L370.3,446L371.4,438.1L373.8,439.2L376.5,442.1L378.2,450.8L379.8,452.2L379,454.1L381.4,458.7L383.6,461.7L385,461.8L385.2,463.5L388.5,465.8L389.5,468.3L391.4,467.2L394.7,469.8L394,471.9L395.5,473.4L396.7,473.3L397.9,470.9L399.2,473L405,471.3L406,472.3L403,473.3L402.7,475.2L406.8,477.8L406.6,479.4L404.6,480.7L404.8,481.9L408.2,483.5L410.1,482.9L410.5,485.1L412.2,485.7L415.1,484.2L415.7,486L418.3,487.4L412.9,497.6L417.7,495.1L420.9,503.2L422.8,503.1L424.6,504.6L427.5,503.5L429.9,504.1L429.7,506.2L432.2,507.6L434.3,505.8L436.9,506.8L439.3,504.7L439.7,510.6L443.9,513.7L440.4,516.4L441.3,519.8L446,525.1L445.2,529.8L442.4,531.6L440.4,530.7L437.7,526L434.2,524.7L431.4,525.5L430.5,529.3L430.9,536.3L428.8,538.8L427.2,538.2L426.8,531.1L418.7,526.9L415.9,521.2L413.9,519.6L411.2,519.8L413,527.9L411.8,531.4L409.5,532.2L406,536.6L404.1,536.9L397,532.8L395.8,530.8L388.3,529.8L385.6,527.5L387.7,518.3L385.2,513.3L382.7,513L381.5,519.2L379,522.3L375.7,523.7L375.4,522L371.5,521.2L369.8,516.4L365.8,511.6L366,506.6L362.1,501.3L362.1,498.4L360.6,497.9L359.7,495.7L356.5,496L349.6,491.2L342.3,495.5L340.1,491.8L338.4,493.2L337.5,489.7L334.2,491L333.2,485.6L332,485.6L330.8,483.4L331.6,481.4L328.8,481.4L327.2,477.4L323.4,475.6L324.6,477L324.2,479.2L317.5,475.6L316.3,477.4L313.6,475.9L316.9,469.5L320.5,468.7L316.4,461.9L317.7,460.3L319.9,460.9L320.9,462.4L324.2,461.9L323.5,459.1L318.7,457.2L319.9,455.4L323.5,452.9L326.1,455.8L326.7,458.5L329.1,458.6L330.5,457.3L328.6,456.5L329.4,455L330.8,455.4L332.1,454.3L330.8,453.2L329.3,453.5L323.9,445.6L325.2,444.8L323.1,437.8L325.6,438.5L328.8,437.4L327.6,431.8L329.6,431.2L329.7,429.2L331.2,427.6L333.7,428.3L334.8,430.4L336.1,425.4L339.5,420.4L338.3,417.9L336.1,416.3L337.5,415.2L337.6,411L340.8,408.2L341.4,405.5L345.1,405.4L346.8,406.1L346.3,407.5L347.6,410L350,412.1Z","centroid":[412,531]},{"code":"MB","name":"Monza e della Brianza","path":"M355.2,350.8L354,352.4L355.1,354.2L351.9,357.2L352.5,359.8L351.2,362L352,364.5L343.7,366.1L343.3,368.1L333.9,372.4L332,374.6L332.6,375.6L330,377L326.4,377L325,378.1L320,375.8L317.2,375.8L316,380.3L316.7,383L312.4,383.8L304.2,379.1L304.9,377.4L300.1,378.5L301.3,377.2L294.9,374.4L294.9,372.7L292.8,370.1L289.5,371.2L283.7,368.1L283.6,366.1L276.8,367.4L276.4,368.7L265.3,367.3L266.5,365.5L265.2,362L267.4,360.3L268.1,356.2L255.8,356L255.5,352.8L257.7,351.7L255.8,345.1L257.5,345L258.9,336.2L263.7,336.1L267,332.5L268.6,334.2L271.7,334.7L275.3,333.1L284.2,343.2L287.6,341.8L287,338.3L287.8,332L292,326.7L295.9,325.8L299.4,317.8L302.4,318.7L305.4,317.9L307.1,319.6L306.6,320.8L308.3,321.6L311,328.7L310.2,335L312.5,337.2L314.4,344.1L320.5,341.2L324,341.9L326.7,344L327.4,345.8L332.8,341L336.9,339L338.7,345.4L340.4,346.3L344.2,347.6L350.9,341.3L353.2,342.8L353.4,345.7L355,347.9Z","centroid":[258,340]}]};
+
+</script>
+<script>
+/* Interactive SVG choropleth of actual Lombardy provincial boundaries. */
+(()=>{
+'use strict';
+function init(){
+ const geo=window.OBSERVATORY_LOMBARDY_MAP;
+ const data=window.OBSERVATORY_LOMBARDY;
+ const $=id=>document.getElementById(id);
+ if(!geo||!data||!$('lombardy-map'))return;
+ const host=$('lombardy-map'),tooltip=$('lombardy-map-tooltip'),detail=$('lombardy-map-detail');
+ const indicator=$('lombardy-indicator'),highlight=$('lombardy-highlight');
+ const provinces=new Map(data.provinces.map(x=>[x.code,x]));
+ const fmt=(n,unit)=>Number(n).toLocaleString('it-IT',{maximumFractionDigits:unit==='%'?2:0})+(unit==='%'?'%':'');
+ const status={selected:highlight.value==='all'?null:highlight.value};
+ // Original shortlist was only three provinces; expose every province consistently.
+ const options=['<option value="all">Nessuna provincia</option>',...data.provinces.slice().sort((a,b)=>a.name.localeCompare(b.name,'it')).map(p=>'<option value="'+p.code+'">'+p.name+'</option>')].join('');
+ highlight.innerHTML=options;
+ highlight.value=status.selected||'all';
+ const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const maxMin=(id)=>data.provinces.reduce((acc,p)=>[Math.min(acc[0],p.values[id]),Math.max(acc[1],p.values[id])],[Infinity,-Infinity]);
+ function rank(code,id,def){
+  return [...data.provinces].sort((a,b)=>def.direction==='lower'?a.values[id]-b.values[id]:b.values[id]-a.values[id]).findIndex(p=>p.code===code)+1;
+ }
+ function color(value,min,max){
+  const t=max===min?0.5:Math.max(0,Math.min(1,(value-min)/(max-min)));
+  const low=[225,237,249],high=[8,124,118];
+  return 'rgb('+low.map((c,i)=>Math.round(c+(high[i]-c)*t)).join(',')+')';
+ }
+ function changeSelection(code){
+  highlight.value=code||'all';
+  // One change event updates the map, ranking and table; avoid double redraw.
+  highlight.dispatchEvent(new Event('change',{bubbles:true}));
+ }
+ function positionTooltip(ev){
+  const frame=host.parentElement.getBoundingClientRect();
+  const x=Math.min(frame.width-235,Math.max(8,ev.clientX-frame.left+14));
+  const y=Math.min(frame.height-90,Math.max(8,ev.clientY-frame.top+10));
+  tooltip.style.left=Math.max(8,x)+'px';tooltip.style.top=Math.max(8,y)+'px';
+ }
+ function showHover(ev,code){
+  const p=provinces.get(code);
+  const def=data.indicators.find(d=>d.id===indicator.value);
+  const benchmark=data.benchmark.values[def.id];
+  const gap=p.values[def.id]-benchmark;
+  tooltip.innerHTML='<strong>'+escape(p.name)+'</strong>'+escape(def.label)+': <b>'+fmt(p.values[def.id],def.unit)+'</b>'+
+   '<div>Posizione: '+(def.group==='stock'?'non applicabile':rank(code,def.id,def)+' / 12')+'</div>'+
+   (def.group==='rate'?'<div>Scarto Lombardia: '+(gap>0?'+':'')+Number(gap).toLocaleString('it-IT',{maximumFractionDigits:2})+' p.p.</div>':'<div>Valore assoluto, non normalizzato</div>');
+  tooltip.hidden=false;
+  if(ev&&typeof ev.clientX==='number')positionTooltip(ev);
+ }
+ function hideHover(){tooltip.hidden=true;}
+ function details(){
+  const def=data.indicators.find(d=>d.id===indicator.value);
+  const selected=status.selected?provinces.get(status.selected):null;
+  if(!selected){
+   detail.innerHTML='<h3>Seleziona una provincia</h3><p>Passa con il mouse su un confine per vedere i dati. Clicca o usa Tab e Invio per fissare una provincia; potrai consultarne i dieci indicatori qui.</p>';
+   return;
+  }
+  const value=selected.values[def.id],benchmark=data.benchmark.values[def.id];
+  const gap=value-benchmark;
+  const summary=def.group==='rate'?'Scarto dalla Lombardia: '+(gap>0?'+':'')+Number(gap).toLocaleString('it-IT',{maximumFractionDigits:2})+' punti percentuali. Posizione: '+rank(selected.code,def.id,def)+' su 12.':'Valore assoluto espresso in migliaia; il numero non indica una performance migliore o peggiore.';
+  detail.innerHTML='<div class="metric-label">Provincia selezionata</div><h3>'+escape(selected.name)+'</h3><div class="metric-label">'+escape(def.label)+'</div><div class="metric-value">'+fmt(value,def.unit)+'</div><p>'+escape(summary)+'</p><div class="rowstat"><span>Lombardia · '+escape(def.label)+'</span><strong>'+fmt(benchmark,def.unit)+'</strong></div>'+
+    data.indicators.filter(x=>x.id!==def.id&&x.group==='rate').map(x=>'<div class="rowstat"><span>'+escape(x.label)+'</span><strong>'+fmt(selected.values[x.id],x.unit)+'</strong></div>').join('')+
+    '<p>I tassi e gli stock hanno denominatori differenti. Fonte: Rilevazione ISTAT sulle forze di lavoro, 2025.</p>';
+ }
+ function draw(){
+  const def=data.indicators.find(x=>x.id===indicator.value);
+  if(!def)return;
+  const [low,high]=maxMin(def.id);
+  const source=geo.provinces;
+  let html='<svg viewBox="'+geo.viewBox+'" role="img" aria-label="Mappa provinciale Lombardia: '+escape(def.label)+'">';
+  for(const s of source){
+   const p=provinces.get(s.code);if(!p)continue;
+   const active=status.selected===s.code;
+   const val=p.values[def.id];
+   html+='<path class="lombardy-map-path'+(active?' is-selected':'')+'" data-code="'+s.code+'" d="'+s.path+'" fill="'+color(val,low,high)+'" fill-rule="evenodd" tabindex="0" role="button" aria-label="'+escape(p.name)+', '+escape(def.label)+': '+fmt(val,def.unit)+'" aria-pressed="'+active+'"><title>'+escape(p.name)+': '+fmt(val,def.unit)+'</title></path>';
+  }
+  html+='</svg>';
+  host.innerHTML=html;
+  $('lombardy-map-legend').innerHTML='<span>'+fmt(low,def.unit)+'</span><span class="lombardy-legend-ramp" aria-hidden="true"></span><span>'+fmt(high,def.unit)+'</span><span>Valori '+(def.group==='rate'?'percentuali':'assoluti in migliaia')+'</span>';
+  for(const node of host.querySelectorAll('.lombardy-map-path')){
+   const code=node.dataset.code;
+   node.addEventListener('pointerenter',ev=>showHover(ev,code));
+   node.addEventListener('pointermove',ev=>positionTooltip(ev));
+   node.addEventListener('pointerleave',hideHover);
+   node.addEventListener('focus',()=>showHover(null,code));
+   node.addEventListener('blur',hideHover);
+   node.addEventListener('click',()=>{hideHover();changeSelection(code)});
+   node.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();hideHover();changeSelection(code);const newNode=host.querySelector('[data-code="'+code+'"]');newNode?.focus({preventScroll:true});}});
+  }
+  details();
+ }
+ highlight.addEventListener('change',()=>{status.selected=highlight.value==='all'?null:highlight.value;draw()});
+ indicator.addEventListener('change',()=>{hideHover();draw()});
+ $('lombardy-map-reset').addEventListener('click',()=>changeSelection('BG'));
+ draw();
+}
+if(document.readyState!=='complete')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+<script>
+/* Comparison across 12 Lombardy provinces. Annual ISTAT survey estimates, 2025. */
+(()=>{
+'use strict';
+const data=window.OBSERVATORY_LOMBARDY;
+const $=id=>document.getElementById(id);
+if(!data || !$('lombardy-indicator'))return;
+const defs=data.indicators,provinces=data.provinces;
+const fmt=(n,unit)=>Number(n).toLocaleString('it-IT',{maximumFractionDigits:unit==='%'?2:0})+(unit==='%'?'%':'');
+const labelOf=id=>defs.find(d=>d.id===id);
+function selectedProvinces(){
+ const id=$('lombardy-indicator').value,order=$('lombardy-order').value;
+ const rows=[...provinces];
+ if(order==='alphabetical')rows.sort((a,b)=>a.name.localeCompare(b.name,'it'));
+ else rows.sort((a,b)=>order==='ascending'?a.values[id]-b.values[id]:b.values[id]-a.values[id]);
+ return rows;
+}
+function render(){
+ const id=$('lombardy-indicator').value,def=labelOf(id),rows=selectedProvinces();
+ const marker=$('lombardy-highlight').value;
+ const benchmark=data.benchmark.values[id];
+ const highest=[...provinces].sort((a,b)=>b.values[id]-a.values[id])[0];
+ const lowest=[...provinces].sort((a,b)=>a.values[id]-b.values[id])[0];
+ const selected=provinces.find(x=>x.code===marker);
+ $('lombardy-title').textContent=def.label;
+ $('lombardy-subtitle').textContent='2025 · '+(def.group==='stock'?'stime in migliaia di persone':'tasso percentuale')+' · ISTAT';
+ const card=(label,value,note)=>'<div class="card"><div class="metric-label">'+label+'</div><div class="metric-value" style="font-size:26px">'+value+'</div><div class="metric-sub">'+note+'</div></div>';
+ $('lombardy-kpis').innerHTML=[
+ card('Media / totale regionale',fmt(benchmark,def.unit),def.unit==='%'?'Benchmark Lombardia':'Stock regionale stimato'),
+ card('Valore massimo',fmt(highest.values[id],def.unit),highest.name),
+ card('Valore minimo',fmt(lowest.values[id],def.unit),lowest.name),
+ card(selected?(def.group==='stock'?selected.name:'Scarto '+selected.name):'Province confrontate',selected?(def.group==='stock'?fmt(selected.values[id],def.unit):(selected.values[id]-benchmark>0?'+':'')+Number(selected.values[id]-benchmark).toLocaleString('it-IT',{maximumFractionDigits:2})+' p.p.'):'12',selected?(def.group==='stock'?'Stock provinciale; non confrontare direttamente con il totale regionale':'Differenza dalla media Lombardia'):'Tutte le province lombarde')
+ ].join('');
+ const W=990,H=575,L=215,R=105,T=35,B=22;
+ const start=Math.min(0,...rows.map(r=>r.values[id]),benchmark);
+ const stop=Math.max(...rows.map(r=>r.values[id]),benchmark);
+ const zeroBase=start===0;
+ const max=stop*1.08||1;
+ const x=v=>L+(W-L-R)*(v-start)/(max-start);
+ const base=x(start),maxWidth=W-R-L;
+ const trackY=i=>T+i*43;
+ let svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+def.label+', valori delle province lombarde anno 2025">';
+ rows.forEach((r,i)=>{
+   const value=r.values[id],y=trackY(i),bar=Math.max(2,x(value)-base);
+   const active=marker===r.code,color=active?'#087c76':'#7899ad';
+   svg+='<text x="'+(L-12)+'" y="'+(y+18)+'" fill="'+(active?'#075e5a':'#405f73')+'" text-anchor="end" font-size="15" font-weight="'+(active?'800':'500')+'">'+r.name+'</text>';
+   svg+='<rect x="'+base+'" y="'+y+'" width="'+maxWidth+'" height="25" rx="5" fill="#ecf2f6"/>';
+   svg+='<rect x="'+base+'" y="'+y+'" width="'+bar+'" height="25" rx="5" fill="'+color+'"><title>'+r.name+': '+fmt(value,def.unit)+'</title></rect>';
+   svg+='<text x="'+Math.min(W-R+7,x(value)+8)+'" y="'+(y+18)+'" font-size="14" fill="#28495d" font-weight="700">'+fmt(value,def.unit)+'</text>';
+ });
+ const bx=x(benchmark);
+ svg+='<line x1="'+bx+'" y1="'+(T-10)+'" x2="'+bx+'" y2="'+(T+rows.length*43-9)+'" stroke="#c26e29" stroke-width="2" stroke-dasharray="6 4"/>';
+ svg+='<text x="'+bx+'" y="'+(T-16)+'" fill="#a05c20" font-size="13" text-anchor="middle">Lombardia '+fmt(benchmark,def.unit)+'</text>';
+ $('lombardy-chart').innerHTML=svg+'</svg>';
+ const rank=[...provinces].sort((a,b)=>def.direction==='lower'?a.values[id]-b.values[id]:b.values[id]-a.values[id]);
+ if(def.group==='stock'){
+   $('lombardy-context').textContent='Valori assoluti: la dimensione della popolazione condiziona l’ordine. Milano e Brescia hanno stock maggiori anche per ragioni demografiche; non è una graduatoria di efficacia o qualità del mercato del lavoro.';
+ }else if(selected){
+   const pos=rank.findIndex(x=>x.code===marker)+1;
+   const diff=selected.values[id]-benchmark;
+   $('lombardy-context').textContent=selected.name+': '+fmt(selected.values[id],def.unit)+', scarto dalla Lombardia '+(diff>0?'+':'')+Number(diff).toLocaleString('it-IT',{maximumFractionDigits:2})+' punti percentuali. Posizione '+pos+' su 12 nell’ordinamento '+(def.direction==='lower'?'crescente':'decrescente')+'. L’indicatore va interpretato nel proprio contesto, non come indice sintetico di performance.';
+ }else{
+   $('lombardy-context').textContent='Ordinamento dei tassi provinciali: differenze descrittive del 2025, senza pesi o correzioni per struttura demografica.';
+ }
+ renderTable(marker);
+}
+function renderTable(marker){
+ const ds=data.indicators;
+ $('lombardy-table').querySelector('thead').innerHTML='<tr><th>Territorio</th>'+ds.map(d=>'<th>'+d.label+' ('+d.unit+')</th>').join('')+'</tr>';
+ const row=(name,values,cls='')=>'<tr class="'+cls+'"><td>'+name+'</td>'+ds.map(d=>'<td>'+fmt(values[d.id],d.unit)+'</td>').join('')+'</tr>';
+ $('lombardy-table').querySelector('tbody').innerHTML=[...provinces].sort((a,b)=>a.name.localeCompare(b.name,'it')).map(x=>row(x.name,x.values,x.code===marker?'lombardy-selected':'')).join('')+row('Lombardia',data.benchmark.values,'lombardy-benchmark');
+}
+function exportCsv(){
+ const ds=data.indicators;
+ const lines=[['territorio',...ds.map(d=>d.id)].join(';')];
+ for(const r of [...provinces,{name:'Lombardia',values:data.benchmark.values}]){
+  lines.push([r.name,...ds.map(d=>String(r.values[d.id]).replace('.',','))].join(';'));
+ }
+ const notes=['# Anno 2025; valori assoluti in migliaia; tassi percentuali','# Fonti: Camera di commercio di Varese / OsserVa e Provincia di Brescia; ISTAT Rilevazione Forze di Lavoro','# I valori assoluti sono arrotondati, non sono tassi e non sono graduatorie di performance'];
+ const blob=new Blob(['\ufeff'+notes.join('\r\n')+'\r\n'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='lombardia_province_10_indicatori_2025.csv';a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),2500);
+}
+$('lombardy-indicator').innerHTML=defs.map(d=>'<option value="'+d.id+'">'+d.label+'</option>').join('');
+for(const key of ['lombardy-indicator','lombardy-order','lombardy-highlight'])$(key).addEventListener('change',render);
+$('lombardy-export').addEventListener('click',exportCsv);
+render();
+})();
+</script>
+<script>
+/* Distinct INPS series: age 2018/2023 and sector 2019/2023; no inferred age-by-sector matrix. */
+(()=>{
+'use strict';
+const data=window.OBSERVATORY_INPS;
+const $=id=>document.getElementById(id);
+if(!data||!$('inps-age-chart')||!$('inps-sector-chart'))return;
+const fmt=(x,d=0)=>Number(x).toLocaleString('it-IT',{maximumFractionDigits:d});
+const signed=(x,d=0)=>(x>0?'+':'')+fmt(x,d);
+function cards(items){return items.map(x=>'<div class="card"><div class="metric-label">'+x[0]+'</div><div class="metric-value" style="font-size:27px">'+x[1]+'</div><div class="metric-sub">'+x[2]+'</div></div>').join('');}
+function drawAge(){
+ const rows=data.age.rows;
+ const yearA='2018',yearB='2023';
+ const older=rows.filter(r=>['50_54','55_59','60_64','over_65'].includes(r.id));
+ const olderA=older.reduce((s,r)=>s+r.values[yearA],0);
+ const olderB=older.reduce((s,r)=>s+r.values[yearB],0);
+ const totalA=data.age.total[yearA],totalB=data.age.total[yearB];
+ $('inps-age-kpis').innerHTML=cards([
+ ['Dipendenti 2023',fmt(totalB),'Media annua, lavoratori nel mese'],
+ ['Variazione dipendenti',signed(totalB-totalA),yearA+'–'+yearB],
+ ['Dipendenti 50 anni e più',fmt(olderB),'Somma delle classi 50+'],
+ ['Quota 50+ nel 2023',fmt(olderB/totalB*100,1)+'%',signed((olderB/totalB-olderA/totalA)*100,1)+' p.p. rispetto al 2018']
+ ]);
+ $('inps-age-table').querySelector('tbody').innerHTML=rows.map(r=>{
+ const a=r.values[yearA],b=r.values[yearB],delta=b-a;
+ return '<tr><td>'+r.label+'</td><td>'+fmt(a)+'</td><td>'+fmt(b)+'</td><td>'+signed(delta)+'</td><td>'+signed(delta/a*100,1)+'%</td></tr>';
+ }).join('')+
+ '<tr><td><strong>Totale pubblicato</strong></td><td>'+fmt(totalA)+'</td><td>'+fmt(totalB)+'</td><td>'+signed(totalB-totalA)+'</td><td>'+signed((totalB-totalA)/totalA*100,1)+'%</td></tr>';
+ const W=900,H=520,L=100,R=70,T=24,B=52,plotW=W-L-R,plotH=H-T-B,mx=Math.max(...rows.flatMap(r=>[r.values[yearA],r.values[yearB]]));
+ const group=plotW/rows.length,barWidth=Math.min(25,group*.32);
+ let out='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Confronto del numero medio di lavoratori dipendenti per classe quinquennale: 2018 e 2023">';
+ for(let i=0;i<5;i++){const v=mx*i/4,y=T+plotH*(1-i/4);out+='<line x1="'+L+'" y1="'+y+'" x2="'+(W-R)+'" y2="'+y+'" stroke="#dde8f1"/><text x="'+(L-9)+'" y="'+(y+4)+'" text-anchor="end" fill="#637e8f" font-size="12">'+fmt(v)+'</text>';}
+ rows.forEach((r,i)=>{const x=L+group*i+group*.17;for(const [j,year,color] of [[0,yearA,'#087c76'],[1,yearB,'#7a5cff']]){const v=r.values[year],height=plotH*v/mx;out+='<rect x="'+(x+j*(barWidth+3))+'" y="'+(T+plotH-height)+'" width="'+barWidth+'" height="'+height+'" fill="'+color+'" rx="2"><title>'+r.label+' '+year+': '+fmt(v)+'</title></rect>';}out+='<text x="'+(L+group*(i+.5))+'" y="'+(H-26)+'" text-anchor="middle" fill="#627b8d" font-size="11">'+r.label+'</text>';});
+ out+='<text x="'+L+'" y="'+(H-6)+'" fill="#087c76" font-size="12">■ 2018</text><text x="'+(L+85)+'" y="'+(H-6)+'" fill="#7a5cff" font-size="12">■ 2023</text></svg>';
+ $('inps-age-chart').innerHTML=out;
+}
+function drawSector(){
+ const order=$('inps-sector-order').value;
+ let rows=[...data.sector.rows];
+ const delta=r=>r.values['2023']-r.values['2019'];
+ if(order==='growth')rows.sort((a,b)=>delta(b)-delta(a));
+ else if(order==='size')rows.sort((a,b)=>b.values['2023']-a.values['2023']);
+ else rows.sort((a,b)=>a.label.localeCompare(b.label,'it'));
+ $('inps-sector-table').querySelector('tbody').innerHTML=rows.map(r=>{
+ const a=r.values['2019'],b=r.values['2023'],v=b-a;
+ return '<tr><td>'+r.ateco+'</td><td style="text-align:left">'+r.label+'</td><td>'+fmt(a)+'</td><td>'+fmt(b)+'</td><td>'+signed(v)+'</td><td>'+signed(v/a*100,1)+'%</td></tr>';
+ }).join('');
+ const W=920,H=495,L=235,R=125,T=26,B=20,barH=15,gap=46,baseline=470,scale=Math.max(...rows.map(r=>Math.abs(delta(r))))||1;
+ let out='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Variazione in numero di dipendenti per ciascun settore ATECO selezionato">';
+ out+='<line x1="'+baseline+'" y1="'+T+'" x2="'+baseline+'" y2="'+(H-B)+'" stroke="#829dad" stroke-width="1.5"/>';
+ rows.forEach((r,i)=>{
+  const v=delta(r),y=T+i*gap,len=Math.abs(v)/scale*290,x=v>=0?baseline:baseline-len,col=v>=0?'#087c76':'#c77758';
+  out+='<text x="'+(L-18)+'" y="'+(y+13)+'" text-anchor="end" font-size="12" fill="#456274">'+r.ateco+' · '+r.label+'</text>';
+  out+='<rect x="'+x+'" y="'+y+'" width="'+Math.max(1,len)+'" height="'+barH+'" rx="2" fill="'+col+'"><title>'+r.label+': '+signed(v)+' dipendenti dal 2019 al 2023</title></rect>';
+  out+='<text x="'+(v>=0?x+len+7:x-7)+'" y="'+(y+12)+'" text-anchor="'+(v>=0?'start':'end')+'" font-size="12" fill="#435f70">'+signed(v)+'</text>';
+ });
+ $('inps-sector-chart').innerHTML=out+'</svg>';
+}
+
+function drawQualifications(){
+ const qual=$('inps-qualification').value,sectorLabels=new Map(data.sector.rows.map(r=>[r.ateco,r.label]));
+ const rows=data.qualifications.rows.map(r=>({
+  ateco:r.ateco,label:sectorLabels.get(r.ateco)||r.ateco,
+  a:r.qualifications[qual]['2019'],b:r.qualifications[qual]['2023']
+ })).sort((a,b)=>(b.b-b.a)-(a.b-a.a));
+ const delta=r=>r.b-r.a;
+ $('inps-qualification-table').querySelector('tbody').innerHTML=rows.map(r=>'<tr><td>'+r.ateco+'</td><td style="text-align:left">'+r.label+'</td><td>'+fmt(r.a)+'</td><td>'+fmt(r.b)+'</td><td>'+signed(delta(r))+'</td><td>'+signed(delta(r)/r.a*100,1)+'%</td></tr>').join('');
+ const W=920,H=500,L=235,R=125,T=24,baseline=460,step=46,barH=16,max=Math.max(1,...rows.map(r=>Math.abs(delta(r))));
+ let svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Variazione 2019-2023 di '+qual+' nei settori ATECO selezionati">';
+ svg+='<line x1="'+baseline+'" y1="'+T+'" x2="'+baseline+'" y2="'+(H-20)+'" stroke="#8aa4b4"/>';
+ rows.forEach((r,i)=>{
+   const v=delta(r),y=T+i*step,w=Math.abs(v)/max*280,x=v<0?baseline-w:baseline;
+   svg+='<text x="'+(L-18)+'" y="'+(y+13)+'" fill="#415f70" font-size="12" text-anchor="end">'+r.ateco+' · '+r.label+'</text>';
+   svg+='<rect x="'+x+'" y="'+y+'" width="'+Math.max(1,w)+'" height="'+barH+'" fill="'+(v>=0?'#087c76':'#c77758')+'" rx="3"><title>'+r.label+': '+signed(v)+'</title></rect>';
+   svg+='<text x="'+(v>=0?x+w+7:x-7)+'" y="'+(y+13)+'" text-anchor="'+(v>=0?'start':'end')+'" font-size="12" fill="#486677">'+signed(v)+'</text>';
+ });
+ $('inps-qualification-chart').innerHTML=svg+'</svg>';
+}
+$('inps-qualification').addEventListener('change',drawQualifications);
+$('inps-sector-order').addEventListener('change',drawSector);
+drawAge();drawSector();drawQualifications();
+})();
+</script>
+<script>
+/* Two-point census comparison; never interpolate missing years. */
+(()=>{
+'use strict';
+const data=window.OBSERVATORY_EMPLOYED_BY_AGE;
+const el=id=>document.getElementById(id);
+if(!data || !el('workforce-age-chart'))return;
+const first=data.rows.find(r=>r.year===2018);
+const last=data.rows.find(r=>r.year===2023);
+if(!first || !last)return;
+const groups=[
+ {id:'age_15_24',label:'15–24 anni'},
+ {id:'age_25_49',label:'25–49 anni'},
+ {id:'age_50_64',label:'50–64 anni'},
+ {id:'age_65_plus',label:'65 anni e oltre'}
+];
+const format=(n,d=0)=>Number(n).toLocaleString('it-IT',{maximumFractionDigits:d});
+const signed=(n,d=0)=>(n>0?'+':'')+format(n,d);
+const card=(label,value,note)=>'<div class="card"><div class="metric-label">'+label+'</div><div class="metric-value" style="font-size:27px">'+value+'</div><div class="metric-sub">'+note+'</div></div>';
+const totalChange=last.total-first.total;
+const olderChange=last.age_50_64-first.age_50_64;
+const youngerChange=last.age_15_24-first.age_15_24;
+const olderShareFirst=first.age_50_64/first.total*100;
+const olderShareLast=last.age_50_64/last.total*100;
+el('workforce-age-kpis').innerHTML=[
+ card('Occupati residenti nel 2023',format(last.total),'Censimento permanente · tutte le età'),
+ card('Variazione occupati 2018–2023',signed(totalChange),'Differenza tra due censimenti'),
+ card('Occupati 50–64: variazione',signed(olderChange),signed(olderChange/first.age_50_64*100,1)+'% sul 2018'),
+ card('Quota occupati 50–64',format(olderShareLast,1)+'%',signed(olderShareLast-olderShareFirst,1)+' p.p. dal 2018')
+].join('');
+el('workforce-age-table').querySelector('tbody').innerHTML=
+ groups.map(g=>{
+ const a=first[g.id],b=last[g.id],difference=b-a,change=difference/a*100;
+ return '<tr><td>'+g.label+'</td><td>'+format(a)+'</td><td>'+format(b)+'</td><td>'+signed(difference)+'</td><td>'+signed(change,1)+'%</td></tr>';
+ }).join('')+
+ '<tr><td><strong>Totale pubblicato</strong></td><td><strong>'+format(first.total)+'</strong></td><td><strong>'+format(last.total)+'</strong></td><td><strong>'+signed(totalChange)+'</strong></td><td><strong>'+signed(totalChange/first.total*100,1)+'%</strong></td></tr>';
+const W=840,H=320,L=150,R=125,T=30,B=43;
+const max=Math.max(...groups.flatMap(g=>[first[g.id],last[g.id]]));
+const colors=['#087c76','#8066d9'];
+const plot=W-L-R;
+let svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Occupati per fascia età nel 2018 e 2023, dati censuari">';
+groups.forEach((g,i)=>{
+ const a=first[g.id],b=last[g.id],top=T+i*66;
+ svg+='<text x="'+(L-13)+'" y="'+(top+28)+'" text-anchor="end" fill="#3c5d70" font-size="14">'+g.label+'</text>';
+ for(const [j,n] of [[0,a],[1,b]]){
+  const width=n/max*plot;
+  svg+='<rect x="'+L+'" y="'+(top+j*24)+'" width="'+width+'" height="18" rx="3" fill="'+colors[j]+'"><title>'+g.label+', '+(j===0?'2018':'2023')+': '+format(n)+'</title></rect>';
+  svg+='<text x="'+(L+width+7)+'" y="'+(top+j*24+14)+'" fill="#456477" font-size="12">'+format(n)+'</text>';
+ }
+});
+svg+='<text x="'+L+'" y="'+(H-10)+'" fill="'+colors[0]+'" font-size="13">■ 2018</text><text x="'+(L+95)+'" y="'+(H-10)+'" fill="'+colors[1]+'" font-size="13">■ 2023</text>';
+svg+='</svg>';
+el('workforce-age-chart').innerHTML=svg;
+})();
+</script>
+<script>
+/* Cross-source descriptive explorer. No predictive claims. */
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const demography=window.OBSERVATORY_DEMOGRAPHY;
+const labour=window.OBSERVATORY_DATA;
+if(!demography || !labour || !$('renewal-demo'))return;
+const definitions={
+ age_15_64:{label:'Residenti 15–64 anni',unit:'persone',digits:0},
+ age_0_14:{label:'Residenti 0–14 anni',unit:'persone',digits:0},
+ age_65_plus:{label:'Residenti di 65 anni e oltre',unit:'persone',digits:0},
+ dependency_index:{label:'Indice di dipendenza strutturale',unit:'punti',digits:1},
+ workforce_replacement_index:{label:'Indice di ricambio della popolazione attiva',unit:'punti',digits:1},
+ employment_rate:{label:'Tasso di occupazione 15–64',unit:'%',digits:1},
+ inactivity_rate:{label:'Tasso di inattività 15–64',unit:'%',digits:1},
+ unemployment_rate:{label:'Tasso di disoccupazione 15–74',unit:'%',digits:1}
+};
+const format=(n,d)=>Number(n).toLocaleString('it-IT',{minimumFractionDigits:0,maximumFractionDigits:d});
+const signed=(n,d)=>(n>0?'+':'')+format(n,d);
+function line(rows,key,color,label,digits){
+ const W=700,H=260,L=78,R=20,T=24,B=44;
+ const values=rows.map(r=>r[key]);
+ const low=Math.min(...values),high=Math.max(...values);
+ const pad=Math.max((high-low)*0.18,high===low?1:(digits===0?100:0.35));
+ const min=Math.max(0,low-pad),max=high+pad;
+ const x=i=>L+(W-L-R)*(rows.length===1?0.5:i/(rows.length-1));
+ const y=value=>T+(max-value)/(max-min)*(H-T-B);
+ let svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+label+' nel periodo selezionato">';
+ for(let k=0;k<5;k++){
+  const v=min+(max-min)*k/4,Y=y(v);
+  svg+='<line x1="'+L+'" y1="'+Y+'" x2="'+(W-R)+'" y2="'+Y+'" stroke="#dce7ee"/>';
+  svg+='<text x="'+(L-12)+'" y="'+(Y+4)+'" font-size="12" text-anchor="end" fill="#627b8d">'+format(v,digits)+'</text>';
+ }
+ svg+='<polyline fill="none" stroke="'+color+'" stroke-width="3.5" stroke-linejoin="round" points="'+rows.map((r,i)=>x(i)+','+y(r[key])).join(' ')+'"/>';
+ rows.forEach((r,i)=>{
+  svg+='<circle cx="'+x(i)+'" cy="'+y(r[key])+'" r="5" fill="white" stroke="'+color+'" stroke-width="3"><title>'+r.year+': '+format(r[key],digits)+'</title></circle>';
+  svg+='<text x="'+x(i)+'" y="'+(H-14)+'" text-anchor="middle" font-size="12" fill="#627b8d">'+r.year+'</text>';
+ });
+ return svg+'</svg>';
+}
+const byYear=new Map(labour.rows.map(row=>[row.year,row]));
+let current=[];
+function render(){
+ const from=Number($('renewal-from').value),to=Number($('renewal-to').value);
+ const demKey=$('renewal-demo').value,labKey=$('renewal-labour').value;
+ const msg=$('renewal-message');
+ if(from>to){
+  msg.textContent='Seleziona un anno iniziale precedente o uguale a quello finale.';
+  $('renewal-kpis').replaceChildren();$('renewal-demo-chart').replaceChildren();
+  $('renewal-labour-chart').replaceChildren();$('renewal-interpretation').replaceChildren();
+  $('renewal-table').querySelector('tbody').replaceChildren();current=[];
+  return;
+ }
+ msg.textContent='';
+ current=demography.rows.filter(row=>row.year>=from&&row.year<=to)
+  .filter(row=>byYear.has(row.year))
+  .map(row=>({...row,labour:byYear.get(row.year)}));
+ if(!current.length){msg.textContent='Nessun dato comune per il periodo selezionato.';return;}
+ const a=definitions[demKey],b=definitions[labKey];
+ const first=current[0],last=current.at(-1);
+ const deltaDemo=last[demKey]-first[demKey],deltaLab=last.labour[labKey]-first.labour[labKey];
+ $('renewal-demo-title').textContent=a.label+' · valori assoluti';
+ $('renewal-labour-title').textContent=b.label+' · tassi annuali';
+ $('renewal-demo-chart').innerHTML=line(current,demKey,'#087c76',a.label,a.digits);
+ $('renewal-labour-chart').innerHTML=line(current.map(r=>({year:r.year,[labKey]:r.labour[labKey]})),labKey,'#7a5cff',b.label,b.digits);
+ const card=(label,value,sub)=>'<div class="card"><div class="metric-label">'+label+'</div><div class="metric-value">'+value+'</div><div class="metric-sub">'+sub+'</div></div>';
+ $('renewal-kpis').innerHTML=
+   card(a.label+' · '+to,format(last[demKey],a.digits),a.unit)+
+   card('Variazione demografica',signed(deltaDemo,a.digits),a.unit+' · '+from+'–'+to)+
+   card(b.label+' · '+to,format(last.labour[labKey],b.digits)+'%',b.unit)+
+   card('Variazione tasso',signed(deltaLab,1)+' p.p.','Punti percentuali · '+from+'–'+to);
+ $('renewal-interpretation').textContent='Nel periodo '+from+'–'+to+', '+a.label.toLowerCase()+' varia di '+signed(deltaDemo,a.digits)+' '+a.unit+', mentre '+b.label.toLowerCase()+' cambia di '+signed(deltaLab,1)+' punti percentuali. Il confronto descrive due andamenti simultanei, senza misurarne il nesso causale. Per stimare il ricambio effettivo servirebbero dati per età sui lavoratori, entrate e uscite per professione e pensionamenti.';
+ $('renewal-table').querySelector('thead').innerHTML='<tr><th>Anno</th><th>'+a.label+' ('+a.unit+')</th><th>'+b.label+' (%)</th></tr>';
+ $('renewal-table').querySelector('tbody').innerHTML=current.map(r=>'<tr><td>'+r.year+'</td><td>'+format(r[demKey],a.digits)+'</td><td>'+format(r.labour[labKey],1)+'</td></tr>').join('');
+}
+function exportCsv(){
+ if(!current.length)return;
+ const dk=$('renewal-demo').value,lk=$('renewal-labour').value;
+ const lines=['anno;'+dk+';'+lk,...current.map(r=>[r.year,r[dk],r.labour[lk]].map(x=>String(x).replace('.',',')).join(';'))];
+ const metadata=['# Popolazione ISTAT al 1 gennaio; tassi ISTAT media annuale','# Fonte demografia: '+demography.source.url,'# Fonte lavoro: Camera di commercio di Bergamo, Forze di lavoro 2025; valori da verificare puntualmente','# Confronto descrittivo, non previsione'];
+ const blob=new Blob(['\ufeff'+metadata.join('\r\n')+'\r\n'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='bergamo_ricambio_'+current[0].year+'_'+current.at(-1).year+'.csv';a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),3000);
+}
+['renewal-from','renewal-to','renewal-demo','renewal-labour'].forEach(id=>$(id).addEventListener('change',render));
+$('renewal-export').addEventListener('click',exportCsv);
+render();
+})();
+</script>
+<script>
+(()=>{'use strict';const official=window.OBSERVATORY_DATA.rows;
+let data=official.slice(), imported=false;const $=id=>document.getElementById(id), fmt=n=>n.toLocaleString('it-IT',{maximumFractionDigits:1}),pct=n=>fmt(n)+'%',num=n=>fmt(n)+' mila';
+function metric(name,v,sub){return `<div class="card"><div class="metric-label">${name}</div><div class="metric-value">${v}</div><div class="metric-sub">${sub}</div></div>`}
+function chart(arr,key,color='#087c76',unit='%'){if(arr.length<1)return 'Nessun dato';const w=720,h=275,left=55,right=20,top=25,bottom=40,vals=arr.map(d=>d[key]);let lo=Math.min(...vals),hi=Math.max(...vals),pad=Math.max((hi-lo)*.24,unit==='%'?0.6:2);lo-=pad;hi+=pad;const X=i=>left+(w-left-right)*i/Math.max(1,arr.length-1),Y=n=>top+(hi-n)/(hi-lo)*(h-top-bottom);let z=`<svg viewBox="0 0 ${w} ${h}" style="width:100%" role="img" aria-label="Serie storica ${key}">`;for(let i=0;i<5;i++){const val=lo+(hi-lo)*i/4,y=Y(val);z+=`<line x1="${left}" y1="${y}" x2="${w-right}" y2="${y}" stroke="#e8eef0"/><text x="${left-8}" y="${y+4}" text-anchor="end" font-size="12" fill="#7b8c95">${fmt(val)}</text>`}z+=`<polyline points="${arr.map((d,i)=>X(i)+','+Y(d[key])).join(' ')}" fill="none" stroke="${color}" stroke-width="3.5" stroke-linejoin="round"/>`;arr.forEach((d,i)=>{z+=`<circle cx="${X(i)}" cy="${Y(d[key])}" r="5" fill="${color}" stroke="white" stroke-width="2"><title>${d.year}: ${fmt(d[key])}${unit}</title></circle><text x="${X(i)}" y="${h-13}" text-anchor="middle" fill="#70838d" font-size="12">${d.year}</text>`});return z+'</svg>'}
+function doubleBars(arr){let w=720,h=285,left=55,top=18,bottom=35,plot=h-top-bottom,mx=520,grp=(w-left-20)/arr.length;let s=`<svg viewBox="0 0 ${w} ${h}" style="width:100%" role="img" aria-label="Occupati dipendenti e indipendenti">`;arr.forEach((d,i)=>{let x=left+i*grp+grp*.22,bw=grp*.48,dep=plot*d.employees/mx,ind=plot*d.self_employed/mx;s+=`<rect x="${x}" y="${top+plot-dep}" width="${bw}" height="${dep}" fill="#087c76"/><rect x="${x}" y="${top+plot-dep-ind}" width="${bw}" height="${ind}" fill="#d4a16b"/><text x="${x+bw/2}" y="${h-9}" text-anchor="middle" font-size="12" fill="#70838d">${d.year}</text>`});return s+`<text x="55" y="14" font-size="12" fill="#087c76">■ dipendenti</text><text x="178" y="14" font-size="12" fill="#b47e44">■ indipendenti</text></svg>`}
+function compareChart(){const x=[{t:'Bergamo',v:67.9},{t:'Lombardia',v:69.6},{t:'Italia',v:62.5}];return `<svg viewBox="0 0 640 240" style="width:100%" role="img" aria-label="Confronto tassi occupazione">${x.map((d,i)=>{const y=15+i*72,width=d.v/80*450;return `<text x="8" y="${y+24}" fill="#556b79" font-size="16">${d.t}</text><rect x="125" y="${y}" width="450" height="37" rx="6" fill="#edf3f4"/><rect x="125" y="${y}" width="${width}" height="37" rx="6" fill="${i===0?'#087c76':'#a3bdc3'}"/><text x="${130+width}" y="${y+25}" font-size="14" fill="#1c3d47">${pct(d.v)}</text>`}).join('')}</svg>`}
+function fillYears(){let sel=$('year'),old=sel.value;sel.innerHTML=data.map(d=>`<option value="${d.year}">${d.year}</option>`).reverse().join('');sel.value=data.some(d=>String(d.year)===old)?old:'2025';if(!data.some(d=>String(d.year)===sel.value))sel.value=String(data[data.length-1].year)}
+function render(){const y=Number($('year').value),d=data.find(x=>x.year===y)||data[data.length-1],idx=data.indexOf(d),prev=idx>0?data[idx-1]:null,change=(key)=>prev?fmt(d[key]-prev[key])+' p.p. rispetto al '+prev.year:'Prima annualità disponibile';$('hero-employment').textContent=pct(d.employment_rate);$('hero-unemployment').textContent=pct(d.unemployment_rate);$('hero-employed').textContent=fmt(d.employed)+'k';document.querySelectorAll('.hero-year').forEach(el=>el.textContent=y);$('kpis').innerHTML=metric('Occupazione · 15–64',pct(d.employment_rate),change('employment_rate'))+metric('Disoccupazione · 15–74',pct(d.unemployment_rate),change('unemployment_rate'))+metric('Inattività · 15–64',pct(d.inactivity_rate),change('inactivity_rate'))+metric('Occupati · 15–89',num(d.employed),'Migliaia di persone · media annuale');$('employment-chart').innerHTML=chart(data,'employment_rate');$('composition-chart').innerHTML=doubleBars(data);$('observations').innerHTML=`<div class="insight"><strong>Occupazione</strong>Nel ${y} il tasso è ${pct(d.employment_rate)}${prev?', variazione '+fmt(d.employment_rate-prev.employment_rate)+' punti sul '+prev.year:''}.</div><div class="insight warning"><strong>Partecipazione al lavoro</strong>Il tasso di inattività è ${pct(d.inactivity_rate)}. Va letto separatamente dalla disoccupazione.</div><div class="insight"><strong>Dipendenti e autonomi</strong>${num(d.employees)} dipendenti e ${num(d.self_employed)} indipendenti (stime arrotondate).</div>`;$('labour-kpis').innerHTML=metric('Occupati',num(d.employed),'Media annuale ISTAT')+metric('Dipendenti',num(d.employees),'Media annuale ISTAT')+metric('Indipendenti',num(d.self_employed),'Media annuale ISTAT')+metric('Disoccupazione',pct(d.unemployment_rate),'15–74 anni');$('labour-chart').innerHTML=doubleBars(data);$('unemp-chart').innerHTML=chart(data,'unemployment_rate','#d49b66');$('gender-kpis').innerHTML=metric('Inattività',pct(d.inactivity_rate),'15–64 anni')+metric('Tasso di attività',pct(100-d.inactivity_rate),'Complementare al tasso di inattività')+metric('Donne · occupazione 2025','58,5%','Dato specifico riferito al 2025')+metric('Uomini · occupazione 2025','76,9%','Dato specifico riferito al 2025');$('inactivity-chart').innerHTML=chart(data,'inactivity_rate','#d49b66');$('compare-chart').innerHTML=compareChart();document.querySelectorAll('.banner')[0].innerHTML=imported?'<strong>Serie esterna caricata:</strong> valori importati dall’utente, non verificati. Confronti 2025, commenti di genere e saldo amministrativo restano riferiti alle fonti ufficiali.':'<strong>Dati ufficiali, periodo dichiarato.</strong> Serie annuali 2019–2025 elaborate dalla Camera di commercio di Bergamo su rilevazioni ISTAT. Le stime campionarie sono arrotondate; il saldo delle posizioni dipendenti da comunicazioni obbligatorie NON equivale alla variazione dello stock di occupati rilevata dall’indagine ISTAT. Nessun numero è simulato in questa versione.'}
+$('year').onchange=render;$('print').onclick=()=>window.print();function csv(rows){let keys=['year','employment_rate','unemployment_rate','inactivity_rate','employed','employees','self_employed'];return keys.join(',')+'\n'+rows.map(r=>keys.map(k=>r[k]).join(',')).join('\n')}function save(name,content){const b=new Blob([content],{type:'text/csv;charset=utf-8'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}$('download').onclick=()=>save('bergamo_istat_2019_2025.csv',csv(official));$('reset').onclick=()=>{data=official.slice();imported=false;fillYears();render();$('csv').value='';$('upload-message').textContent='Ripristinata serie ufficiale 2019–2025.'};$('csv').onchange=async e=>{try{const f=e.target.files[0];if(!f)return;const text=await f.text(),lines=text.trim().split(/\r?\n/),sep=lines[0].includes(';')?';':',',head=lines[0].split(sep).map(x=>x.trim()),keys=['year','employment_rate','unemployment_rate','inactivity_rate','employed','employees','self_employed'];if(keys.some(k=>!head.includes(k)))throw Error('Colonne richieste mancanti');const parsed=lines.slice(1).map(line=>{const vals=line.split(sep),r={};keys.forEach(k=>{const v=Number((vals[head.indexOf(k)]||'').replace(',','.'));if(!Number.isFinite(v))throw Error('Valore non numerico');r[k]=v});if(!Number.isInteger(r.year))throw Error('Anno non valido');['employment_rate','unemployment_rate','inactivity_rate'].forEach(k=>{if(r[k]<0||r[k]>100)throw Error('Tasso fuori intervallo')});return r}).sort((a,b)=>a.year-b.year);if(!parsed.length||new Set(parsed.map(x=>x.year)).size!==parsed.length)throw Error('Righe assenti o duplicati');data=parsed;imported=true;fillYears();render();$('upload-message').textContent='Importate '+parsed.length+' annualità. Dati esterni non verificati.'}catch(ex){$('upload-message').textContent='Errore importazione: '+ex.message}};fillYears();render()})();
+</script><script>
+(()=>{
+'use strict';
+const rows=window.OBSERVATORY_DATA.rows;
+const defs=window.OBSERVATORY_DATA.defs;
+const colors=["#23c6b5", "#5585ff", "#f5a75d", "#815fff", "#0ba19a", "#e16c9a"];
+const $=id=>document.getElementById(id);
+const nice=x=>Number(x).toLocaleString('it-IT',{maximumFractionDigits:1});
+const options=()=>[...document.querySelectorAll('#ts-choices input:checked')].map(el=>el.value);
+let chartType='line', currentSvg='';
+function prepared(){
+ const from=Number($('ts-from').value),to=Number($('ts-to').value);
+ const keys=options(), indexed=$('ts-index').checked;
+ if(from>to)return {error:'Il primo anno deve precedere o coincidere con l’ultimo.'};
+ if(!keys.length)return {error:'Seleziona almeno un indicatore.'};
+ const sel=defs.filter(d=>keys.includes(d.key));
+ if(!indexed&&new Set(sel.map(d=>d.group)).size>1)return {error:'Le unità non sono confrontabili: usa soltanto tassi oppure soltanto occupati, oppure attiva l’indice 100.'};
+ const data=rows.filter(r=>r.year>=from&&r.year<=to);
+ if(!data.length)return {error:'Nessun dato per l’intervallo selezionato.'};
+ const series=sel.map(d=>({ ...d, values:data.map(r=> indexed ? (data[0][d.key] ? r[d.key]/data[0][d.key]*100 : null) : r[d.key]) }));
+ return {data,series,indexed,from,to};
+}
+function svg(p){
+ const w=900,h=350,L=68,R=28,T=28,B=56,W=w-L-R,H=h-T-B;
+ const vals=p.series.flatMap(s=>s.values).filter(Number.isFinite);
+ let min=Math.min(...vals),max=Math.max(...vals);const margin=Math.max((max-min)*.16, p.indexed?2:(p.series[0].unit==='%'?.6:2));
+ min=Math.max(0,min-margin);max+=margin;if(min>=max)max=min+1;
+ const xx=i=>L+W*(p.data.length===1?.5:i/(p.data.length-1));
+ const yy=v=>T+(max-v)/(max-min)*H;
+ let out=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="900" height="350" role="img" aria-label="Grafico storico personalizzato" style="width:100%;height:auto">`;
+ for(let i=0;i<5;i++){let v=min+(max-min)*i/4,y=yy(v);out+=`<line x1="${L}" y1="${y}" x2="${w-R}" y2="${y}" stroke="#dce8f1"/><text x="${L-12}" y="${y+4}" font-size="13" text-anchor="end" fill="#678091">${nice(v)}</text>`}
+ p.data.forEach((r,i)=>out+=`<text x="${xx(i)}" y="${h-17}" font-size="13" text-anchor="middle" fill="#678091">${r.year}</text>`);
+ p.series.forEach((s,j)=>{
+  const color=colors[defs.findIndex(d=>d.key===s.key)];
+  if(chartType==='line'){
+   out+=`<polyline points="${s.values.map((v,i)=>`${xx(i)},${yy(v)}`).join(' ')}" fill="none" stroke="${color}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`;
+   s.values.forEach((v,i)=>out+=`<circle cx="${xx(i)}" cy="${yy(v)}" r="5" fill="white" stroke="${color}" stroke-width="3"><title>${s.title} · ${p.data[i].year}: ${nice(v)}${p.indexed?'':' '+s.unit}</title></circle>`);
+  }else{
+   const groups=Math.max(1,p.data.length),bw=Math.min(42,W/groups/(p.series.length+0.5)),groupWidth=bw*p.series.length;
+   s.values.forEach((v,i)=>{const x=xx(i)-groupWidth/2+j*bw,y=yy(v),base=yy(min);out+=`<rect x="${x}" y="${y}" width="${Math.max(1,bw-3)}" height="${Math.max(0,base-y)}" rx="3" fill="${color}"><title>${s.title} · ${p.data[i].year}: ${nice(v)}${p.indexed?'':' '+s.unit}</title></rect>`});
+  }
+ });
+ return out+'</svg>';
+}
+function render(){
+ const p=prepared(),msg=$('ts-message');msg.textContent='';
+ if(p.error){msg.textContent=p.error;msg.setAttribute('role','alert');$('ts-chart').innerHTML='<p class="ts-empty">Seleziona indicatori e intervallo validi per generare il grafico.</p>';$('ts-legend').innerHTML='';$('ts-summary').innerHTML='';$('ts-table').querySelector('thead').innerHTML='';$('ts-table').querySelector('tbody').innerHTML='';currentSvg='';return;}msg.removeAttribute('role');
+ currentSvg=svg(p);$('ts-chart').innerHTML=currentSvg;
+ $('ts-chart-caption').textContent=(p.indexed?'Indice 100 nel '+p.from:p.series[0].unit==='%'?'Tassi percentuali':'Migliaia di occupati')+' · Bergamo · '+p.from+'–'+p.to;
+ $('ts-legend').innerHTML=p.series.map(s=>`<span><i class="ts-swatch" style="background:${colors[defs.findIndex(d=>d.key===s.key)]}"></i>${s.title}</span>`).join('');
+ $('ts-summary').innerHTML=p.series.map(s=>{const start=s.values[0],end=s.values[s.values.length-1],diff=end-start;const sign=diff>0?'+':'';const unit=p.indexed?' punti indice':s.unit==='%'?' p.p.':' mila';return '<div class="ts-insight"><div class="ts-insight-name">'+s.title+'</div><div class="ts-insight-value">'+sign+nice(diff)+unit+'</div><div class="ts-insight-years">'+p.from+'–'+p.to+' · differenza assoluta</div></div>'}).join('');
+ $('ts-table').querySelector('thead').innerHTML='<tr><th>Anno</th>'+p.series.map(s=>'<th>'+s.title+(p.indexed?' (indice)':' ('+s.unit+')')+'</th>').join('')+'</tr>';
+ $('ts-table').querySelector('tbody').innerHTML=p.data.map((r,i)=>'<tr><td>'+r.year+'</td>'+p.series.map(s=>{if(!$('ts-delta').checked)return '<td>'+nice(s.values[i])+'</td>';if(i===0)return '<td title="Prima annualità selezionata">—</td>';const change=s.values[i]-s.values[i-1];return '<td title="Variazione in '+(p.indexed?'punti indice':s.unit==='%'?'punti percentuali':'migliaia di persone')+'">'+(change>0?'+':'')+nice(change)+'</td>'}).join('')+'</tr>').join('');
+}
+function save(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)}
+function exportCsv(){const p=prepared();if(p.error){$('ts-message').textContent=p.error;return};const hdr=['anno',...p.series.map(s=>s.key+(p.indexed?'_indice':'_'+s.unit))];const lines=[hdr.join(';'),...p.data.map((r,i)=>[r.year,...p.series.map(s=>s.values[i].toString().replace('.',','))].join(';'))];save('bergamo_serie_storiche_'+p.from+'_'+p.to+'.csv','\ufeff'+lines.join('\n'),'text/csv;charset=utf-8')}
+document.querySelectorAll('[data-preset]').forEach(button=>button.addEventListener('click',()=>{
+ const mode=button.dataset.preset;
+ const selected=mode==='rates'?['employment_rate','unemployment_rate','inactivity_rate']:mode==='work'?['employees','self_employed']:mode==='index'?defs.map(d=>d.key):['employment_rate','inactivity_rate'];
+ document.querySelectorAll('#ts-choices input').forEach(el=>el.checked=selected.includes(el.value));
+ $('ts-index').checked=mode==='index';chartType='line';['line','bar'].forEach(t=>$('ts-'+t).setAttribute('aria-pressed',String(t==='line')));
+ $('ts-from').value='2019';$('ts-to').value='2025';render();
+}));
+document.querySelectorAll('#ts-choices input').forEach(el=>el.addEventListener('change',render));
+['ts-from','ts-to','ts-index','ts-delta'].forEach(id=>$(id).addEventListener('change',render));
+['line','bar'].forEach(type=>$('ts-'+type).addEventListener('click',()=>{chartType=type;['line','bar'].forEach(t=>$('ts-'+t).setAttribute('aria-pressed',String(t===type)));render()}));
+$('ts-csv').addEventListener('click',exportCsv);
+$('ts-svg').addEventListener('click',()=>{if(prepared().error)return;save('bergamo_serie_storiche.svg',currentSvg,'image/svg+xml;charset=utf-8')});
+render();
+})();
+</script>
+<script>
+(()=>{
+'use strict';
+const {excelsior,cob}=window.OBSERVATORY_FLOWS;
+const fmt=(v,opts={})=>Number(v).toLocaleString('it-IT',opts);
+const monthLabel=p=>p.slice(5)+'/'+p.slice(2,4);
+const $=id=>document.getElementById(id);
+function lineChart(rows,key,{percent=false,color='#087c76'}={}){
+ const width=760,height=242,L=58,R=18,T=24,B=42,innerW=width-L-R,innerH=height-T-B;
+ const values=rows.map(r=>r[key]),minValue=Math.min(...values),maxValue=Math.max(...values);
+ const padding=Math.max((maxValue-minValue)*.18,percent?2:500);
+ const yMin=Math.max(0,minValue-padding),yMax=maxValue+padding;
+ const x=i=>L+innerW*(rows.length===1?0.5:i/(rows.length-1));
+ const y=v=>T+(yMax-v)/(yMax-yMin)*innerH;
+ let svg='<svg viewBox="0 0 '+width+' '+height+'" role="img" aria-label="Serie mensile Excelsior">';
+ for(let j=0;j<5;j++){const v=yMin+(yMax-yMin)*j/4,Y=y(v);svg+='<path d="M'+L+' '+Y+' H'+(width-R)+'" stroke="#dce9f1"/><text x="'+(L-8)+'" y="'+(Y+4)+'" font-size="12" text-anchor="end" fill="#647d8e">'+fmt(v,{maximumFractionDigits:percent?1:0})+'</text>';}
+ svg+='<polyline fill="none" stroke="'+color+'" stroke-width="3" points="'+rows.map((r,i)=>x(i)+','+y(r[key])).join(' ')+'"/>';
+ rows.forEach((r,i)=>{if(rows.length<=12||i%3===0||i===rows.length-1)svg+='<text font-size="10" fill="#6a8395" x="'+x(i)+'" y="'+(height-16)+'" text-anchor="middle">'+monthLabel(r.period)+'</text>';svg+='<circle cx="'+x(i)+'" cy="'+y(r[key])+'" r="'+(rows.length>20?2.7:4)+'" fill="'+color+'"><title>'+r.period+': '+fmt(r[key],{maximumFractionDigits:1})+(percent?'%':'')+'</title></circle>';});
+ return svg+'</svg>';
+}
+function renderExcelsior(){
+ const selected=$('flows-year').value;
+ const rows=excelsior.rows.filter(r=>selected==='all'||r.period.startsWith(selected));
+ $('flows-excelsior-entries').innerHTML=lineChart(rows,'planned_entries');
+ $('flows-excelsior-difficulty').innerHTML=lineChart(rows,'hard_to_fill_percent',{percent:true,color:'#7a5cff'});
+}
+function renderCob(){
+ const rows=cob.rows,w=760,h=275,L=58,R=18,T=20,B=42,plotW=w-L-R,plotH=h-T-B,peak=140000;
+ const group=plotW/rows.length,bw=group*.29;
+ let svg='<svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="Assunzioni e cessazioni dal 2019 al 2024">';
+ for(let i=0;i<=4;i++){const v=peak*i/4,y=T+plotH*(1-v/peak);svg+='<path d="M'+L+' '+y+' H'+(w-R)+'" stroke="#dce9f1"/><text x="'+(L-8)+'" y="'+(y+4)+'" text-anchor="end" font-size="12" fill="#647d8e">'+fmt(v)+'</text>';}
+ rows.forEach((r,i)=>{const x=L+i*group+group*.17;for(const [j,key,color] of [[0,'hires','#087c76'],[1,'terminations','#7a5cff']]){const barH=plotH*r[key]/peak;svg+='<rect x="'+(x+j*(bw+4))+'" y="'+(T+plotH-barH)+'" height="'+barH+'" width="'+bw+'" rx="3" fill="'+color+'"><title>'+r.year+' · '+(j===0?'Assunzioni':'Cessazioni')+': '+fmt(r[key])+'</title></rect>';}svg+='<text x="'+(L+i*group+group*.5)+'" y="'+(h-14)+'" text-anchor="middle" fill="#647d8e" font-size="12">'+r.year+'</text>';});
+ svg+='</svg><div class="ts-legend"><span><i class="ts-swatch" style="background:#087c76"></i>Assunzioni</span><span><i class="ts-swatch" style="background:#7a5cff"></i>Cessazioni</span></div>';
+ $('flows-cob-chart').innerHTML=svg;
+ $('flows-cob-table').querySelector('tbody').innerHTML=rows.map(r=>'<tr><td>'+r.year+'</td><td>'+fmt(r.hires)+'</td><td>'+fmt(r.terminations)+'</td><td>'+((r.net>0)?'+':'')+fmt(r.net)+'</td></tr>').join('');
+ const recent=rows.at(-1),recentMonthly=excelsior.rows.at(-1);
+ $('flows-kpis').innerHTML=[
+ ['Saldo COB '+recent.year,(recent.net>0?'+':'')+fmt(recent.net),'Posizioni dipendenti · differenza tra flussi'],
+ ['Assunzioni COB '+recent.year,fmt(recent.hires),'Contratti effettivamente avviati'],
+ ['Entrate previste '+recentMonthly.period,fmt(recentMonthly.planned_entries),'Previsioni mensili Excelsior'],
+ ['Difficoltà reperimento '+recentMonthly.period,fmt(recentMonthly.hard_to_fill_percent,{maximumFractionDigits:1})+'%','Quota entrate previste difficili da coprire']
+ ].map(([label,value,sub])=>'<div class="card"><div class="metric-label">'+label+'</div><div class="metric-value">'+value+'</div><div class="metric-sub">'+sub+'</div></div>').join('');
+}
+$('flows-year').addEventListener('change',renderExcelsior);
+renderExcelsior();renderCob();
+})();
+</script>
+<script>
+(()=>{
+'use strict';
+const data=window.OBSERVATORY_DEMOGRAPHY;
+const $=id=>document.getElementById(id);
+const format=(n,digits=0)=>Number(n).toLocaleString('it-IT',{maximumFractionDigits:digits});
+const titleByKey=Object.fromEntries(data.indicators.map(x=>[x.id,x.label]));
+function render(){
+ const key=$('demo-series').value,rows=data.rows;
+ const unit=['age_15_64','age_0_14','age_65_plus'].includes(key)?'persone':'punti';
+ const values=rows.map(x=>x[key]),first=values[0],last=values.at(-1),delta=last-first;
+ const range=Math.max(...values)-Math.min(...values);
+ const lower=Math.max(0,Math.min(...values)-Math.max(range*.18,unit==='persone'?500:2));
+ const upper=Math.max(...values)+Math.max(range*.18,unit==='persone'?500:2);
+ const width=800,height=260,L=70,R=22,T=24,B=44;
+ const x=i=>L+(width-L-R)*i/(rows.length-1);
+ const y=v=>T+(upper-v)/(upper-lower)*(height-T-B);
+ let svg='<svg viewBox="0 0 '+width+' '+height+'" role="img" aria-label="'+titleByKey[key]+' dal 2019 al 2025">';
+ for(let i=0;i<5;i++){const v=lower+(upper-lower)*i/4,Y=y(v);svg+='<path d="M'+L+' '+Y+' H'+(width-R)+'" stroke="#e0ebf3"/><text x="'+(L-12)+'" y="'+(Y+4)+'" text-anchor="end" fill="#627b8d" font-size="12">'+format(v,unit==='persone'?0:1)+'</text>';}
+ svg+='<polyline fill="none" stroke="#087c76" stroke-width="3" stroke-linejoin="round" points="'+values.map((v,i)=>x(i)+','+y(v)).join(' ')+'"/>';
+ rows.forEach((r,i)=>{svg+='<circle cx="'+x(i)+'" cy="'+y(r[key])+'" r="5" fill="white" stroke="#087c76" stroke-width="3"><title>'+r.year+': '+format(r[key],unit==='persone'?0:1)+'</title></circle><text x="'+x(i)+'" y="'+(height-15)+'" font-size="12" text-anchor="middle" fill="#627b8d">'+r.year+'</text>';});
+ $('demo-chart').innerHTML=svg+'</svg>';
+ const card=(label,value,subtitle)=>'<div class="card"><div class="metric-label">'+label+'</div><div class="metric-value" style="font-size:26px">'+value+'</div><div class="metric-sub">'+subtitle+'</div></div>';
+ $('demo-summary').innerHTML=card('2019',format(first,unit==='persone'?0:1),unit)+card('2025',format(last,unit==='persone'?0:1),unit)+card('Variazione 2019–2025',(delta>0?'+':'')+format(delta,unit==='persone'?0:1),unit+' · differenza assoluta');
+}
+$('demo-series').addEventListener('change',render);
+render();
+})();
+</script></body></html>
