@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 const read=path=>readFileSync(new URL(path,import.meta.url),'utf8');
 const age=JSON.parse(read('../data/inps-age-monthly-mean.json'));
 const sector=JSON.parse(read('../data/inps-sector-annual.json'));
+const qualifications=JSON.parse(read('../data/inps-sector-qualifications.json'));
 const generated=read('../app/data/inps-distributions.js');
 const html=read('../app/index.html');
 const script=read('../app/inps-explorer.js');
@@ -31,14 +32,29 @@ test('Shared browser payload matches both source JSONs',()=>{
  const p=JSON.parse(found[1]);
  assert.deepEqual(p.age,age);
  assert.deepEqual(p.sector,sector);
+ assert.deepEqual(p.qualifications,qualifications);
 });
 test('INPS display avoids invented cross-tabulations and states divergent scopes',()=>{
  assert.match(html,/id="inps-age-table"/);
  assert.match(html,/id="inps-sector-chart"/);
  assert.match(html,/id="inps-sector-order"/);
+ assert.match(html,/id="inps-qualification"/);
+ assert.match(html,/id="inps-qualification-chart"/);
  assert.match(html,/data\/inps-distributions\.js/);
  assert.match(html,/src="inps-explorer\.js" defer/);
  assert.match(html,/non sono incrociati con l'età/);
  assert.match(script,/Distinct INPS series/);
  assert.doesNotMatch(script,/fetch\(/);
+});
+
+test('INPS contractual grade dataset has correct sectors and two observation years',()=>{
+ assert.deepEqual(qualifications.years,[2019,2023]);
+ assert.equal(qualifications.rows.length,10);
+ assert.deepEqual(qualifications.rows.map(x=>x.ateco).sort(),sector.rows.map(x=>x.ateco).sort());
+ for(const row of qualifications.rows){
+  for(const grade of ['operai','impiegati','quadri'])
+   for(const year of ['2019','2023'])
+    assert.ok(Number.isInteger(row.qualifications[grade][year])&&row.qualifications[grade][year]>=0);
+ }
+ assert.match(qualifications.limitations,/non professioni ISTAT/);
 });
