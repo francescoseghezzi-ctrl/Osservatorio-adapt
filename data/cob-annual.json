@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "territory": "BG",
+  "dataset_id": "cob_annual",
+  "frequency": "annual",
+  "scope_note": "Flussi di contratti di lavoro dipendente extra-agricolo e con esclusioni settoriali riportate nei rapporti provinciali; non confrontare direttamente con stock di occupati ISTAT. Differenze tra versioni dei rapporti possibili per revisioni SISTAL.",
+  "source": {
+    "publisher": "Provincia di Bergamo, Osservatorio Mercato del Lavoro",
+    "url": "https://www.provincia.bergamo.it/cnvpbgrm/zf/index.php/servizi-aggiuntivi/index/index/idtesto/347"
+  },
+  "rows": [
+    {
+      "year": 2023,
+      "hires": 128899,
+      "terminations": 122220,
+      "net": 6679,
+      "source_url": "https://www.provincia.bergamo.it/cnvpbgrm/po/mostra_news.php?area=H&id=2098",
+      "verification": "report_graph"
+    },
+    {
+      "year": 2024,
+      "hires": 127948,
+      "terminations": 121003,
+      "net": 6945,
+      "source_url": "https://www.provincia.bergamo.it/cnvpbgrm/po/mostra_news.php?area=H&id=2098",
+      "verification": "reported_in_summary"
+    },
+    {
+      "year": 2025,
+      "hires": null,
+      "terminations": null,
+      "net": 4580,
+      "source_url": "https://www.provincia.bergamo.it/cnvpbgrm/po/mostra_news.php?area=H&id=2535",
+      "verification": "reported_in_summary"
+    }
+  ]
+}
