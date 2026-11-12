@@ -8,6 +8,12 @@ Il workflow `.github/workflows/nightly-agent.yml` esegue **solo controlli** prog
 
 Le esecuzioni avvengono alle 02:15 UTC, soggette alle regole e alle quote GitHub Actions del piano del repository. In Italia l'orario equivale alle 03:15 durante l'ora solare e alle 04:15 durante l'ora legale. GitHub non garantisce che i job programmati partano all'ora esatta.
 
+## Dati e provenienza
+
+Le serie annuali di Bergamo sono conservate in `data/bergamo-annual.json`; definizioni, unità di misura, classi di età, frequenza e stato di verifica delle fonti sono in `data/catalog.json`. **I dati sono stati trasferiti dalla versione precedente e non sono ancora stati verificati individualmente contro le pubblicazioni primarie.** Il catalogo li contrassegna `source_pending`; non considerarli validati soltanto perché superano i test tecnici.
+
+`app/data/bergamo-series.js` è generato dai due file sorgenti e letto da entrambe le visualizzazioni della dashboard. Modificare solo i file in `data/`, poi eseguire `npm run build:data` e `npm test`. `npm run check:data` verifica che il file generato non sia rimasto indietro. **Non inserire serie nuove senza fonte, definizione e periodo verificabili.**
+
 ## Sviluppo
 
 - Applicazione: `app/index.html`
