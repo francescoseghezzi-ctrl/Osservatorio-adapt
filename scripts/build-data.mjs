@@ -78,3 +78,16 @@ if(process.argv.includes('--check')){
 }else{
  writeFileSync(inpsDestination,inpsContent);
 }
+
+const lombardy=JSON.parse(readFileSync(resolve(root,'data/lombardy-provinces-2025.json'),'utf8'));
+const lombardyDestination=resolve(root,'app/data/lombardy-2025.js');
+const lombardyContent='/* Generated from data/lombardy-provinces-2025.json */\n'
+ + 'window.OBSERVATORY_LOMBARDY='+JSON.stringify(lombardy)+';\n';
+if(process.argv.includes('--check')){
+ if(readFileSync(lombardyDestination,'utf8')!==lombardyContent){
+  console.error('Lombardy provincial comparison dataset is out of sync; run npm run build:data.');
+  process.exitCode=1;
+ }
+}else{
+ writeFileSync(lombardyDestination,lombardyContent);
+}
