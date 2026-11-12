@@ -41,6 +41,7 @@ La sezione `#renewal` accosta, per anno 2019–2025, alcune serie di popolazione
 - `data/inps-age-monthly-mean.json`: lavoratori dipendenti privati extra-agricoli per classe di eta, media annua dei lavoratori nel mese, **2018 e 2023**, per luogo di lavoro nella provincia di Bergamo. Fonte: [Provincia di Bergamo, rapporto II trimestre 2025, tabelle INPS](https://www.provincia.bergamo.it/cnvpbgrm/po/attachment_news.php?id=2958).
 - `data/inps-sector-annual.json`: selezione di dieci sezioni ATECO con lavoratori dipendenti **nell'anno**, **2019 e 2023**. Fonte: [Provincia di Bergamo, tavole allegate al rapporto annuale 2024](https://www.provincia.bergamo.it/po/attachment_news.php?id=2648). La selezione non equivale al totale.
 - Le due distribuzioni **non** sono una matrice eta per settore, non coincidono per perimetro temporale/indicatore e non sono confrontabili con il Censimento degli occupati residenti. Nessuna stima di pensionamenti o di fabbisogni settoriali e derivabile da questi dati aggregati.
+- `data/inps-sector-qualifications.json`: sezione ATECO × qualifica contrattuale (**operai, impiegati, quadri**) per 2019 e 2023, tratto dalle tavole INPS del rapporto provinciale. Le qualifiche non sono classificazioni di professioni e non esauriscono i lavoratori dei rispettivi settori.
 - `app/data/inps-distributions.js` viene generato tramite `npm run build:data`; i grafici e le tabelle nel modulo ricambio sono realizzati da `app/inps-explorer.js`.
 
 ## Sviluppo
