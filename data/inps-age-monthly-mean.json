@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "territory": "BG",
+  "dataset_id": "inps_covered_employees_age",
+  "unit": "persons",
+  "measure": "INPS lavoratori dipendenti privati extra-agricoli nel mese; numero medio annuo",
+  "years": [
+    2018,
+    2023
+  ],
+  "source": {
+    "publisher": "Provincia di Bergamo, Osservatorio del Mercato del Lavoro",
+    "primary": "INPS, Osservatorio sui lavoratori dipendenti",
+    "url": "https://www.provincia.bergamo.it/cnvpbgrm/po/attachment_news.php?id=2958",
+    "table": "Osservatorio sui lavoratori dipendenti nel mese, p. 42 del Rapporto II trimestre 2025"
+  },
+  "scope_note": "Dati INPS medi annui per luogo di lavoro nel privato extra-agricolo. Non sommare a occupati residenti da Censimento né ai flussi COB. La somma delle classi 2018 differisce di una unità dal totale pubblicato; valori originali preservati.",
+  "total": {
+    "2018": 313681,
+    "2023": 343130
+  },
+  "rows": [
+    {
+      "id": "under_20",
+      "label": "Fino a 19",
+      "values": {
+        "2018": 2741,
+        "2023": 4420
+      }
+    },
+    {
+      "id": "20_24",
+      "label": "20–24",
+      "values": {
+        "2018": 22818,
+        "2023": 28708
+      }
+    },
+    {
+      "id": "25_29",
+      "label": "25–29",
+      "values": {
+        "2018": 32283,
+        "2023": 36451
+      }
+    },
+    {
+      "id": "30_34",
+      "label": "30–34",
+      "values": {
+        "2018": 35837,
+        "2023": 37373
+      }
+    },
+    {
+      "id": "35_39",
+      "label": "35–39",
+      "values": {
+        "2018": 39532,
+        "2023": 38334
+      }
+    },
+    {
+      "id": "40_44",
+      "label": "40–44",
+      "values": {
+        "2018": 46688,
+        "2023": 41543
+      }
+    },
+    {
+      "id": "45_49",
+      "label": "45–49",
+      "values": {
+        "2018": 47175,
+        "2023": 48433
+      }
+    },
+    {
+      "id": "50_54",
+      "label": "50–54",
+      "values": {
+        "2018": 44100,
+        "2023": 47912
+      }
+    },
+    {
+      "id": "55_59",
+      "label": "55–59",
+      "values": {
+        "2018": 29569,
+        "2023": 40083
+      }
+    },
+    {
+      "id": "60_64",
+      "label": "60–64",
+      "values": {
+        "2018": 10344,
+        "2023": 15830
+      }
+    },
+    {
+      "id": "over_65",
+      "label": "65 e oltre",
+      "values": {
+        "2018": 2593,
+        "2023": 4043
+      }
+    }
+  ]
+}
