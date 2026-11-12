@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "territory": "BG",
+  "dataset_id": "inps_employees_sector",
+  "unit": "persons",
+  "measure": "Lavoratori dipendenti nell'anno; principali sezioni ATECO",
+  "years": [
+    2019,
+    2023
+  ],
+  "source": {
+    "publisher": "Provincia di Bergamo, Osservatorio Mercato del Lavoro",
+    "primary": "INPS, Osservatorio lavoratori dipendenti privati extra-agricoli",
+    "url": "https://www.provincia.bergamo.it/po/attachment_news.php?id=2648",
+    "table": "Tavole allegate al Rapporto annuale 2024, lavoratori nell'anno, 2019–2023"
+  },
+  "scope_note": "Le dieci sezioni ATECO sono una selezione, non l'intero universo. Non sommare le righe come se costituissero il totale. Periodo 2019-2023 e definizione dell'anno differenti da INPS lavoratori nel mese 2018-2023. Non disponibile incrocio età × settore.",
+  "rows": [
+    {
+      "ateco": "C",
+      "label": "Manifattura",
+      "values": {
+        "2019": 138175,
+        "2023": 140501
+      }
+    },
+    {
+      "ateco": "F",
+      "label": "Costruzioni",
+      "values": {
+        "2019": 26435,
+        "2023": 32380
+      }
+    },
+    {
+      "ateco": "G",
+      "label": "Commercio",
+      "values": {
+        "2019": 43484,
+        "2023": 46340
+      }
+    },
+    {
+      "ateco": "H",
+      "label": "Trasporti e magazzinaggio",
+      "values": {
+        "2019": 21935,
+        "2023": 25506
+      }
+    },
+    {
+      "ateco": "I",
+      "label": "Alloggio e ristorazione",
+      "values": {
+        "2019": 25006,
+        "2023": 27681
+      }
+    },
+    {
+      "ateco": "J",
+      "label": "Informazione e comunicazione",
+      "values": {
+        "2019": 4727,
+        "2023": 5807
+      }
+    },
+    {
+      "ateco": "M",
+      "label": "Attività professionali e tecniche",
+      "values": {
+        "2019": 8342,
+        "2023": 9791
+      }
+    },
+    {
+      "ateco": "N",
+      "label": "Noleggio e servizi alle imprese",
+      "values": {
+        "2019": 34833,
+        "2023": 39335
+      }
+    },
+    {
+      "ateco": "Q",
+      "label": "Sanità e assistenza sociale",
+      "values": {
+        "2019": 20725,
+        "2023": 20218
+      }
+    },
+    {
+      "ateco": "S",
+      "label": "Altre attività di servizi",
+      "values": {
+        "2019": 8375,
+        "2023": 7614
+      }
+    }
+  ]
+}
