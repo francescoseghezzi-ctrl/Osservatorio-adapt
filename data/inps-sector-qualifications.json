@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "territory": "BG",
+  "dataset_id": "inps_sector_qualifications",
+  "years": [
+    2019,
+    2023
+  ],
+  "measure": "Lavoratori dipendenti nell'anno, principali qualifiche per sezioni ATECO, INPS",
+  "source": {
+    "publisher": "Provincia di Bergamo, Rapporto annuale 2024, tavole allegate",
+    "primary": "INPS, Osservatorio lavoratori dipendenti privati extra-agricoli",
+    "url": "https://www.provincia.bergamo.it/po/attachment_news.php?id=2648",
+    "page": "23; tabella per qualifica e sezione ATECO"
+  },
+  "limitations": "Qualifiche contrattuali (non professioni ISTAT). Rappresenta tre qualifiche principali e non tutti i lavoratori del settore: non usare le somme come totale settoriale. Mancano dimensioni anagrafiche e incrocio eta x qualifica.",
+  "rows": [
+    {
+      "ateco": "C",
+      "qualifications": {
+        "impiegati": {
+          "2019": 38756,
+          "2023": 40962
+        },
+        "operai": {
+          "2019": 89178,
+          "2023": 89225
+        },
+        "quadri": {
+          "2019": 3745,
+          "2023": 4129
+        }
+      }
+    },
+    {
+      "ateco": "F",
+      "qualifications": {
+        "impiegati": {
+          "2019": 4911,
+          "2023": 6425
+        },
+        "operai": {
+          "2019": 19816,
+          "2023": 23901
+        },
+        "quadri": {
+          "2019": 103,
+          "2023": 157
+        }
+      }
+    },
+    {
+      "ateco": "G",
+      "qualifications": {
+        "impiegati": {
+          "2019": 26119,
+          "2023": 27339
+        },
+        "operai": {
+          "2019": 14100,
+          "2023": 15195
+        },
+        "quadri": {
+          "2019": 714,
+          "2023": 999
+        }
+      }
+    },
+    {
+      "ateco": "H",
+      "qualifications": {
+        "impiegati": {
+          "2019": 5396,
+          "2023": 5806
+        },
+        "operai": {
+          "2019": 15274,
+          "2023": 18118
+        },
+        "quadri": {
+          "2019": 329,
+          "2023": 382
+        }
+      }
+    },
+    {
+      "ateco": "I",
+      "qualifications": {
+        "impiegati": {
+          "2019": 1664,
+          "2023": 1796
+        },
+        "operai": {
+          "2019": 21453,
+          "2023": 23967
+        },
+        "quadri": {
+          "2019": 47,
+          "2023": 60
+        }
+      }
+    },
+    {
+      "ateco": "J",
+      "qualifications": {
+        "impiegati": {
+          "2019": 3909,
+          "2023": 4815
+        },
+        "operai": {
+          "2019": 183,
+          "2023": 243
+        },
+        "quadri": {
+          "2019": 131,
+          "2023": 199
+        }
+      }
+    },
+    {
+      "ateco": "M",
+      "qualifications": {
+        "impiegati": {
+          "2019": 6576,
+          "2023": 7731
+        },
+        "operai": {
+          "2019": 832,
+          "2023": 730
+        },
+        "quadri": {
+          "2019": 192,
+          "2023": 273
+        }
+      }
+    },
+    {
+      "ateco": "N",
+      "qualifications": {
+        "impiegati": {
+          "2019": 7441,
+          "2023": 7133
+        },
+        "operai": {
+          "2019": 26446,
+          "2023": 31350
+        },
+        "quadri": {
+          "2019": 159,
+          "2023": 179
+        }
+      }
+    },
+    {
+      "ateco": "Q",
+      "qualifications": {
+        "impiegati": {
+          "2019": 14160,
+          "2023": 14316
+        },
+        "operai": {
+          "2019": 6284,
+          "2023": 5580
+        },
+        "quadri": {
+          "2019": 33,
+          "2023": 32
+        }
+      }
+    },
+    {
+      "ateco": "S",
+      "qualifications": {
+        "impiegati": {
+          "2019": 2064,
+          "2023": 2120
+        },
+        "operai": {
+          "2019": 5196,
+          "2023": 4570
+        },
+        "quadri": {
+          "2019": 45,
+          "2023": 50
+        }
+      }
+    }
+  ]
+}
