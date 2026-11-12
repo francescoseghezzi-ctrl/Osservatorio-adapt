@@ -37,3 +37,16 @@ if(process.argv.includes('--check')){
 } else {
   writeFileSync(flowsDestination,flowsContent);
 }
+
+const demography=JSON.parse(readFileSync(resolve(root,'data/demography-annual.json'),'utf8'));
+const demographicDestination=resolve(root,'app/data/demography-series.js');
+const demographicContent='/* Generated from data/demography-annual.json */\n'
+ + 'window.OBSERVATORY_DEMOGRAPHY='+JSON.stringify(demography)+';\n';
+if(process.argv.includes('--check')){
+  if(readFileSync(demographicDestination,'utf8')!==demographicContent){
+    console.error('Generated demographic dataset is out of sync; run npm run build:data.');
+    process.exitCode=1;
+  }
+} else {
+  writeFileSync(demographicDestination,demographicContent);
+}
