@@ -44,6 +44,14 @@ La sezione `#renewal` accosta, per anno 2019–2025, alcune serie di popolazione
 - `data/inps-sector-qualifications.json`: sezione ATECO × qualifica contrattuale (**operai, impiegati, quadri**) per 2019 e 2023, tratto dalle tavole INPS del rapporto provinciale. Le qualifiche non sono classificazioni di professioni e non esauriscono i lavoratori dei rispettivi settori.
 - `app/data/inps-distributions.js` viene generato tramite `npm run build:data`; i grafici e le tabelle nel modulo ricambio sono realizzati da `app/inps-explorer.js`.
 
+## Confronto tra le province lombarde · 2025
+
+La sezione `#lombardy` confronta **tutte le 12 province lombarde** su dieci indicatori ISTAT omogenei per anno: tassi di occupazione totale, femminile e maschile (15–64), disoccupazione (15–74), attività e inattività (15–64), occupati (15–89), disoccupati e forze di lavoro (15+), inattivi (15–64). Gli ultimi quattro indicatori sono stock espressi in migliaia di persone; **non sono graduatorie di performance**.
+
+Il dato canonico e in `data/lombardy-provinces-2025.json` e il payload del browser in `app/data/lombardy-2025.js`, generato mediante `npm run build:data`. L'interfaccia `app/lombardy.js` include ordinamento, evidenziazione di una provincia, benchmark regionale, tabella e CSV. Le fonti del dataset sono [Provincia di Brescia, Rapporto 2025, pp. 48–53](https://lavoro.provincia.brescia.it/export/sites/default/.galleries/documenti/osservatorio/Report-2025.pdf) e [Camera di commercio di Varese / OsserVa, occupazione per genere, pubblicato 13 marzo 2026](https://www.osserva-varese.it/istat-occupazione/), basate sulla Rilevazione ISTAT sulle forze di lavoro. Le consistenze in migliaia e i tassi hanno arrotondamenti differenti.
+
+**Limitazione:** il confronto è un quadro trasversale 2025, non una serie storica comparativa; non include ancora retribuzioni, competenze, flussi COB comparabili o demografia per tutte le province. La copertura e la qualità delle fonti vanno riesaminate a ogni aggiornamento.
+
 ## Sviluppo
 
 - Applicazione: `app/index.html`
