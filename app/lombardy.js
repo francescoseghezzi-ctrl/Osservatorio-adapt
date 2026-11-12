@@ -28,7 +28,7 @@ function render(){
  card('Media / totale regionale',fmt(benchmark,def.unit),def.unit==='%'?'Benchmark Lombardia':'Stock regionale stimato'),
  card('Valore massimo',fmt(highest.values[id],def.unit),highest.name),
  card('Valore minimo',fmt(lowest.values[id],def.unit),lowest.name),
- card(selected?'Differenza '+selected.name:'Province confrontate',selected?(selected.values[id]-benchmark>0?'+':'')+fmt(selected.values[id]-benchmark,def.unit==='%'?'%':'migliaia'):'12',selected?(def.unit==='%'?'Punti percentuali dalla Lombardia':'Migliaia rispetto al totale lombardo'):'Tutte le province lombarde')
+ card(selected?(def.group==='stock'?selected.name:'Scarto '+selected.name):'Province confrontate',selected?(def.group==='stock'?fmt(selected.values[id],def.unit):(selected.values[id]-benchmark>0?'+':'')+Number(selected.values[id]-benchmark).toLocaleString('it-IT',{maximumFractionDigits:2})+' p.p.'):'12',selected?(def.group==='stock'?'Stock provinciale; non confrontare direttamente con il totale regionale':'Differenza dalla media Lombardia'):'Tutte le province lombarde')
  ].join('');
  const W=990,H=575,L=215,R=105,T=35,B=22;
  const start=Math.min(0,...rows.map(r=>r.values[id]),benchmark);
