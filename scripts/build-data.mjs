@@ -50,3 +50,16 @@ if(process.argv.includes('--check')){
 } else {
   writeFileSync(demographicDestination,demographicContent);
 }
+
+const censusEmployment=JSON.parse(readFileSync(resolve(root,'data/employed-age-census.json'),'utf8'));
+const censusDest=resolve(root,'app/data/employed-age-census.js');
+const censusContent='/* Generated from data/employed-age-census.json */\n'
+ + 'window.OBSERVATORY_EMPLOYED_BY_AGE='+JSON.stringify(censusEmployment)+';\n';
+if(process.argv.includes('--check')){
+  if(readFileSync(censusDest,'utf8')!==censusContent){
+    console.error('Generated age-specific employment census data is out of sync; run npm run build:data.');
+    process.exitCode=1;
+  }
+} else {
+  writeFileSync(censusDest,censusContent);
+}
