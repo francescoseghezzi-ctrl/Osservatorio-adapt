@@ -60,6 +60,12 @@ La vista `#lombardy` include una coropleta SVG delle **12 province lombarde**, c
 
 Nota geografica: la data di versione esatta della geometria upstream non è attestata nel file estratto; verificare l'eventuale aggiornamento prima della pubblicazione definitiva.
 
+## Controlli nel browser
+
+Il controllo `npm run test:browser` avvia un server HTTP locale e una sessione Chromium/Google Chrome headless per due viewport (desktop e mobile). Verifica che le 12 province siano disegnate, che il click e la tastiera selezionino i territori, che il cambio indicatore aggiorni dettagli e tabella, che compaia il tooltip e che la mappa non trabocchi nella vista mobile. Usa solo moduli Node.js standard e un browser Chrome/Chromium installato.
+
+Il workflow `.github/workflows/ci.yml` esegue `npm run check:data`, `npm test` e `npm run test:browser` sui push su `main` e sulle pull request, oltre all'avvio manuale. L'esistenza dei test **non dimostra** il loro esito: controllare il risultato di GitHub Actions e ispezionare la resa visiva prima di presentare il prodotto. La data del dataset geografico upstream non è verificata.
+
 ## Sviluppo
 
 - Applicazione: `app/index.html`
