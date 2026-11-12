@@ -29,6 +29,13 @@ Le serie annuali di Bergamo sono conservate in `data/bergamo-annual.json`; defin
 
 La sezione `#renewal` accosta, per anno 2019–2025, alcune serie di popolazione residente al 1° gennaio (da `data/demography-annual.json`) e i tassi annuali del mercato del lavoro (da `data/bergamo-annual.json`). Consente la scelta di due indicatori e del periodo, visualizza **due assi/grafici separati con unità proprie**, calcola differenze assolute e punti percentuali ed esporta una tabella CSV con note sulle fonti. **Non** stima pensionamenti, domanda futura di sostituzione né causalità fra andamenti. La fonte e la revisione delle serie del lavoro restano `source_pending` nel catalogo.
 
+## Composizione per età degli occupati: Censimento 2018 e 2023
+
+- `data/employed-age-census.json`: occupati residenti per età 15–24, 25–49, 50–64 e 65+ nel 2018 e nel 2023. Fonte: [Provincia di Bergamo, *Scenari demografici e mercato del lavoro*, allegato al Rapporto II trimestre 2025, p. 9](https://www.provincia.bergamo.it/cnvpbgrm/po/attachment_news.php?id=2960), su Censimento permanente ISTAT.
+- **Due osservazioni, non sette**: non interpolare gli anni mancanti. I totali 2018 differiscono di una unità dalla somma delle classi pubblicate; si conserva il totale originale.
+- `app/data/employed-age-census.js` è generato da `npm run build:data`; `app/workforce-age.js` visualizza il confronto nel modulo `#renewal`.
+- Le età degli occupati residenti non sono utilizzabili da sole per stimare pensionamenti o fabbisogni professionali; mancano serie per settore e professione sullo stesso perimetro.
+
 ## Sviluppo
 
 - Applicazione: `app/index.html`
