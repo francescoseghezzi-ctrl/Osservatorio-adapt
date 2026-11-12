@@ -52,6 +52,14 @@ Il dato canonico e in `data/lombardy-provinces-2025.json` e il payload del brows
 
 **Limitazione:** il confronto è un quadro trasversale 2025, non una serie storica comparativa; non include ancora retribuzioni, competenze, flussi COB comparabili o demografia per tutte le province. La copertura e la qualità delle fonti vanno riesaminate a ogni aggiornamento.
 
+## Mappa provinciale interattiva della Lombardia
+
+La vista `#lombardy` include una coropleta SVG delle **12 province lombarde**, con confini territoriali reali derivati dal dataset geografico [guglielmo/geojson-italy, limiti delle province](https://github.com/guglielmo/geojson-italy/blob/main/topojson/limits_IT_provinces.topo.json) (redistribuzione di confini ISTAT). I poligoni sono incorporati in `app/data/lombardy-boundaries.js`, senza servizi esterni, API a pagamento o richieste di rete da browser.
+
+`app/lombardy-map.js` gestisce colore per indicatore, tooltip con nome, valore, posizione e scarto regionale, selezione al click o da tastiera, dettaglio provinciale e sincronizzazione con ordinamento e tabella. La mappa usa lo stesso dataset 2025 della tabella (`data/lombardy-provinces-2025.json`): nessun nuovo valore statistico è interpolato. Per i valori assoluti l'ordinamento per dimensione **non** va interpretato come graduatoria di qualità del mercato del lavoro.
+
+Nota geografica: la data di versione esatta della geometria upstream non è attestata nel file estratto; verificare l'eventuale aggiornamento prima della pubblicazione definitiva.
+
 ## Sviluppo
 
 - Applicazione: `app/index.html`
