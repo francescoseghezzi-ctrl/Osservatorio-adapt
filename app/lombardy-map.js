@@ -94,5 +94,5 @@ function init(){
  $('lombardy-map-reset').addEventListener('click',()=>changeSelection('BG'));
  draw();
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+if(document.readyState!=='complete')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
