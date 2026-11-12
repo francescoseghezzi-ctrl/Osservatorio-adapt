@@ -20,6 +20,11 @@ Le serie annuali di Bergamo sono conservate in `data/bergamo-annual.json`; defin
 - `data/excelsior-monthly.json`: 42 osservazioni mensili gennaio 2022–giugno 2025, entrate previste dalle imprese e quota di difficile reperimento. Fonte: [Provincia di Bergamo, Rapporto I trimestre 2025, p. 37](https://www.provincia.bergamo.it/po/attachment_news.php?id=2785). **Entrate previste, non assunzioni effettive**. Ci fermiamo a giugno 2025 per evitare un confronto diretto con i mesi da luglio, quando Excelsior ha ampliato il campo di osservazione al settore primario.
 - `app/data/flows-series.js` è generato automaticamente dai due archivi, per la sezione `#flows`. Non modificarlo a mano.
 
+## Demografia 2019–2025
+
+- `data/demography-annual.json`: popolazione residente all'1 gennaio per le classi 0–14, 15–64 e 65+, totale, età media, indice di vecchiaia, indice di dipendenza strutturale e indice di ricambio della popolazione attiva. Fonte: [ISTAT tramite Tuttitalia, serie storiche e indici demografici della provincia di Bergamo](https://www.tuttitalia.it/lombardia/provincia-di-bergamo/statistiche/indici-demografici-struttura-popolazione/). I dati non descrivono gli occupati né i pensionamenti effettivi.
+- `app/data/demography-series.js`: esportazione generata automaticamente dal file sorgente, utilizzata nella dashboard per il selettore di serie demografiche.
+
 ## Sviluppo
 
 - Applicazione: `app/index.html`
