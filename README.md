@@ -25,6 +25,10 @@ Le serie annuali di Bergamo sono conservate in `data/bergamo-annual.json`; defin
 - `data/demography-annual.json`: popolazione residente all'1 gennaio per le classi 0–14, 15–64 e 65+, totale, età media, indice di vecchiaia, indice di dipendenza strutturale e indice di ricambio della popolazione attiva. Fonte: [ISTAT tramite Tuttitalia, serie storiche e indici demografici della provincia di Bergamo](https://www.tuttitalia.it/lombardia/provincia-di-bergamo/statistiche/indici-demografici-struttura-popolazione/). I dati non descrivono gli occupati né i pensionamenti effettivi.
 - `app/data/demography-series.js`: esportazione generata automaticamente dal file sorgente, utilizzata nella dashboard per il selettore di serie demografiche.
 
+## Ricambio generazionale · analisi descrittiva
+
+La sezione `#renewal` accosta, per anno 2019–2025, alcune serie di popolazione residente al 1° gennaio (da `data/demography-annual.json`) e i tassi annuali del mercato del lavoro (da `data/bergamo-annual.json`). Consente la scelta di due indicatori e del periodo, visualizza **due assi/grafici separati con unità proprie**, calcola differenze assolute e punti percentuali ed esporta una tabella CSV con note sulle fonti. **Non** stima pensionamenti, domanda futura di sostituzione né causalità fra andamenti. La fonte e la revisione delle serie del lavoro restano `source_pending` nel catalogo.
+
 ## Sviluppo
 
 - Applicazione: `app/index.html`
