@@ -63,3 +63,17 @@ if(process.argv.includes('--check')){
 } else {
   writeFileSync(censusDest,censusContent);
 }
+
+const inpsAge=JSON.parse(readFileSync(resolve(root,'data/inps-age-monthly-mean.json'),'utf8'));
+const inpsSector=JSON.parse(readFileSync(resolve(root,'data/inps-sector-annual.json'),'utf8'));
+const inpsDestination=resolve(root,'app/data/inps-distributions.js');
+const inpsContent='/* Generated from data/inps-age-monthly-mean.json and data/inps-sector-annual.json */\n'
+ + 'window.OBSERVATORY_INPS='+JSON.stringify({age:inpsAge,sector:inpsSector})+';\n';
+if(process.argv.includes('--check')){
+ if(readFileSync(inpsDestination,'utf8')!==inpsContent){
+  console.error('Generated INPS distributions are out of sync; run npm run build:data.');
+  process.exitCode=1;
+ }
+}else{
+ writeFileSync(inpsDestination,inpsContent);
+}
