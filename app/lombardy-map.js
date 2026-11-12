@@ -26,10 +26,9 @@ function init(){
   return 'rgb('+low.map((c,i)=>Math.round(c+(high[i]-c)*t)).join(',')+')';
  }
  function changeSelection(code){
-  status.selected=code;
   highlight.value=code||'all';
+  // One change event updates the map, ranking and table; avoid double redraw.
   highlight.dispatchEvent(new Event('change',{bubbles:true}));
-  draw();
  }
  function positionTooltip(ev){
   const frame=host.parentElement.getBoundingClientRect();
