@@ -14,6 +14,12 @@ Le serie annuali di Bergamo sono conservate in `data/bergamo-annual.json`; defin
 
 `app/data/bergamo-series.js` è generato dai due file sorgenti e letto da entrambe le visualizzazioni della dashboard. Modificare solo i file in `data/`, poi eseguire `npm run build:data` e `npm test`. `npm run check:data` verifica che il file generato non sia rimasto indietro. **Non inserire serie nuove senza fonte, definizione e periodo verificabili.**
 
+## Flussi e previsioni: due basi distinte
+
+- `data/cob-annual.json`: 2019–2024, assunzioni, cessazioni, saldi amministrativi nel lavoro dipendente privato extra-agricolo in provincia di Bergamo. Fonte: [Provincia di Bergamo, Rapporto annuale 2024, p. 12](https://www.provincia.bergamo.it/cnvpbgrm/po/attachment_news.php?id=2647). Non sono stock ISTAT.
+- `data/excelsior-monthly.json`: 42 osservazioni mensili gennaio 2022–giugno 2025, entrate previste dalle imprese e quota di difficile reperimento. Fonte: [Provincia di Bergamo, Rapporto I trimestre 2025, p. 37](https://www.provincia.bergamo.it/po/attachment_news.php?id=2785). **Entrate previste, non assunzioni effettive**. Ci fermiamo a giugno 2025 per evitare un confronto diretto con i mesi da luglio, quando Excelsior ha ampliato il campo di osservazione al settore primario.
+- `app/data/flows-series.js` è generato automaticamente dai due archivi, per la sezione `#flows`. Non modificarlo a mano.
+
 ## Sviluppo
 
 - Applicazione: `app/index.html`
