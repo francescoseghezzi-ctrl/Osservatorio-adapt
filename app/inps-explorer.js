@@ -55,6 +55,27 @@ function drawSector(){
  });
  $('inps-sector-chart').innerHTML=out+'</svg>';
 }
+
+function drawQualifications(){
+ const qual=$('inps-qualification').value,sectorLabels=new Map(data.sector.rows.map(r=>[r.ateco,r.label]));
+ const rows=data.qualifications.rows.map(r=>({
+  ateco:r.ateco,label:sectorLabels.get(r.ateco)||r.ateco,
+  a:r.qualifications[qual]['2019'],b:r.qualifications[qual]['2023']
+ })).sort((a,b)=>(b.b-b.a)-(a.b-a.a));
+ const delta=r=>r.b-r.a;
+ $('inps-qualification-table').querySelector('tbody').innerHTML=rows.map(r=>'<tr><td>'+r.ateco+'</td><td style="text-align:left">'+r.label+'</td><td>'+fmt(r.a)+'</td><td>'+fmt(r.b)+'</td><td>'+signed(delta(r))+'</td><td>'+signed(delta(r)/r.a*100,1)+'%</td></tr>').join('');
+ const W=920,H=500,L=235,R=125,T=24,baseline=460,step=46,barH=16,max=Math.max(1,...rows.map(r=>Math.abs(delta(r))));
+ let svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Variazione 2019-2023 di '+qual+' nei settori ATECO selezionati">';
+ svg+='<line x1="'+baseline+'" y1="'+T+'" x2="'+baseline+'" y2="'+(H-20)+'" stroke="#8aa4b4"/>';
+ rows.forEach((r,i)=>{
+   const v=delta(r),y=T+i*step,w=Math.abs(v)/max*280,x=v<0?baseline-w:baseline;
+   svg+='<text x="'+(L-18)+'" y="'+(y+13)+'" fill="#415f70" font-size="12" text-anchor="end">'+r.ateco+' · '+r.label+'</text>';
+   svg+='<rect x="'+x+'" y="'+y+'" width="'+Math.max(1,w)+'" height="'+barH+'" fill="'+(v>=0?'#087c76':'#c77758')+'" rx="3"><title>'+r.label+': '+signed(v)+'</title></rect>';
+   svg+='<text x="'+(v>=0?x+w+7:x-7)+'" y="'+(y+13)+'" text-anchor="'+(v>=0?'start':'end')+'" font-size="12" fill="#486677">'+signed(v)+'</text>';
+ });
+ $('inps-qualification-chart').innerHTML=svg+'</svg>';
+}
+$('inps-qualification').addEventListener('change',drawQualifications);
 $('inps-sector-order').addEventListener('change',drawSector);
-drawAge();drawSector();
+drawAge();drawSector();drawQualifications();
 })();
