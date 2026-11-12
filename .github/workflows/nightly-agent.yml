@@ -26,7 +26,7 @@ jobs:
           python3 - <<'PY'
           import re, pathlib
           html=pathlib.Path('app/index.html').read_text()
-          scripts=re.findall(r'<script(?:\\s[^>]*)?>(.*?)</script>', html, flags=re.S|re.I)
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', html, flags=re.S|re.I)
           pathlib.Path('/tmp/observatory-inline.js').write_text('\n'.join(scripts))
           PY
           node --check /tmp/observatory-inline.js
