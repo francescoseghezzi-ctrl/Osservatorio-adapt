@@ -36,6 +36,13 @@ La sezione `#renewal` accosta, per anno 2019–2025, alcune serie di popolazione
 - `app/data/employed-age-census.js` è generato da `npm run build:data`; `app/workforce-age.js` visualizza il confronto nel modulo `#renewal`.
 - Le età degli occupati residenti non sono utilizzabili da sole per stimare pensionamenti o fabbisogni professionali; mancano serie per settore e professione sullo stesso perimetro.
 
+## Lavoratori INPS per eta e settore (due universi separati)
+
+- `data/inps-age-monthly-mean.json`: lavoratori dipendenti privati extra-agricoli per classe di eta, media annua dei lavoratori nel mese, **2018 e 2023**, per luogo di lavoro nella provincia di Bergamo. Fonte: [Provincia di Bergamo, rapporto II trimestre 2025, tabelle INPS](https://www.provincia.bergamo.it/cnvpbgrm/po/attachment_news.php?id=2958).
+- `data/inps-sector-annual.json`: selezione di dieci sezioni ATECO con lavoratori dipendenti **nell'anno**, **2019 e 2023**. Fonte: [Provincia di Bergamo, tavole allegate al rapporto annuale 2024](https://www.provincia.bergamo.it/po/attachment_news.php?id=2648). La selezione non equivale al totale.
+- Le due distribuzioni **non** sono una matrice eta per settore, non coincidono per perimetro temporale/indicatore e non sono confrontabili con il Censimento degli occupati residenti. Nessuna stima di pensionamenti o di fabbisogni settoriali e derivabile da questi dati aggregati.
+- `app/data/inps-distributions.js` viene generato tramite `npm run build:data`; i grafici e le tabelle nel modulo ricambio sono realizzati da `app/inps-explorer.js`.
+
 ## Sviluppo
 
 - Applicazione: `app/index.html`
