@@ -22,6 +22,7 @@ test('preserves source and methodological qualifications',()=>{
   assert.match(html, /ISTAT/i);
   assert.match(html, /metodolog/i);
 });
-test('no external chart script dependency',()=>{
-  assert.doesNotMatch(html, /<script\s+src=/i);
+test('only local chart data script dependency',()=>{
+  assert.match(html, /<script src="data\/bergamo-series\.js"><\/script>/);
+  assert.doesNotMatch(html, /<script\s+src="https?:/i);
 });
