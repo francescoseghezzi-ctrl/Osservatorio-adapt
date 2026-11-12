@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "last_catalog_update": "2026-11-12",
+  "territory": {
+    "id": "BG",
+    "name": "Provincia di Bergamo"
+  },
+  "quality_note": "These values are carried over from v1.0, not independently verified against primary publications. No invented or extrapolated data.",
+  "indicators": [
+    {
+      "id": "employment_rate",
+      "label": "Tasso di occupazione",
+      "unit": "%",
+      "frequency": "annual",
+      "territory": "BG",
+      "years": [
+        2019,
+        2025
+      ],
+      "population": "15-64",
+      "provenance": "Camera di commercio di Bergamo / ISTAT (attribution in original prototype; primary source and vintage not independently verified)",
+      "validation_status": "source_pending",
+      "group": "rate"
+    },
+    {
+      "id": "unemployment_rate",
+      "label": "Tasso di disoccupazione",
+      "unit": "%",
+      "frequency": "annual",
+      "territory": "BG",
+      "years": [
+        2019,
+        2025
+      ],
+      "population": "15-74",
+      "provenance": "Camera di commercio di Bergamo / ISTAT (attribution in original prototype; primary source and vintage not independently verified)",
+      "validation_status": "source_pending",
+      "group": "rate"
+    },
+    {
+      "id": "inactivity_rate",
+      "label": "Tasso di inattivita",
+      "unit": "%",
+      "frequency": "annual",
+      "territory": "BG",
+      "years": [
+        2019,
+        2025
+      ],
+      "population": "15-64",
+      "provenance": "Camera di commercio di Bergamo / ISTAT (attribution in original prototype; primary source and vintage not independently verified)",
+      "validation_status": "source_pending",
+      "group": "rate"
+    },
+    {
+      "id": "employed",
+      "label": "Occupati",
+      "unit": "mila",
+      "frequency": "annual",
+      "territory": "BG",
+      "years": [
+        2019,
+        2025
+      ],
+      "population": "occupied persons",
+      "provenance": "Camera di commercio di Bergamo / ISTAT (attribution in original prototype; primary source and vintage not independently verified)",
+      "validation_status": "source_pending",
+      "group": "count"
+    },
+    {
+      "id": "employees",
+      "label": "Lavoratori dipendenti",
+      "unit": "mila",
+      "frequency": "annual",
+      "territory": "BG",
+      "years": [
+        2019,
+        2025
+      ],
+      "population": "occupied persons",
+      "provenance": "Camera di commercio di Bergamo / ISTAT (attribution in original prototype; primary source and vintage not independently verified)",
+      "validation_status": "source_pending",
+      "group": "count"
+    },
+    {
+      "id": "self_employed",
+      "label": "Lavoratori indipendenti",
+      "unit": "mila",
+      "frequency": "annual",
+      "territory": "BG",
+      "years": [
+        2019,
+        2025
+      ],
+      "population": "occupied persons",
+      "provenance": "Camera di commercio di Bergamo / ISTAT (attribution in original prototype; primary source and vintage not independently verified)",
+      "validation_status": "source_pending",
+      "group": "count"
+    }
+  ]
+}
