@@ -20,3 +20,20 @@ if(process.argv.includes('--check')){
   writeFileSync(destination,content);
   console.log('Updated '+destination);
 }
+
+
+// The two additional datasets are maintained independently: projected demand (Excelsior)
+// and administrative employment flows (COB) must not share an aggregate scale.
+const excelsior=JSON.parse(readFileSync(resolve(root,'data/excelsior-monthly.json'),'utf8'));
+const cob=JSON.parse(readFileSync(resolve(root,'data/cob-annual.json'),'utf8'));
+const flowsDestination=resolve(root,'app/data/flows-series.js');
+const flowsContent='/* Generated from data/excelsior-monthly.json and data/cob-annual.json */\n'
+ + 'window.OBSERVATORY_FLOWS='+JSON.stringify({excelsior,cob})+';\n';
+if(process.argv.includes('--check')){
+  if(readFileSync(flowsDestination,'utf8')!==flowsContent){
+    console.error('Generated flows dataset is out of sync; run npm run build:data.');
+    process.exitCode=1;
+  }
+} else {
+  writeFileSync(flowsDestination,flowsContent);
+}
