@@ -19,6 +19,8 @@ jobs:
           node-version: '22'
       - name: Verify observatory structure and navigation
         run: npm test
+      - name: Verify generated data is current
+        run: npm run check:data
       - name: Check inline JavaScript syntax
         run: |
           python3 - <<'PY'
