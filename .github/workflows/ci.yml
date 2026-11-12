@@ -1,5 +1,7 @@
 name: Checks
 on:
+  push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -14,3 +16,7 @@ jobs:
           node-version: '22'
       - run: npm run check:data
       - run: npm test
+      - name: Browser smoke test (desktop and mobile)
+        run: |
+          command -v google-chrome || command -v chromium || command -v chromium-browser
+          npm run test:browser
